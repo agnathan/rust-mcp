@@ -18,3 +18,8 @@ pub fn negotiated_version_label() -> &'static str {
 pub fn registered_tool_name() -> &'static str {
     todo!("chapter 3: return the name passed to FastMcp::tool")
 }
+
+/// The `Option` field chapter 4 leaves out of the schema's `required` array.
+pub fn optional_argument_name() -> &'static str {
+    todo!("chapter 4: return the name of the Option field")
+}

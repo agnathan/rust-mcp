@@ -3,7 +3,7 @@
   {"n": 1, "title": "Speaking JSON-RPC", "step": "ch01-1-jsonrpc", "part": "I"},
   {"n": 2, "title": "Negotiating the protocol", "step": "ch02-1-negotiate", "part": "I"},
   {"n": 3, "title": "The FastMcp builder and tools", "step": "ch03-1-builder", "part": "I"},
-  {"n": 4, "title": "Schemas from types", "step": "ch04-schema", "part": "I"},
+  {"n": 4, "title": "Schemas from types", "step": "ch04-1-schema", "part": "I"},
   {"n": 5, "title": "A tool macro", "step": "ch05-tool-macro", "part": "I"},
   {"n": 6, "title": "Resources and templates", "step": "ch06-resources", "part": "I"},
   {"n": 7, "title": "Prompts, completions, pagination", "step": "ch07-prompts", "part": "I"},

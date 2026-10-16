@@ -139,6 +139,34 @@
       "fake": "No socket and no rmcp session. status is not called. The argument object is real JSON, cloned once per call.",
       "source": "steps/ch03-1-builder/crates/fastmcp-core/benches/tools.rs",
       "reading": "Smaller is better. A thousand calls should stay well under a millisecond. About 60 µs locally."
+    },
+    {
+      "id": "4.1/schema_1",
+      "section": "4.1 Schema",
+      "chapter": "Chapter 4 Schemas from types",
+      "function": "schema_1",
+      "summary": "Generate one JSON Schema from a struct.",
+      "what": "The cost of json_schema_of for Greet: draft 2020-12 generation, serde_json::to_value, and removal of the top-level title and description.",
+      "why": "Every .tool() registration pays this once for the argument type and once for the return type. It should stay far below a tool call.",
+      "timing": "Nothing is built before the bench except the type itself, which is compiled in. The timed closure is b.iter. Inside it: json_schema_of::<Greet>() and black_box of the Arc. There is no cache and no FastMcp.",
+      "inputs": "Greet has name: String and title: Option<String>. The schema's required array contains name and omits title.",
+      "fake": "Nothing is mocked. No socket, no tools/list, and no TypeId cache. rmcp caches this kind of schema; this function does not.",
+      "source": "steps/ch04-1-schema/crates/fastmcp-core/benches/schema.rs",
+      "reading": "Smaller is better. One schema should stay well under 100 microseconds. About 1.6 µs locally."
+    },
+    {
+      "id": "4.1/schema_1000",
+      "section": "4.1 Schema",
+      "chapter": "Chapter 4 Schemas from types",
+      "function": "schema_1000",
+      "summary": "Generate the same JSON Schema 1,000 times.",
+      "what": "The cost of 1,000 uncached json_schema_of::<Greet>() calls.",
+      "why": "Shows the generator's cost across a batch of registrations that do not share a cache. A cache would hide the work after the first call.",
+      "timing": "The timed closure is b.iter. Inside it: a loop of 1,000 generations and black_box of the last Arc. No server is built. No schema is reused across iterations of the loop.",
+      "inputs": "The same Greet struct on every iteration. name is String. title is Option<String>.",
+      "fake": "No socket and no cache. The repetition is the point: each call builds a new document.",
+      "source": "steps/ch04-1-schema/crates/fastmcp-core/benches/schema.rs",
+      "reading": "Smaller is better. A thousand uncached generations should stay well under 50 ms. About 1.9 ms locally."
     }
   ]
 }
