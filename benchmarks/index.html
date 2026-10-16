@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FastMCP benchmarks</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c1917;
+      --muted: #57534e;
+      --line: #e7e5e4;
+      --paper: #fafaf9;
+      --card: #ffffff;
+      --faster: #166534;
+      --slower: #b91c1c;
+      --noise: #57534e;
+      --faster-bg: #dcfce7;
+      --slower-bg: #fee2e2;
+      --noise-bg: #f5f5f4;
+    }
+    body {
+      margin: 0;
+      font: 16px/1.45 "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    header, main { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+    h1 { font-size: 2rem; margin: 0 0 8px; }
+    h2 { font-size: 1.4rem; margin: 36px 0 12px; }
+    h3 { font-size: 1.05rem; margin: 0 0 8px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    p, li { max-width: 70ch; }
+    a { color: #1d4ed8; }
+    .lede { color: var(--muted); margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; background: var(--card); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 14px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { position: sticky; top: 0; background: #f5f5f4; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .faster { color: var(--faster); background: var(--faster-bg); }
+    .slower { color: var(--slower); background: var(--slower-bg); }
+    .noise { color: var(--noise); background: var(--noise-bg); }
+    .chart-card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 0 0 16px; }
+    .chart-wrap { height: 220px; }
+    details { margin-top: 8px; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 14px; }
+    details p { margin: 8px 0; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    #popover {
+      position: fixed; z-index: 5; display: none; background: white; border: 1px solid var(--line);
+      border-radius: 6px; padding: 8px 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      font-family: ui-sans-serif, system-ui, sans-serif; font-size: 14px;
+    }
+    .badge { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FastMCP benchmarks</h1>
+    <p class="lede">Criterion median per section. A change under 5% is noise. Smaller is better.</p>
+  </header>
+  <main>
+    <h2>Latest run</h2>
+    <div id="summary"></div>
+    <div id="chapters"></div>
+  </main>
+  <div id="popover"></div>
+  <script>
+    const NOISE = 0.05;
+    const REPO = "https://github.com/agnathan/rust-mcp";
+
+    function human(ns) {
+      if (ns == null || Number.isNaN(ns)) return "—";
+      const abs = Math.abs(ns);
+      if (abs < 1e3) return (abs < 10 ? ns.toFixed(2) : ns.toFixed(1)) + " ns";
+      if (abs < 1e6) return (ns / 1e3).toFixed(2) + " µs";
+      if (abs < 1e9) return (ns / 1e6).toFixed(2) + " ms";
+      return (ns / 1e9).toFixed(2) + " s";
+    }
+
+    function change(latest, previous) {
+      if (previous == null || previous === 0 || latest == null) return null;
+      return (latest - previous) / previous;
+    }
+
+    function changeCell(ratio) {
+      if (ratio == null) return "<td class=\"num\">—</td>";
+      const pct = ratio * 100;
+      const text = (pct > 0 ? "+" : "") + pct.toFixed(1) + "%";
+      let cls = "noise";
+      if (Math.abs(ratio) >= NOISE) cls = ratio < 0 ? "faster" : "slower";
+      const label = Math.abs(ratio) < NOISE ? "noise" : (ratio < 0 ? "faster" : "slower");
+      return `<td class="num ${cls}">${text} <span class="badge">${label}</span></td>`;
+    }
+
+    function seriesFor(id, runs) {
+      const points = [];
+      for (const run of runs) {
+        const sample = run.benches && run.benches[id];
+        if (!sample || sample.median_ns == null) continue;
+        points.push({
+          sha: run.sha,
+          date: run.date,
+          run_url: run.run_url,
+          estimate: run.estimate || "median",
+          median_ns: sample.median_ns,
+          low_ns: sample.low_ns,
+          high_ns: sample.high_ns
+        });
+      }
+      return points;
+    }
+
+    function shortSha(sha) {
+      return (sha || "").slice(0, 7);
+    }
+
+    function esc(text) {
+      return String(text ?? "").replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+
+    function renderSummary(catalog, runs) {
+      const host = document.getElementById("summary");
+      if (!runs.length) {
+        host.textContent = "No runs in data.json.";
+        return;
+      }
+      const rows = catalog.map((bench) => {
+        const points = seriesFor(bench.id, runs);
+        const latest = points[points.length - 1];
+        const previous = points.length > 1 ? points[points.length - 2] : null;
+        return { bench, latest, previous, ratio: change(latest && latest.median_ns, previous && previous.median_ns) };
+      });
+      const body = rows.map(({ bench, latest, previous, ratio }) => {
+        const kind = latest && latest.estimate === "mean" ? " <span class=\"badge\">mean</span>" : "";
+        return `<tr>
+          <td>${esc(bench.section)}</td>
+          <td><code>${esc(bench.function)}</code></td>
+          <td class="num">${latest ? human(latest.median_ns) : "—"}${kind}</td>
+          ${changeCell(ratio)}
+        </tr>`;
+      }).join("");
+      host.innerHTML = `<table>
+        <thead><tr><th>Section</th><th>Benchmark</th><th class="num">Latest median</th><th class="num">Vs previous</th></tr></thead>
+        <tbody>${body}</tbody>
+      </table>
+      <p class="badge">Green is at least 5% faster. Red is at least 5% slower. Anything inside 5% is noise. A “mean” mark is a seeded artifact that stored only the Criterion mean.</p>`;
+    }
+
+    function renderCharts(catalog, runs) {
+      const host = document.getElementById("chapters");
+      const groups = new Map();
+      for (const bench of catalog) {
+        if (!groups.has(bench.chapter)) groups.set(bench.chapter, []);
+        groups.get(bench.chapter).push(bench);
+      }
+      for (const [chapter, benches] of groups) {
+        const section = document.createElement("section");
+        const heading = document.createElement("h2");
+        heading.textContent = chapter;
+        section.appendChild(heading);
+        for (const bench of benches) {
+          section.appendChild(chartCard(bench, seriesFor(bench.id, runs)));
+        }
+        host.appendChild(section);
+      }
+    }
+
+    function chartCard(bench, points) {
+      const card = document.createElement("article");
+      card.className = "chart-card";
+      card.id = "bench-" + bench.id.replace(/[^a-zA-Z0-9_-]/g, "-");
+      const title = document.createElement("h3");
+      title.textContent = `${bench.section} · ${bench.function}`;
+      card.appendChild(title);
+      const summary = document.createElement("p");
+      summary.textContent = bench.summary;
+      card.appendChild(summary);
+      if (!points.length) {
+        const empty = document.createElement("p");
+        empty.className = "badge";
+        empty.textContent = "No samples yet. A push to main records this section on its own.";
+        card.appendChild(empty);
+      } else {
+        const wrap = document.createElement("div");
+        wrap.className = "chart-wrap";
+        const canvas = document.createElement("canvas");
+        wrap.appendChild(canvas);
+        card.appendChild(wrap);
+        const chart = new Chart(canvas, {
+          type: "line",
+          data: {
+            labels: points.map((point) => point.date.slice(0, 10) + " " + shortSha(point.sha)),
+            datasets: [{
+              label: "median",
+              data: points.map((point) => point.median_ns),
+              borderColor: "#1d4ed8",
+              backgroundColor: "#1d4ed8",
+              tension: 0.15,
+              pointRadius: 4,
+              pointHoverRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label(item) {
+                    const point = points[item.dataIndex];
+                    const band = point.low_ns == null ? "" : ` (${human(point.low_ns)}–${human(point.high_ns)})`;
+                    const kind = point.estimate === "mean" ? " mean" : " median";
+                    return human(point.median_ns) + kind + band;
+                  },
+                  afterLabel(item) {
+                    const point = points[item.dataIndex];
+                    return shortSha(point.sha) + " · click for the commit and the run";
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                ticks: { callback: (value) => human(Number(value)) }
+              }
+            },
+            onClick(event, elements) {
+              if (!elements.length) return;
+              const point = points[elements[0].index];
+              const pop = document.getElementById("popover");
+              const native = event.native;
+              pop.style.left = Math.min(native.clientX + 8, window.innerWidth - 280) + "px";
+              pop.style.top = (native.clientY + 8) + "px";
+              pop.style.display = "block";
+              pop.innerHTML = `<div><strong>${human(point.median_ns)}</strong> <span class="badge">${point.estimate}</span></div>
+                <div><a href="${REPO}/commit/${point.sha}">commit ${shortSha(point.sha)}</a></div>
+                <div><a href="${point.run_url}">Actions run</a></div>`;
+            }
+          }
+        });
+        chart.canvas.style.cursor = "pointer";
+      }
+      const details = document.createElement("details");
+      details.innerHTML = `<summary>Details</summary>
+        <p><strong>What it measures.</strong> ${esc(bench.what)}</p>
+        <p><strong>Why it matters.</strong> ${esc(bench.why)}</p>
+        <p><strong>Where the timer starts and stops.</strong> ${esc(bench.timing)}</p>
+        <p><strong>Inputs.</strong> ${esc(bench.inputs)}</p>
+        <p><strong>What is mocked.</strong> ${esc(bench.fake)}</p>
+        <p><strong>Source.</strong> <code>${esc(bench.source)}</code>, function <code>${esc(bench.function)}</code>.</p>
+        <p><strong>How to read it.</strong> ${esc(bench.reading)}</p>`;
+      card.appendChild(details);
+      return card;
+    }
+
+    document.addEventListener("click", (event) => {
+      const pop = document.getElementById("popover");
+      if (!pop.contains(event.target)) pop.style.display = "none";
+    });
+
+    Promise.all([fetch("descriptions.json"), fetch("data.json")]).then(async ([descRes, dataRes]) => {
+      if (!descRes.ok || !dataRes.ok) throw new Error("missing json");
+      const descriptions = await descRes.json();
+      const data = await dataRes.json();
+      const runs = (data.runs || []).slice().sort((a, b) => String(a.date).localeCompare(String(b.date)));
+      renderSummary(descriptions.benchmarks, runs);
+      renderCharts(descriptions.benchmarks, runs);
+    }).catch((error) => {
+      document.getElementById("summary").textContent = "Could not load descriptions.json and data.json beside this page (" + error + "). Serve the benchmarks directory over HTTP; a file:// page cannot fetch them.";
+    });
+  </script>
+</body>
+</html>

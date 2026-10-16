@@ -1,0 +1,64 @@
+name: Benchmarks
+
+# Informational only. A slow result does not fail the run, and a bench
+# failure does not fail the workflow: the job is continue-on-error.
+# A push to main appends the Criterion median, low, and high to data.json on
+# gh-pages. Pull requests upload the artifact and do not publish.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+  deployments: write
+
+jobs:
+  bench:
+    name: criterion
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .
+      - name: Record the run coordinates
+        run: |
+          echo "BENCH_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+          echo "BENCH_RUN_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
+      - name: Section 1.1 JSON-RPC
+        run: bash .github/scripts/run_bench_section.sh 1.1 "1.1 JSON-RPC" ch01-1-fastmcp-core jsonrpc
+      - name: Write the job summary
+        if: always()
+        run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload the criterion summary
+        if: always() && hashFiles('target/criterion-summary.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: criterion-summary-${{ github.sha }}
+          path: |
+            target/criterion-summary.json
+            target/criterion-run.json
+            target/bench-run.json
+      - name: Record the benchmark trend
+        if: always() && hashFiles('target/criterion-summary.json') != ''
+        continue-on-error: true
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: FastMCP criterion
+          tool: customSmallerIsBetter
+          output-file-path: target/criterion-summary.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          gh-pages-branch: gh-pages
+          benchmark-data-dir-path: dev/bench
+          comment-always: true
+          summary-always: true
+          fail-on-alert: false
+          alert-threshold: "200%"
+      - name: Publish the benchmark dashboard
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: python3 .github/scripts/publish_bench_dashboard.py

@@ -1,0 +1,23 @@
+[
+  {"n": 0, "title": "Introduction", "step": null, "part": "I"},
+  {"n": 1, "title": "Speaking JSON-RPC", "step": "ch01-1-jsonrpc", "part": "I"},
+  {"n": 2, "title": "First server over stdio", "step": "ch02-stdio", "part": "I"},
+  {"n": 3, "title": "The FastMCP builder and tools", "step": "ch03-builder", "part": "I"},
+  {"n": 4, "title": "Schemas from types", "step": "ch04-schema", "part": "I"},
+  {"n": 5, "title": "A tool macro", "step": "ch05-tool-macro", "part": "I"},
+  {"n": 6, "title": "Resources and templates", "step": "ch06-resources", "part": "I"},
+  {"n": 7, "title": "Prompts and completions", "step": "ch07-prompts", "part": "I"},
+  {"n": 8, "title": "Errors done right", "step": "ch08-errors", "part": "I"},
+  {"n": 9, "title": "Context", "step": "ch09-context", "part": "I"},
+  {"n": 10, "title": "Lifespan and state", "step": "ch10-lifespan", "part": "I"},
+  {"n": 11, "title": "Streamable HTTP", "step": "ch11-http", "part": "I"},
+  {"n": 12, "title": "The client", "step": "ch12-client", "part": "II"},
+  {"n": 13, "title": "Testing utilities", "step": "ch13-testing", "part": "II"},
+  {"n": 14, "title": "Middleware", "step": "ch14-middleware", "part": "II"},
+  {"n": 15, "title": "Composition", "step": "ch15-composition", "part": "II"},
+  {"n": 16, "title": "Transforms and visibility", "step": "ch16-transforms", "part": "II"},
+  {"n": 17, "title": "OpenAPI to MCP", "step": "ch17-openapi", "part": "II"},
+  {"n": 18, "title": "Auth", "step": "ch18-auth", "part": "III"},
+  {"n": 19, "title": "Settings and CLI", "step": "ch19-settings", "part": "III"},
+  {"n": 20, "title": "Shipping it", "step": "ch20-shipping", "part": "III"}
+]

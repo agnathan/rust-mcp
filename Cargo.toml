@@ -1,0 +1,6 @@
+[workspace]
+resolver = "3"
+members = [
+    "steps/ch01-1-jsonrpc/crates/fastmcp-core",
+    "fastmcp-rs",
+]

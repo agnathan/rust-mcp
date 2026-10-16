@@ -1,0 +1,8 @@
+# Used by .github/workflows/my-harness.yml (`cargo nextest run --profile ci`).
+[profile.ci]
+fail-fast = false
+
+[profile.ci.junit]
+path = "junit.xml"
+store-success-output = true
+store-failure-output = true
