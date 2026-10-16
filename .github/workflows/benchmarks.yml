@@ -61,6 +61,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 15.1 "15.1 Testing" ch15-1-fastmcp-core harness
       - name: Section 16.1 Middleware
         run: bash .github/scripts/run_bench_section.sh 16.1 "16.1 Middleware" ch16-1-fastmcp-core middleware
+      - name: Section 17.1 Providers
+        run: bash .github/scripts/run_bench_section.sh 17.1 "17.1 Providers" ch17-1-fastmcp-core providers
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"

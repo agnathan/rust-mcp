@@ -83,3 +83,8 @@ pub fn snapshot_tool_name() -> &'static str {
 pub fn ping_interval_ms() -> &'static str {
     todo!("chapter 16: return the default ping interval")
 }
+
+/// The public name of a tool mounted under `api`.
+pub fn mounted_tool_name() -> &'static str {
+    todo!("chapter 17: return the namespace, an underscore, and the tool name")
+}

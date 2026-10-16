@@ -53,6 +53,9 @@ cargo bench -p ch15-1-fastmcp-core --bench harness
 cargo test -p ch16-1-fastmcp-core
 cargo run -p ch16-1-fastmcp-core --example demo
 cargo bench -p ch16-1-fastmcp-core --bench middleware
+cargo test -p ch17-1-fastmcp-core
+cargo run -p ch17-1-fastmcp-core --example demo
+cargo bench -p ch17-1-fastmcp-core --bench providers
 ```
 
 | Step | Chapter | Adds |
@@ -73,5 +76,6 @@ cargo bench -p ch16-1-fastmcp-core --bench middleware
 | ch14-1-client | 14 | `infer_transport` classifies a string; an in-memory client pings; a group prefixes `{server}_{tool}` and fans out with `JoinSet` |
 | ch15-1-testing | 15 | `Harness` lists and calls tools in process; the duplex lists the same names; `LevelGuard` restores a log level |
 | ch16-1-middleware | 16 | `ToolHook` chain: log, time, token bucket, cache, response limit; `PingMiddleware` wants a positive interval and one task per connection |
+| ch17-1-providers | 17 | `Provider`: local list, aggregate, `{namespace}_` mount, proxy ping and instructions, `*.tool` discovery |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).

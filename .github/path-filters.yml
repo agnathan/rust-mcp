@@ -40,3 +40,5 @@ ch15-1-testing:
   - "steps/ch15-1-testing/**"
 ch16-1-middleware:
   - "steps/ch16-1-middleware/**"
+ch17-1-providers:
+  - "steps/ch17-1-providers/**"

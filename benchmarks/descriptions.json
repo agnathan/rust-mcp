@@ -475,6 +475,48 @@
       "fake": "The cache is not in this timer. No socket.",
       "source": "steps/ch16-1-middleware/crates/fastmcp-core/benches/middleware.rs",
       "reading": "Smaller is better. A thousand calls should stay well under 2 milliseconds. About 557 \u00b5s locally."
+    },
+    {
+      "id": "17.1/direct_call",
+      "section": "17.1 Providers",
+      "chapter": "Chapter 17 Providers and composition",
+      "function": "direct_call",
+      "summary": "One call on a local provider.",
+      "what": "The cost of finding one tool name in a local list and cloning its body.",
+      "why": "This is the baseline a proxy hop is compared with.",
+      "timing": "The provider is built before the bench. The timed closure is b.iter. Inside it: one call and black_box of the body.",
+      "inputs": "A single tool named status with body ok.",
+      "fake": "No socket and no proxy.",
+      "source": "steps/ch17-1-providers/crates/fastmcp-core/benches/providers.rs",
+      "reading": "Smaller is better. One call should stay well under 1 microsecond. About 16 ns locally."
+    },
+    {
+      "id": "17.1/proxy_call",
+      "section": "17.1 Providers",
+      "chapter": "Chapter 17 Providers and composition",
+      "function": "proxy_call",
+      "summary": "One call through an in-process proxy.",
+      "what": "The cost of one extra hop from ProxyProvider to the local provider.",
+      "why": "A proxy has to stay cheap when the tool itself is a memory lookup.",
+      "timing": "The inner provider and the proxy are built before the bench. The timed closure is b.iter. Inside it: one call.",
+      "inputs": "The same status tool.",
+      "fake": "No remote client and no list cache.",
+      "source": "steps/ch17-1-providers/crates/fastmcp-core/benches/providers.rs",
+      "reading": "Smaller is better. One call should stay well under 1 microsecond. About 18 ns locally."
+    },
+    {
+      "id": "17.1/aggregate_10",
+      "section": "17.1 Providers",
+      "chapter": "Chapter 17 Providers and composition",
+      "function": "aggregate_10",
+      "summary": "A tool list across ten providers.",
+      "what": "The cost of concatenating ten one-tool lists.",
+      "why": "Composition shows up as a list, and the list has to stay small when each provider is small.",
+      "timing": "The ten providers and the aggregate are built before the bench. The timed closure is b.iter. Inside it: list_tools and black_box of the Vec.",
+      "inputs": "Ten providers, one tool each.",
+      "fake": "No socket. The list is not filtered.",
+      "source": "steps/ch17-1-providers/crates/fastmcp-core/benches/providers.rs",
+      "reading": "Smaller is better. The list should stay well under 5 microseconds. About 448 ns locally."
     }
   ]
 }
