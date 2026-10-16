@@ -118,13 +118,13 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 |---|---|---|---|---|---|
 | `cold_start` | clap parse of `inspect`, figment load of the defaults, and `tool_names` on a new server | The `OnceLock` cache. It is not called here | The argument list `inspect`. No config file | No socket and no reload watcher | Well under 50 µs. About 8.4 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38964942836](https://github.com/agnathan/rust-mcp/actions/runs/38964942836) (2026-10-16T20:48:56Z). GitHub's `github.sha` for that pull request run is the merge commit `a1be8cb150ac51c4cfb3b8ba9c12ff292ace8046`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `cold_start` | pending | pending | pending | < 50 µs |
+| `cold_start` | 23.38 µs | 23.32 µs | 23.44 µs | < 50 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, one cold `inspect` is 23.38 µs. That is the median this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
