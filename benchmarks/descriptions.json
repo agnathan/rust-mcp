@@ -111,6 +111,34 @@
       "fake": "The pipe is tokio::io::duplex, not the terminal's stdin and stdout. It is the same AsyncRead and AsyncWrite transport rmcp::transport::stdio uses. No child process.",
       "source": "steps/ch02-1-negotiate/crates/fastmcp-core/benches/negotiate.rs",
       "reading": "Smaller is better. One session should stay well under 5 ms. About 114 µs locally. A jump into milliseconds of process startup would mean the bench started spawning a binary."
+    },
+    {
+      "id": "3.1/lookup_1",
+      "section": "3.1 Tools",
+      "chapter": "Chapter 3 The FastMcp builder and tools",
+      "function": "lookup_1",
+      "summary": "Look up one tool in a registry of 1,000.",
+      "what": "The cost of HashMap::contains_key for tool-500 on a server that holds tool-0 through tool-999.",
+      "why": "tools/call starts with a name lookup. The lookup should stay noise next to deserializing the arguments.",
+      "timing": "thousand() runs before the bench and registers 1,000 tools. The timed closure is b.iter. Inside it: has_tool on the name tool-500, then black_box of the bool. Building the server and the closures is excluded.",
+      "inputs": "1,000 tools named tool-0 through tool-999. Each closure takes Echo { n: i64 } and returns n. The looked-up name is tool-500.",
+      "fake": "Nothing is mocked. There is no JSON parse in this sample, no socket, and no tools/call. status is not one of the 1,000 keys.",
+      "source": "steps/ch03-1-builder/crates/fastmcp-core/benches/tools.rs",
+      "reading": "Smaller is better. One lookup should stay well under a microsecond. About 13 ns locally."
+    },
+    {
+      "id": "3.1/dispatch_1000",
+      "section": "3.1 Tools",
+      "chapter": "Chapter 3 The FastMcp builder and tools",
+      "function": "dispatch_1000",
+      "summary": "Deserialize and call 1,000 registered tools.",
+      "what": "The cost of dispatch_tool for every tool from tool-0 through tool-999: map lookup, clone of the argument JSON, serde into Echo, and the closure.",
+      "why": "This is the registry's work for a batch of calls with no transport between them.",
+      "timing": "The server, the Vec of 1,000 names, and the argument JSON are built before the bench. The timed closure is b.iter. Inside it: dispatch_tool for each name with a clone of {\"n\": 1}, then black_box of the last Result. Registration is excluded. The clone, the deserialize, and the closure are included.",
+      "inputs": "1,000 tools. Each call receives the object {\"n\": 1}. The closure returns the number 1.",
+      "fake": "No socket and no rmcp session. status is not called. The argument object is real JSON, cloned once per call.",
+      "source": "steps/ch03-1-builder/crates/fastmcp-core/benches/tools.rs",
+      "reading": "Smaller is better. A thousand calls should stay well under a millisecond. About 60 µs locally."
     }
   ]
 }

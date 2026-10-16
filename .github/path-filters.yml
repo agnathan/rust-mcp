@@ -12,3 +12,5 @@ ch01-1-jsonrpc:
   - "steps/ch01-1-jsonrpc/**"
 ch02-1-negotiate:
   - "steps/ch02-1-negotiate/**"
+ch03-1-builder:
+  - "steps/ch03-1-builder/**"
