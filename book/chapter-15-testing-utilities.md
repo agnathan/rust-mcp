@@ -131,14 +131,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `memory_list` | `tool_names`: collect the map keys, sort, and put `status` first | Building the `Harness` and the `FastMcp` | A server named `widgets` with no extra tools | No socket and no duplex | Well under 1 µs. About 24 ns here. |
 | `duplex_list` | One `tools/list` on a connected memory client, and collecting the names | `connect_memory` and the handshake | The same server name. The only tool is `status`. | No child process. The duplex is already up. | Well under 200 µs. About 53 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38960803122](https://github.com/agnathan/rust-mcp/actions/runs/38960803122) (2026-10-16T20:14:33Z). GitHub's `github.sha` for that pull request run is the merge commit `c69b0508917b92cb6301106c9b0699c2865cb25c`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `memory_list` | pending | pending | pending | < 1 µs |
-| `duplex_list` | pending | pending | pending | < 200 µs |
+| `memory_list` | 30.67 ns | 30.62 ns | 30.72 ns | < 1 µs |
+| `duplex_list` | 47.07 µs | 46.55 µs | 48.31 µs | < 200 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, the harness list is 30.67 ns and the duplex list is 47.07 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
