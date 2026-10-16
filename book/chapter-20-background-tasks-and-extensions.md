@@ -118,14 +118,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `submit_to_result` | `submit` of one closure, then `wait` until the result is stored | Building the runtime and the board | A closure that returns `ok` | No socket, no TTL, no poll interval | Well under 50 µs. About 4.2 µs here. |
 | `concurrent_1k` | 1,000 submits, then a wait for each id | Building the runtime and the board | The same instant closure, one thousand times | The waits run after all submits, so the tasks overlap. No socket | Well under 20 ms. About 2.4 ms here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38963181333](https://github.com/agnathan/rust-mcp/actions/runs/38963181333) (2026-10-16T20:34:08Z). GitHub's `github.sha` for that pull request run is the merge commit `27e6d2cf41bf37af489b23a3239ae63df6d0ba6b`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `submit_to_result` | pending | pending | pending | < 50 µs |
-| `concurrent_1k` | pending | pending | pending | < 20 ms |
+| `submit_to_result` | 11.27 µs | 10.18 µs | 12.27 µs | < 50 µs |
+| `concurrent_1k` | 957.7 µs | 915.1 µs | 1.016 ms | < 20 ms |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, one task from submit to result is 11.27 µs, and a thousand overlapping tasks are 957.7 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 

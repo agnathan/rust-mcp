@@ -117,13 +117,13 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 |---|---|---|---|---|---|
 | `parse_1k` | `serde_json` parse of the text, then `tools_from_spec` | Building the JSON text | 1,000 GET operations, ids `get_widget_0` through `get_widget_999` | No HTTP request | Well under 2 ms. About 430 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38963719818](https://github.com/agnathan/rust-mcp/actions/runs/38963719818) (2026-10-16T20:38:42Z). GitHub's `github.sha` for that pull request run is the merge commit `f64434c47ae61168900cf1ebeb5459423d091300`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `parse_1k` | pending | pending | pending | < 2 ms |
+| `parse_1k` | 445.2 µs | 441.2 µs | 451.4 µs | < 2 ms |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, parsing 1,000 operations is 445.2 µs. That is the median this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
