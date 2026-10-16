@@ -2,13 +2,49 @@
 
 *Draft. Bracketed notes like [personal note] are where my own story goes.*
 
-Chapter 3 can call `add` with a struct, and `tools/list` still advertises an empty object for every tool. A client cannot see that `left` and `right` are required, or that `label` may be left out. This chapter keeps the builder and asks `schemars` to write that document from the struct. The same call writes a schema for the value the tool returns.
+## Introduction
+
+Chapter 3 can call `add`. A client that asks `tools/list` still sees an empty object for every tool. It learns the name and the description, and it cannot tell that `left` and `right` are required integers, or that a field called `label` may be left out. The client has to guess, and a guess that omits `right` fails inside the server after the request has already been sent.
+
+FastMCP solves this by building a JSON Schema from the function's types at registration time. The input schema says which arguments the client must send. The output schema says what a successful call returns. This chapter keeps the builder and asks the `schemars` crate to write both documents from the structs you already have. The same `Option` that means "this field may be missing" in Rust becomes "this field is not in `required`" on the wire.
+
+## What you'll build
+
+`add` still adds two integers. The difference is that the tool now carries a schema, and the value it returns is a struct the client can see.
+
+```text
+add(2, 3) = {"total":5}
+required: ["left","right"]
+label: {"type":["string","null"]}
+```
+
+`required` lists `left` and `right`. `label` is an optional string: the property allows a string or JSON `null`, and omitting the key still runs the tool. The return value is `{"total": 5}`, and `tools/list` advertises an output schema whose `total` is an integer. `status` stays the era note from chapter 2, with an empty input object and no output schema.
+
+The package is `ch04-1-fastmcp-core`. The library name is still `fastmcp_core`. The snapshot is `steps/ch04-1-schema`, a full copy of chapter 3 plus schema generation. `schemars` 1.2.3 is a direct dependency so `#[derive(JsonSchema)]` can see a crate named `schemars`. `rmcp`'s server feature uses that same crate. Re-exporting it as `rmcp::schemars` is enough to call the trait, and the derive looks up the crate by its own name, so the package depends on `schemars` directly.
+
+```bash
+cargo run -p ch04-1-fastmcp-core --example demo
+```
+
+## Goals
+
+- Generate a JSON Schema from an argument struct and from the struct a tool returns.
+- Explain `#[derive(JsonSchema)]`, and why `schemars` has to be a direct dependency.
+- Say what `Option<String>` becomes in the schema: absent from `required`, and typed as a string or null.
+- Keep a missing required field out of the closure, and let a missing optional field through.
+- Read the schema benchmarks, and know they measure generation with no cache.
+
+## Roadmap
+
+**4.1 Ask the type for its schema.** The input struct, the output struct, and `json_schema_of`, which writes a draft 2020-12 document and drops the title the tool does not need. This is where `Option` becomes a field the client may omit.
+
+**4.2 Show that document on `tools/list`.** Registration stores both schemas. A call still deserializes first, and the return struct is what `structuredContent` carries.
+
+**4.3 Build, run, and benchmark.** The tests, the demo above, and the cost of building the document once and a thousand times, with no cache in the way.
 
 | Section | Step | What it adds |
 |---|---|---|
-| 4.1 | `steps/ch04-1-schema` | `JsonSchema` on the argument struct and the return struct; `Option` |
-
-The package is `ch04-1-fastmcp-core`. The library name is still `fastmcp_core`. It is a full copy of chapter 3 plus schema generation. `schemars` 1.2.3 is a direct dependency so `#[derive(JsonSchema)]` can see the `schemars` crate. `rmcp`'s server feature uses that same crate.
+| 4.1–4.3 | `steps/ch04-1-schema` | `JsonSchema` on the argument struct and the return struct; `Option` |
 
 > **How FastMCP does it**
 >
@@ -34,17 +70,9 @@ The package is `ch04-1-fastmcp-core`. The library name is still `fastmcp_core`. 
 
 [personal note: the first struct whose schema surprised me]
 
-## What this chapter decides
+## 4.1 Ask the type for its schema
 
-- `#[derive(Deserialize, JsonSchema)]` on the argument struct. `#[derive(Serialize, JsonSchema)]` on the return struct.
-- `json_schema_of::<T>()` uses `SchemaSettings::draft2020_12()`, serializes the schema, and removes the top-level title and description.
-- `.tool()` calls that once for `P` and once for `R`, and stores both `Arc`s.
-- `Add` has `label: Option<String>`. `required` is `["left", "right"]`. `label`'s schema is `{"type": ["string", "null"]}`.
-- The bench calls `json_schema_of` directly. Registration is not inside the timer. There is no cache, so 1,000 iterations are 1,000 generations of the same struct.
-
-## 4.1 A schema from a struct
-
-`Add` is the input. `Sum` is the output.
+`Add` is the input. `Sum` is the output. The new piece on each struct is `JsonSchema`, next to the serde derive you already used.
 
 ```rust
 #[derive(Deserialize, JsonSchema)]
@@ -60,11 +88,11 @@ struct Sum {
 }
 ```
 
-> **Rust: a derive macro.** `#[derive(JsonSchema)]` is an instruction to a macro that runs at compile time. The macro reads the struct's fields and writes the `impl JsonSchema for Add` you would otherwise write by hand. `Deserialize` and `Serialize` are the same kind of macro, from serde. You name the traits. The compiler fills in the methods. If a field's type has no `JsonSchema` impl, the derive fails at compile time.
+`#[derive(JsonSchema)]` is an instruction to a macro that runs while the program is compiling. The macro reads the fields and writes the `impl JsonSchema for Add` you would otherwise write by hand. `Deserialize` and `Serialize` are the same kind of macro, from serde. You name the traits. The compiler fills in the methods. If a field's type has no `JsonSchema` implementation, the derive fails at compile time, which is the error you want: a schema that cannot describe one of its fields should not wait until a client asks.
 
-> **Rust: `Option`.** `Option<String>` is either `Some(text)` or `None`. serde treats a missing JSON key as `None`. A present JSON `null` is also `None`. A present string is `Some`. `schemars` sees `Option` and leaves `label` out of the `required` array. The property itself allows a string or null: `{"type": ["string", "null"]}`.
+`Option<String>` is either `Some(text)` or `None`. Serde treats a missing JSON key as `None`, and a present JSON `null` as `None` too. A present string is `Some`. Forgetting `Option` puts the field in `required`. The client must send it, and a missing key fails before the closure. With `Option`, `schemars` leaves `label` out of the `required` array. The property itself allows a string or null: `{"type": ["string", "null"]}`.
 
-`json_schema_of` is the whole generator:
+`json_schema_of` is the whole generator. It lives in `steps/ch04-1-schema/crates/fastmcp-core/src/schema.rs`.
 
 ```rust
 pub fn json_schema_of<T: JsonSchema>() -> Arc<Map<String, Value>> {
@@ -79,23 +107,29 @@ pub fn json_schema_of<T: JsonSchema>() -> Arc<Map<String, Value>> {
 }
 ```
 
-> **Rust: `schemars`.** `JsonSchema` is the trait the derive implements. `SchemaSettings::draft2020_12()` picks the dialect. `into_root_schema_for::<T>()` walks `T` and returns a schema value. `serde_json::to_value` turns that into the `Map` MCP stores on the tool. The top-level title would be the struct name (`Add`). MCP already has the tool's name and description, so the title is removed.
+`JsonSchema` is the trait the derive implements. `SchemaSettings::draft2020_12()` picks the dialect. `into_root_schema_for::<T>()` walks `T` and returns a schema value. `serde_json::to_value` turns that into the map MCP stores on the tool. The top-level title would be the struct's name, `Add` or `Sum`. MCP already has the tool's name and description, so the title and the top-level description come off. `Arc` is the same shared pointer as chapter 3: the document is built once, at registration, and every clone of the server shares it.
 
-`register` stores `json_schema_of::<P>()` as the input schema and `json_schema_of::<R>()` as the output schema. `tools/list` passes the output schema to `Tool::with_raw_output_schema`. The closure still runs only after `P` deserializes, and its `Ok(R)` is serialized to JSON for `structuredContent`.
+A return type whose schema is not an object, a bare `i64`, is legal in `rmcp`, and it is the case FastMCP wraps in an object with `x-fastmcp-wrap-result`. This chapter's `Sum` is an object so `tools/list` can show `total`. The wrap marker is not copied.
 
-### The tests
+FastMCP's `compress_schema` also prunes nested titles, unused `$defs`, and parameters you name. This function removes the top-level title and description. That is the part a client needs in order to see `required` and the property types. The deeper prune waits.
+
+## 4.2 Show that document on `tools/list`
+
+`register` stores `json_schema_of::<P>()` as the input schema and `json_schema_of::<R>()` as the output schema. `.tool()` calls each once. `tools/list` passes the output schema to `Tool::with_raw_output_schema`. The closure still runs only after `P` deserializes, and its `Ok(R)` is serialized to JSON for `structuredContent`.
+
+So the path a client sees is: list the tool, read `required`, send `left` and `right`, and receive `{"total": 5}`. Send `left` alone and the closure does not run. Send `left`, `right`, and no `label`, and the tool runs with `label` as `None`.
+
+`status` is unchanged. It is still listed first, still answers with the era note, and it still has an empty input object and no output schema. It was never a registered closure, so it never went through `json_schema_of`.
+
+## 4.3 Build, run, and benchmark
 
 `option_field_is_not_required` builds a schema for a struct with `name: String` and `title: Option<String>`. The root type is `object`. `required` contains `name` and does not contain `title`. The `title` property's JSON contains `null`.
 
-`omitted_label_runs_and_stays_out_of_required` calls `add` with `left` and `right` only. The sum is `{"total": 5}`. The registered input schema lists `left` and omits `label`. The output schema's `total` property has type `integer`.
+`omitted_label_runs_and_stays_out_of_required` calls `add` with `left` and `right` only. The sum is `{"total": 5}`. The registered input schema lists `left` and omits `label` from `required`. The output schema's `total` property has type `integer`.
 
 `missing_field_does_not_run_the_tool` still rejects `{"left": 1}`.
 
 `tests/tools.rs` checks the same documents on the wire. `tools/list` for `add` has `label` outside `required` and an output schema whose `total` is `integer`. `status` has no output schema. `tools/call` of `add` with `left: 2` and `right: 3` returns structured content `{"total": 5}`.
-
-Thirty-seven tests passed: 26 in the library, 3 in `tests/handshake.rs`, 3 in `tests/session.rs`, 5 in `tests/tools.rs`.
-
-### Build, run, and benchmark
 
 ```bash
 cargo test -p ch04-1-fastmcp-core
@@ -103,7 +137,7 @@ cargo run -p ch04-1-fastmcp-core --example demo
 cargo bench -p ch04-1-fastmcp-core --bench schema -- --warm-up-time 1 --measurement-time 2 --sample-size 10
 ```
 
-`cargo test` printed `ok` for all 37 tests. The demo prints:
+`cargo test` printed `ok` for all 37 tests: 26 in the library, 3 in `tests/handshake.rs`, 3 in `tests/session.rs`, 5 in `tests/tools.rs`. The demo prints:
 
 ```text
 add(2, 3) = {"total":5}
@@ -113,6 +147,8 @@ label: {"type":["string","null"]}
 
 `examples/stdio.rs` registers the same `add` tool and waits on stdin. The demo above is the command that exits.
 
+The bench calls `json_schema_of` directly. Registration is outside the timer. There is no cache, so 1,000 iterations are 1,000 generations of the same struct. `rmcp` would hit a `TypeId` cache after the first call. This loop does not, on purpose: a cache would make `schema_1000` tell you about the map, not about `schemars`.
+
 The bench command's slope, on the same 4-vCPU guest as chapter 1:
 
 ```text
@@ -120,7 +156,7 @@ schema_1                time:   [1.5947 µs 1.6048 µs 1.6129 µs]
 schema_1000             time:   [1.8501 ms 1.8807 ms 1.9153 ms]
 ```
 
-Local medians from that run's `estimates.json` (the slope above is not this column):
+Local medians from that run's `estimates.json` (the slope above is a different statistic):
 
 | Benchmark | Median | Low | High | Target |
 |---|---|---|---|---|
@@ -149,23 +185,18 @@ On the Ubuntu runner, one schema is 1.863 µs, and a thousand uncached generatio
 
 ### Rust Playground
 
-[`book/playground/ch04-schemas-from-types.rs`](playground/ch04-schemas-from-types.rs) prints the `required` array and the `label` property, and it treats a missing key as omitted. The [playground crate list](https://play.rust-lang.org/meta/crates) has `schemars` 1.2.2 built without the `derive` feature, so `#[derive(JsonSchema)]` does not compile there. The derive runs in this chapter's crate.
+[`book/playground/ch04-schemas-from-types.rs`](playground/ch04-schemas-from-types.rs) prints the `required` array and the `label` property, and it treats a missing key as omitted. The [playground crate list](https://play.rust-lang.org/meta/crates) has `schemars` 1.2.2 built without the `derive` feature, so `#[derive(JsonSchema)]` does not compile there. The derive runs in this chapter's crate. The playground file prints the schema document with `serde_json` instead.
 
 [Run the schema document on the playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1759c3f47f771664dee7a57b7894d8f5).
 
-## Pitfalls
+## Recap
 
-- `#[derive(JsonSchema)]` looks up a crate named `schemars`. Re-exporting the crate as `rmcp::schemars` is enough to call the trait, and it is not enough for the derive. The package depends on `schemars` directly.
-- Forgetting `Option` puts the field in `required`. The client must send it, and a missing key fails before the closure.
-- The bench is uncached on purpose. A later cache would make `schema_1000` tell you about the map, not about `schemars`.
-- A return type whose schema is not an object (a bare `i64`) is legal in `rmcp` and is the case FastMCP wraps. This chapter's `Sum` is an object so `tools/list` can show `total`.
+`.tool()` stores a JSON Schema for the argument struct and a JSON Schema for the return struct, both generated when the tool is registered. `#[derive(JsonSchema)]` writes the implementation, and it needs a direct `schemars` dependency. `required` lists the fields the client must send. `label: Option<String>` is the field they may leave out, and the schema marks it as a string or null. Omitting `right` still fails before the closure. Omitting `label` runs the tool.
 
-## Chapter summary
-
-`.tool()` now stores a JSON Schema for the argument struct and a JSON Schema for the return struct. `required` lists the fields the client must send. `label: Option<String>` is the field they may leave out, and the schema marks it as a string or null. The documents are built when the tool is registered.
+`cargo run -p ch04-1-fastmcp-core --example demo` prints `{"total": 5}` and the `label` schema. On the Ubuntu run linked above, one schema is 1.863 µs and a thousand uncached generations are 1.916 ms. The bench has no cache, so that second number is the cost of building the document.
 
 [personal note: a moment where the compiler stopped me, and how I worked out what it wanted]
 
 ## What's next
 
-Chapter 5 turns `.tool(|args: Add| ...)` into a `#[tool]` attribute, closer to FastMCP's decorator. The schema rules from this chapter stay.
+Chapter 5 turns `.tool(|args: Add| ...)` into a `#[tool]` attribute, closer to FastMCP's decorator. The schema rules from this chapter stay: required fields, optional fields, and an output schema taken from the return type.
