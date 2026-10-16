@@ -115,13 +115,13 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 |---|---|---|---|---|---|
 | `verify_hs256` | One `verify` of an HS256 token, including the audience check | Signing the token | Audience `http://example.test/mcp`, subject `ada`, expiry far in the future | No HTTP, no JWKS fetch, no log of the secret | Well under 20 µs. About 1.5 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38964184915](https://github.com/agnathan/rust-mcp/actions/runs/38964184915) (2026-10-16T20:42:35Z). GitHub's `github.sha` for that pull request run is the merge commit `25e4e2fe719df470d1aaa61912ebc0dfc92639d5`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `verify_hs256` | pending | pending | pending | < 20 µs |
+| `verify_hs256` | 2.559 µs | 2.556 µs | 2.565 µs | < 20 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, one HS256 check is 2.559 µs. That is the median this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
