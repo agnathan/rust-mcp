@@ -238,3 +238,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `parse_1k` | < 2 ms | pending | 430.1 µs |
 
 `parse_1k` parses a 1,000-operation OpenAPI document and lists the tools. Details are in [Chapter 21](../book/chapter-21-openapi-to-mcp.md).
+
+## Chapter 22 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `verify_hs256` | < 20 µs | pending | 1.530 µs |
+
+`verify_hs256` checks one HS256 token and its audience. Details are in [Chapter 22](../book/chapter-22-authentication.md).

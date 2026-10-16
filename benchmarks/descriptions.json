@@ -615,6 +615,20 @@
       "fake": "No HTTP request.",
       "source": "steps/ch21-1-openapi/crates/fastmcp-core/benches/openapi.rs",
       "reading": "Smaller is better. The conversion should stay well under 2 milliseconds. About 430 \u00b5s locally."
+    },
+    {
+      "id": "22.1/verify_hs256",
+      "section": "22.1 Auth",
+      "chapter": "Chapter 22 Authentication",
+      "function": "verify_hs256",
+      "summary": "One HS256 verification, including the audience check.",
+      "what": "The cost of decoding a signed token and checking that the audience matches.",
+      "why": "Verification sits on the request path. It has to stay small next to the tool itself.",
+      "timing": "The token is signed before the bench. The timed closure is b.iter. Inside it: verify and black_box of the subject.",
+      "inputs": "Audience http://example.test/mcp, subject ada. The secret is a test value and is not printed.",
+      "fake": "No HTTP request and no JWKS fetch.",
+      "source": "steps/ch22-1-auth/crates/fastmcp-core/benches/auth.rs",
+      "reading": "Smaller is better. One verification should stay well under 20 microseconds. About 1.5 \u00b5s locally."
     }
   ]
 }
