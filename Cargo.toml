@@ -39,5 +39,7 @@ members = [
     "steps/ch20-1-tasks/crates/fastmcp-core",
     "steps/ch21-1-openapi/crates/fastmcp-macros",
     "steps/ch21-1-openapi/crates/fastmcp-core",
+    "steps/ch22-1-auth/crates/fastmcp-macros",
+    "steps/ch22-1-auth/crates/fastmcp-core",
     "fastmcp-rs",
 ]

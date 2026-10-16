@@ -108,3 +108,8 @@ pub fn tasks_extension_id() -> &'static str {
 pub fn openapi_tool_name() -> &'static str {
     todo!("chapter 21: return the operationId")
 }
+
+/// The symmetric JWT algorithm this chapter verifies.
+pub fn auth_algorithm() -> &'static str {
+    todo!("chapter 22: return the HMAC algorithm name")
+}
