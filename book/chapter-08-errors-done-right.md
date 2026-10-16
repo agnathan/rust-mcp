@@ -160,7 +160,7 @@ The local table is the machine where the command transcript was captured. The ch
 
 [`book/playground/ch08-errors.rs`](playground/ch08-errors.rs) is the classification without `thiserror` or `rmcp`. The playground does not have this book's crate.
 
-PLAYGROUND_LINK
+[Run the classification on the playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=0cab6346941c023e63fe966e7c551a5c).
 
 I executed that gist on the playground's stable channel, debug mode, edition 2021. It exited 0 and printed:
 
