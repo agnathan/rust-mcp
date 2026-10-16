@@ -261,3 +261,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `trace_on` | < 1 ms | 288.6 µs | 213.4 µs |
 
 `auth_1k` is a thousand allows. `store_get` is one memory read. `trace_off` and `trace_on` are a thousand calls with the span absent and present. Details are in [Chapter 23](../book/chapter-23-production.md).
+
+## Chapter 24 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `cold_start` | < 50 µs | 23.38 µs | 8.384 µs |
+
+`cold_start` parses `inspect` and loads settings. Details are in [Chapter 24](../book/chapter-24-settings-and-cli.md).
