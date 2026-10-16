@@ -268,6 +268,6 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `cold_start` | < 50 µs | pending | 8.384 µs |
+| `cold_start` | < 50 µs | 23.38 µs | 8.384 µs |
 
 `cold_start` parses `inspect` and loads settings. Details are in [Chapter 24](../book/chapter-24-settings-and-cli.md).
