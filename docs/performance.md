@@ -235,6 +235,6 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `parse_1k` | < 2 ms | pending | 430.1 µs |
+| `parse_1k` | < 2 ms | 445.2 µs | 430.1 µs |
 
 `parse_1k` parses a 1,000-operation OpenAPI document and lists the tools. Details are in [Chapter 21](../book/chapter-21-openapi-to-mcp.md).
