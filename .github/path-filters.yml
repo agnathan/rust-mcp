@@ -42,3 +42,5 @@ ch16-1-middleware:
   - "steps/ch16-1-middleware/**"
 ch17-1-providers:
   - "steps/ch17-1-providers/**"
+ch18-1-transforms:
+  - "steps/ch18-1-transforms/**"

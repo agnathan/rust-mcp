@@ -88,3 +88,8 @@ pub fn ping_interval_ms() -> &'static str {
 pub fn mounted_tool_name() -> &'static str {
     todo!("chapter 17: return the namespace, an underscore, and the tool name")
 }
+
+/// The public name of `add` after a `math` namespace.
+pub fn namespaced_tool() -> &'static str {
+    todo!("chapter 18: return the prefix, an underscore, and the tool name")
+}

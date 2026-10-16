@@ -17,7 +17,7 @@
   {"n": 15, "title": "Testing utilities", "step": "ch15-1-testing", "part": "II"},
   {"n": 16, "title": "Middleware", "step": "ch16-1-middleware", "part": "II"},
   {"n": 17, "title": "Providers and composition", "step": "ch17-1-providers", "part": "II"},
-  {"n": 18, "title": "Transforms and visibility", "step": "ch18-transforms", "part": "II"},
+  {"n": 18, "title": "Transforms and visibility", "step": "ch18-1-transforms", "part": "II"},
   {"n": 19, "title": "Tool search and code mode", "step": "ch19-search", "part": "II"},
   {"n": 20, "title": "Background tasks and extensions", "step": "ch20-tasks", "part": "II"},
   {"n": 21, "title": "OpenAPI to MCP", "step": "ch21-openapi", "part": "II"},

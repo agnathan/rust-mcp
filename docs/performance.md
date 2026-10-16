@@ -195,3 +195,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `aggregate_10` | < 5 µs | 535.9 ns | 448.1 ns |
 
 `direct_call` is one local `call`. `proxy_call` is the same call through a proxy. `aggregate_10` lists ten providers. Details are in [Chapter 17](../book/chapter-17-providers-and-composition.md).
+
+## Chapter 18 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `filter_10k` | < 1 ms | 137.9 µs | 127.2 µs |
+
+`filter_10k` lists the enabled names in a catalog of 10,000 tools. Details are in [Chapter 18](../book/chapter-18-transforms-and-visibility.md).
