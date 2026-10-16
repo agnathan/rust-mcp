@@ -64,3 +64,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 | `call_fn_1000` | < 10 µs | 342.5 ns | 263.2 ns |
 
 `register_macro_1` is one `tool_decl` registration, including schema generation. `call_fn_1000` is a thousand direct calls of the function the macro left in place. The proc macro is not in either timer. Details are in [Chapter 5](../book/chapter-05-a-tool-macro.md).
+
+## Chapter 6 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38863264174](https://github.com/agnathan/rust-mcp/actions/runs/38863264174) (2026-10-16T06:48:21Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `resource_lookup_10k` | < 1 µs | 64.47 ns | 38.75 ns |
+| `template_scan_10k` | < 1 ms | 308.6 µs | 264.2 µs |
+
+`resource_lookup_10k` is one `HashMap` get among 10,000 static resources. `template_scan_10k` walks 10,000 templates and matches the last one. Details are in [Chapter 6](../book/chapter-06-resources-and-templates.md).

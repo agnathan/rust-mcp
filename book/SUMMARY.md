@@ -10,7 +10,7 @@
 - [Chapter 3: The `FastMcp` builder and tools](chapter-03-the-fastmcp-builder-and-tools.md)
 - [Chapter 4: Schemas from types](chapter-04-schemas-from-types.md)
 - [Chapter 5: A `#[tool]` macro](chapter-05-a-tool-macro.md)
-- [Chapter 6: Resources and templates]()
+- [Chapter 6: Resources and templates](chapter-06-resources-and-templates.md)
 - [Chapter 7: Prompts, completions, pagination]()
 - [Chapter 8: Errors done right]()
 - [Chapter 9: Context]()

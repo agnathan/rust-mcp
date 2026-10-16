@@ -28,3 +28,8 @@ pub fn optional_argument_name() -> &'static str {
 pub fn macro_tool_struct_name() -> &'static str {
     todo!("chapter 5: return the ToolDecl struct name for fn add")
 }
+
+/// The exact URI of the static readme resource in chapter 6.
+pub fn static_resource_uri() -> &'static str {
+    todo!("chapter 6: return the URI passed to FastMcp::resource for the readme")
+}
