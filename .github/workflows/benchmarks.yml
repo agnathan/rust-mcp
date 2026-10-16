@@ -52,7 +52,9 @@ jobs:
           tool: customSmallerIsBetter
           output-file-path: target/criterion-summary.json
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
+          # Pull requests upload the artifact and may comment. Only a push to
+          # main commits the trend data on gh-pages.
+          auto-push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           gh-pages-branch: gh-pages
           benchmark-data-dir-path: dev/bench
           comment-always: true

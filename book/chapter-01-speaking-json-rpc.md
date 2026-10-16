@@ -282,7 +282,7 @@ Benchmarking dispatch_initialize: Analyzing
 dispatch_initialize     time:   [738.41 ns 743.92 ns 751.87 ns]
 ```
 
-Local medians from that run's `estimates.json`:
+Local medians from that run's `estimates.json` (the slope above is not this column):
 
 | Benchmark | Median | Low | High | Target |
 |---|---|---|---|---|
@@ -302,9 +302,17 @@ Local medians from that run's `estimates.json`:
 | `serialize_1000_messages` | `to_vec` of each of 1,000 messages, plus summing the lengths | Building the 1,000 structs | Ids `0` through `999` | No batching into one array | Under 50 ms. About 179 µs here. |
 | `dispatch_initialize` | `dispatch`: match the method, parse params, build `InitializeResult`, `to_value` it | Parsing bytes | One already-parsed initialize, id `1` | Server name `fastmcp-rs`, version `0.1.0`, empty capabilities, no session and no middleware | Well under 1 ms. About 750 ns here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The workflow's median, low, and high are written into the job summary from `estimates.json`. A push to `main` appends that run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38843114413](https://github.com/agnathan/rust-mcp/actions/runs/38843114413) (2026-10-16T02:58:15Z). GitHub's `github.sha` for that pull request run is the merge commit `7e42523ddcf9765dbb7fc2e0350dc9f250db6025`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
-The CI medians for this chapter are filled from the Benchmarks run on the pull request once that job has finished. Until that table is updated, the numbers above are the local run only.
+| Benchmark | CI median | Low | High | Target |
+|---|---|---|---|---|
+| `parse_1_message` | 1.558 µs | 1.556 µs | 1.561 µs | < 1 ms |
+| `parse_1000_messages` | 1.569 ms | 1.567 ms | 1.574 ms | < 50 ms |
+| `serialize_1_message` | 249.3 ns | 249.2 ns | 249.7 ns | < 1 ms |
+| `serialize_1000_messages` | 249.8 µs | 249.0 µs | 250.1 µs | < 50 ms |
+| `dispatch_initialize` | 863.7 ns | 863.1 ns | 865.1 ns | < 1 ms |
+
+On the Ubuntu runner, one message is still well under a millisecond, and 1,000 messages are 1.569 ms to parse and 249.8 µs to serialize. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -342,7 +350,7 @@ parse error -32700 (EOF while parsing an object at line 1 column 1)
 
 ## Chapter summary
 
-The crate can parse and emit a JSON-RPC 2.0 message, and it can answer `initialize` and `ping`. Requests have ids. Notifications do not, and they get no response. Errors use the standard codes. The five benches stay far under their targets on the machine above: a single message is under a microsecond to a couple of microseconds, and 1,000 messages are about 1.3 ms to parse and 179 µs to serialize.
+The crate can parse and emit a JSON-RPC 2.0 message, and it can answer `initialize` and `ping`. Requests have ids. Notifications do not, and they get no response. Errors use the standard codes. On the Ubuntu CI run linked above, the medians are 1.558 µs to parse one message, 1.569 ms to parse 1,000, 249.3 ns to serialize one, 249.8 µs to serialize 1,000, and 863.7 ns to dispatch `initialize`. All five sit under the targets.
 
 [personal note: a moment where the compiler stopped me, and how I worked out what it wanted]
 
