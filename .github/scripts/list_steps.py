@@ -16,7 +16,7 @@ def step_dirs(root: Path) -> list[Path]:
         return []
     found = []
     for path in sorted(steps.iterdir()):
-        if path.is_dir() and path.name.startswith(("ch", "gw")) and any(path.rglob("Cargo.toml")):
+        if path.is_dir() and path.name.startswith(("ch", "gw", "ap")) and any(path.rglob("Cargo.toml")):
             found.append(path)
     return found
 

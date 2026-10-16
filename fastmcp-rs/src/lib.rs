@@ -128,3 +128,8 @@ pub fn settings_env_prefix() -> &'static str {
 pub fn publish_command() -> &'static str {
     todo!("chapter 25: return the dry-run publish command")
 }
+
+/// The MCP Apps extension id.
+pub fn ui_extension_id() -> &'static str {
+    todo!("appendix A: return the UI extension identifier")
+}

@@ -80,6 +80,9 @@ cargo bench -p ch24-1-fastmcp-core --bench settings
 cargo test -p ch25-1-fastmcp-core
 cargo run -p ch25-1-fastmcp-core --example demo
 cargo bench -p ch25-1-fastmcp-core --bench shipping
+cargo test -p apa-1-apps
+cargo run -p apa-1-apps --example demo
+cargo bench -p apa-1-apps --bench apps
 ```
 
 | Step | Chapter | Adds |
@@ -109,5 +112,6 @@ cargo bench -p ch25-1-fastmcp-core --bench shipping
 | ch23-1-production | 23 | Call check, component versions, memory and file stores, a tracing span, SHA-256 fingerprint |
 | ch24-1-cli | 24 | Settings from defaults, JSON, and `FASTMCP_` env; `run`, `dev`, `inspect`, and `install` |
 | ch25-1-shipping | 25 | A dry-run publish plan, three archive names, and one in-process `add` next to Python FastMCP |
+| apa-1-apps | A | Model tools versus app tools, and the 12-character SHA-256 backend name |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).

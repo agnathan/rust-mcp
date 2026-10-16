@@ -713,6 +713,20 @@
       "fake": "No socket, no cargo publish, no Python. Middleware hooks are not on dispatch_tool.",
       "source": "steps/ch25-1-shipping/crates/fastmcp-core/benches/shipping.rs",
       "reading": "Smaller is better. One call should stay well under 1 microsecond. About 98 ns locally."
+    },
+    {
+      "id": "A.1/visible_10k",
+      "section": "A.1 Apps",
+      "chapter": "Appendix A Apps",
+      "function": "visible_10k",
+      "summary": "Keep the model-visible names in a list of 10,000 tools.",
+      "what": "The cost of filtering (name, audience) pairs down to Audience::Model.",
+      "why": "The model list is this filter. The hash of a backend tool is a different path.",
+      "timing": "The 10,000 pairs are built before the bench. The timed closure is b.iter. Inside it: visible_model and black_box.",
+      "inputs": "Even indexes are model tools. Odd indexes are app tools. Names are tool_0 through tool_9999.",
+      "fake": "No SHA-256, no renderer, no socket.",
+      "source": "steps/apa-1-apps/benches/apps.rs",
+      "reading": "Smaller is better. The filter should stay well under 50 microseconds. About 10 \u00b5s locally."
     }
   ]
 }

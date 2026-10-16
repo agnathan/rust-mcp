@@ -39,6 +39,6 @@
 
 # Appendices
 
-- [Appendix A: Apps]()
+- [Appendix A: Apps](appendix-a-apps.md)
 - [Appendix B: OAuth proxy, OIDC proxy, and the full OAuth server]()
 - [Appendix C: Icons and metadata]()

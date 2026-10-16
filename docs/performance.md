@@ -281,3 +281,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `rust_call` | < 1 µs | pending | 98.31 ns |
 
 `rust_call` is one in-process `add`. The Python comparison is local and is not in this table. Details are in [Chapter 25](../book/chapter-25-shipping.md).
+
+## Appendix A budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this appendix. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `visible_10k` | < 50 µs | pending | 9.924 µs |
+
+`visible_10k` keeps the model-visible names in a list of 10,000 tools. Details are in [Appendix A](../book/appendix-a-apps.md).
