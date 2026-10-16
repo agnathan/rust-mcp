@@ -4,7 +4,7 @@
 
 # Part I: The protocol and the server
 
-- [Introduction](chapter-00-introduction.md)
+- [Chapter 0: Introduction](chapter-00-introduction.md)
 - [Chapter 1: Speaking JSON-RPC](chapter-01-speaking-json-rpc.md)
 - [Chapter 2: Negotiating the protocol]()
 - [Chapter 3: The `FastMcp` builder and tools]()
