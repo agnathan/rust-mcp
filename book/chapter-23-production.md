@@ -122,16 +122,16 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `trace_off` | 1,000 allocations of the string `ok`, with no span | A subscriber | The string `ok` | No span and no collector | Well under 50 µs. About 8.7 µs here. |
 | `trace_on` | 1,000 `traced_call` spans around the same string | Installing the subscriber | Tool name `add` | The subscriber writes to `std::io::sink`. No OTLP exporter | Well under 1 ms. About 213 µs here. The span costs more than the bare string. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38964657668](https://github.com/agnathan/rust-mcp/actions/runs/38964657668) (2026-10-16T20:46:29Z). GitHub's `github.sha` for that pull request run is the merge commit `1fcbff5af61f2199d25ca4ffdb5c5618f037710d`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `auth_1k` | pending | pending | pending | < 5 µs |
-| `store_get` | pending | pending | pending | < 1 µs |
-| `trace_off` | pending | pending | pending | < 50 µs |
-| `trace_on` | pending | pending | pending | < 1 ms |
+| `auth_1k` | 545.5 ns | 545.3 ns | 545.8 ns | < 5 µs |
+| `store_get` | 27.72 ns | 27.70 ns | 27.73 ns | < 1 µs |
+| `trace_off` | 10.11 µs | 10.10 µs | 10.15 µs | < 50 µs |
+| `trace_on` | 288.6 µs | 287.7 µs | 289.1 µs | < 1 ms |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, a thousand allows are 545.5 ns, one memory get is 27.72 ns, a thousand strings with no span are 10.11 µs, and a thousand spans are 288.6 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
