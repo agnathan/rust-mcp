@@ -86,3 +86,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `paginate_10k` | < 50 µs | pending | 2.482 µs |
 
 `prompt_render_1` is one prompt render. `paginate_10k` is one page of 50 items taken from offset 5,000 of a 10,000-item list. Details are in [Chapter 7](../book/chapter-07-prompts-completions-pagination.md).
+
+## Chapter 8 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `dispatch_ok_1000` | < 1 ms | pending | 128.4 µs |
+| `dispatch_missing_1000` | < 1 ms | pending | 64.08 µs |
+
+`dispatch_ok_1000` is a thousand successful `add` dispatches. `dispatch_missing_1000` is a thousand lookups of a name that is not registered. Details are in [Chapter 8](../book/chapter-08-errors-done-right.md).

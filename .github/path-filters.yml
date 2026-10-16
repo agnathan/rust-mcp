@@ -22,3 +22,5 @@ ch06-1-resources:
   - "steps/ch06-1-resources/**"
 ch07-1-prompts:
   - "steps/ch07-1-prompts/**"
+ch08-1-errors:
+  - "steps/ch08-1-errors/**"
