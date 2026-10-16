@@ -601,6 +601,20 @@
       "fake": "Waits start after every submit, so the tasks overlap. No socket.",
       "source": "steps/ch20-1-tasks/crates/fastmcp-core/benches/tasks.rs",
       "reading": "Smaller is better. One thousand tasks should stay well under 20 milliseconds. About 2.4 ms locally."
+    },
+    {
+      "id": "21.1/parse_1k",
+      "section": "21.1 OpenAPI",
+      "chapter": "Chapter 21 OpenAPI to MCP",
+      "function": "parse_1k",
+      "summary": "One thousand OpenAPI operations become tools.",
+      "what": "The cost of parsing the JSON text and walking every path into an operation name.",
+      "why": "A spec is the input. The tool list is the output. This is that conversion at a size that is no longer a toy.",
+      "timing": "The JSON text is built before the bench. The timed closure is b.iter. Inside it: from_str, tools_from_spec, and black_box of the length.",
+      "inputs": "1,000 GET operations with operationId get_widget_N.",
+      "fake": "No HTTP request.",
+      "source": "steps/ch21-1-openapi/crates/fastmcp-core/benches/openapi.rs",
+      "reading": "Smaller is better. The conversion should stay well under 2 milliseconds. About 430 \u00b5s locally."
     }
   ]
 }

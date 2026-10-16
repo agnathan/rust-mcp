@@ -228,3 +228,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `concurrent_1k` | < 20 ms | 957.7 µs | 2.423 ms |
 
 `submit_to_result` submits one task and waits for its text. `concurrent_1k` submits one thousand tasks and waits for each. Details are in [Chapter 20](../book/chapter-20-background-tasks-and-extensions.md).
+
+## Chapter 21 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `parse_1k` | < 2 ms | 445.2 µs | 430.1 µs |
+
+`parse_1k` parses a 1,000-operation OpenAPI document and lists the tools. Details are in [Chapter 21](../book/chapter-21-openapi-to-mcp.md).

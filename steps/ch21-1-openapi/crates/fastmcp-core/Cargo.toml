@@ -1,0 +1,114 @@
+[package]
+name = "ch21-1-fastmcp-core"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+publish = false
+
+[lib]
+name = "fastmcp_core"
+
+[dependencies]
+rmcp = { version = "3.5.1", default-features = false, features = ["server", "transport-io", "transport-streamable-http-server"] }
+schemars = "1.2.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+thiserror = "2"
+anyhow = "1"
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio"] }
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "io-std", "sync", "time"] }
+tokio-util = "0.7"
+ch21-1-fastmcp-macros = { path = "../fastmcp-macros" }
+rhai = "1.26.1"
+reqwest = { version = "0.13.5", default-features = false, features = ["json", "rustls"] }
+
+[dev-dependencies]
+criterion = "0.5"
+insta = "1"
+rmcp = { version = "3.5.1", default-features = false, features = ["client", "server", "transport-io"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "io-std", "io-util", "sync"] }
+
+[[bench]]
+name = "jsonrpc"
+harness = false
+
+[[bench]]
+name = "negotiate"
+harness = false
+
+[[bench]]
+name = "tools"
+harness = false
+
+[[bench]]
+name = "schema"
+harness = false
+
+[[bench]]
+name = "macro_reg"
+harness = false
+
+[[bench]]
+name = "resources"
+harness = false
+
+[[bench]]
+name = "prompts"
+harness = false
+
+[[bench]]
+name = "errors"
+harness = false
+
+[[bench]]
+name = "context"
+harness = false
+
+[[bench]]
+name = "inject"
+harness = false
+
+[[bench]]
+name = "lifespan"
+harness = false
+
+[[bench]]
+name = "http"
+harness = false
+
+[[bench]]
+name = "elicit"
+harness = false
+
+[[bench]]
+name = "client"
+harness = false
+
+[[bench]]
+name = "harness"
+harness = false
+
+[[bench]]
+name = "middleware"
+harness = false
+
+[[bench]]
+name = "providers"
+harness = false
+
+[[bench]]
+name = "transform"
+harness = false
+
+[[bench]]
+name = "search"
+harness = false
+
+[[bench]]
+name = "tasks"
+harness = false
+
+[[bench]]
+name = "openapi"
+harness = false

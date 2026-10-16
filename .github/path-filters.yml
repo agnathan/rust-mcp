@@ -48,3 +48,5 @@ ch19-1-search:
   - "steps/ch19-1-search/**"
 ch20-1-tasks:
   - "steps/ch20-1-tasks/**"
+ch21-1-openapi:
+  - "steps/ch21-1-openapi/**"
