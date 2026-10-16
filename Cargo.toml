@@ -3,5 +3,6 @@ resolver = "3"
 members = [
     "steps/ch01-1-jsonrpc/crates/fastmcp-core",
     "steps/ch02-1-negotiate/crates/fastmcp-core",
+    "steps/ch03-1-builder/crates/fastmcp-core",
     "fastmcp-rs",
 ]

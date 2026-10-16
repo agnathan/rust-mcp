@@ -13,3 +13,8 @@ pub fn ping_response_json() -> String {
 pub fn negotiated_version_label() -> &'static str {
     todo!("chapter 2: echo the handshake version the client requested")
 }
+
+/// The name of the tool chapter 3 registers on the builder.
+pub fn registered_tool_name() -> &'static str {
+    todo!("chapter 3: return the name passed to FastMcp::tool")
+}

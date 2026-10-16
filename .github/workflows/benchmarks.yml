@@ -33,6 +33,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 1.1 "1.1 JSON-RPC" ch01-1-fastmcp-core jsonrpc
       - name: Section 2.1 Negotiate
         run: bash .github/scripts/run_bench_section.sh 2.1 "2.1 Negotiate" ch02-1-fastmcp-core negotiate
+      - name: Section 3.1 Tools
+        run: bash .github/scripts/run_bench_section.sh 3.1 "3.1 Tools" ch03-1-fastmcp-core tools
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"

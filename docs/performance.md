@@ -31,3 +31,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The local column is the same 4-vCP
 | `stdio_initialize_list` | < 5 ms | pending | 113.9 µs |
 
 `negotiate_1` is one version choice. `negotiate_1000` is a thousand choices, with every fifth request asking for `2026-07-28`. `stdio_initialize_list` is one in-memory duplex session: serve, `initialize`, `tools/list`, cancel. It does not spawn a process. Details are in [Chapter 2](../book/chapter-02-negotiating-the-protocol.md).
+
+## Chapter 3 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The local column is the same 4-vCPU Intel Xeon guest. The CI column is filled from this chapter's Benchmarks run once that job has finished.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `lookup_1` | < 1 µs | pending | 12.51 ns |
+| `dispatch_1000` | < 1 ms | pending | 59.96 µs |
+
+`lookup_1` is one `HashMap` lookup among 1,000 tools. `dispatch_1000` deserializes and calls all 1,000. Details are in [Chapter 3](../book/chapter-03-the-fastmcp-builder-and-tools.md).
