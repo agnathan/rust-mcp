@@ -224,7 +224,7 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `submit_to_result` | < 50 µs | pending | 4.219 µs |
-| `concurrent_1k` | < 20 ms | pending | 2.423 ms |
+| `submit_to_result` | < 50 µs | 11.27 µs | 4.219 µs |
+| `concurrent_1k` | < 20 ms | 957.7 µs | 2.423 ms |
 
 `submit_to_result` submits one task and waits for its text. `concurrent_1k` submits one thousand tasks and waits for each. Details are in [Chapter 20](../book/chapter-20-background-tasks-and-extensions.md).
