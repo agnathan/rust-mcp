@@ -741,6 +741,20 @@
       "fake": "No HTTP, no code map, no token.",
       "source": "steps/apb-1-oauth/benches/oauth.rs",
       "reading": "Smaller is better. One challenge should stay well under 1 microsecond. About 101 ns locally."
+    },
+    {
+      "id": "C.1/check_1k",
+      "section": "C.1 Icons",
+      "chapter": "Appendix C Icons",
+      "function": "check_1k",
+      "summary": "Check 1,000 icon sources.",
+      "what": "The cost of check_icon on 1,000 https URLs, counting how many pass.",
+      "why": "A server card should refuse a bad source before a client renders it.",
+      "timing": "The icons are built before the bench. The timed closure is b.iter. Inside it: count_ok and black_box.",
+      "inputs": "1,000 icons. src is https://example.test/icon-{n}.png. size is 48x48. theme is light.",
+      "fake": "No fetch and no JSON serialization.",
+      "source": "steps/apc-1-icons/benches/icons.rs",
+      "reading": "Smaller is better. One thousand checks should stay well under 50 microseconds. About 7 \u00b5s locally."
     }
   ]
 }

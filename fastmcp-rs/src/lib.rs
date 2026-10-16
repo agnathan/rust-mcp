@@ -138,3 +138,8 @@ pub fn ui_extension_id() -> &'static str {
 pub fn pkce_method() -> &'static str {
     todo!("appendix B: return the PKCE method")
 }
+
+/// The theme string for an icon drawn for a light UI.
+pub fn icon_theme_light() -> &'static str {
+    todo!("appendix C: return the light theme name")
+}

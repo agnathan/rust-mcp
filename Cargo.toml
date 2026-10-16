@@ -49,5 +49,6 @@ members = [
     "steps/ch25-1-shipping/crates/fastmcp-core",
     "steps/apa-1-apps",
     "steps/apb-1-oauth",
+    "steps/apc-1-icons",
     "fastmcp-rs",
 ]

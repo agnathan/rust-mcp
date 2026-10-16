@@ -41,4 +41,4 @@
 
 - [Appendix A: Apps](appendix-a-apps.md)
 - [Appendix B: OAuth proxy, OIDC proxy, and the full OAuth server](appendix-b-oauth.md)
-- [Appendix C: Icons and metadata]()
+- [Appendix C: Icons and metadata](appendix-c-icons.md)

@@ -301,3 +301,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `pkce_s256` | < 1 µs | pending | 100.6 ns |
 
 `pkce_s256` hashes one verifier and encodes it as unpadded base64url. Details are in [Appendix B](../book/appendix-b-oauth.md).
+
+## Appendix C budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this appendix. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `check_1k` | < 50 µs | pending | 7.219 µs |
+
+`check_1k` checks 1,000 icon sources. Details are in [Appendix C](../book/appendix-c-icons.md).
