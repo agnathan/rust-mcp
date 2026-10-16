@@ -10,3 +10,5 @@ shared:
   - ".github/chapters.json"
 ch01-1-jsonrpc:
   - "steps/ch01-1-jsonrpc/**"
+ch02-1-negotiate:
+  - "steps/ch02-1-negotiate/**"

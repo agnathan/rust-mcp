@@ -8,3 +8,8 @@
 pub fn ping_response_json() -> String {
     todo!("chapter 1: return a JSON-RPC success response for ping")
 }
+
+/// The protocol version `initialize` echoes when the client asks for `2025-06-18`.
+pub fn negotiated_version_label() -> &'static str {
+    todo!("chapter 2: echo the handshake version the client requested")
+}
