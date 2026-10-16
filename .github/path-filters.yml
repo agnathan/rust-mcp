@@ -52,3 +52,5 @@ ch21-1-openapi:
   - "steps/ch21-1-openapi/**"
 ch22-1-auth:
   - "steps/ch22-1-auth/**"
+ch23-1-production:
+  - "steps/ch23-1-production/**"

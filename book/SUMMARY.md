@@ -33,7 +33,7 @@
 # Part III: Shipping
 
 - [Chapter 22: Authentication](chapter-22-authentication.md)
-- [Chapter 23: Production: authorization, versioning, storage, telemetry]()
+- [Chapter 23: Production: authorization, versioning, storage, telemetry](chapter-23-production.md)
 - [Chapter 24: Settings and CLI]()
 - [Chapter 25: Shipping it]()
 

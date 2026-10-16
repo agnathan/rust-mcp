@@ -113,3 +113,8 @@ pub fn openapi_tool_name() -> &'static str {
 pub fn auth_algorithm() -> &'static str {
     todo!("chapter 22: return the HMAC algorithm name")
 }
+
+/// The hash algorithm for a tool fingerprint.
+pub fn fingerprint_algo() -> &'static str {
+    todo!("chapter 23: return the fingerprint algorithm")
+}
