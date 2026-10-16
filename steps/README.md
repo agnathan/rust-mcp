@@ -32,6 +32,9 @@ cargo bench -p ch08-1-fastmcp-core --bench errors
 cargo test -p ch09-1-fastmcp-core
 cargo run -p ch09-1-fastmcp-core --example demo
 cargo bench -p ch09-1-fastmcp-core --bench context
+cargo test -p ch10-1-fastmcp-core
+cargo run -p ch10-1-fastmcp-core --example demo
+cargo bench -p ch10-1-fastmcp-core --bench inject
 ```
 
 | Step | Chapter | Adds |
@@ -45,5 +48,6 @@ cargo bench -p ch09-1-fastmcp-core --bench context
 | ch07-1-prompts | 7 | Prompts, prefix completion capped at 100, and a base64 offset cursor on every `list_*`; one render and one page from 10,000 items |
 | ch08-1-errors | 8 | `AppError` and `to_mcp_error`: not-found is `invalid_params`, `anyhow` is `internal_error`, a tool `Err` stays `is_error`; 1,000 successes versus 1,000 misses |
 | ch09-1-context | 9 | `Context` via `Arc` and `Mutex`: logs, progress, a static resource read, a canned sample; 1,000 progress notes in memory |
+| ch10-1-depends | 10 | `provide` and `Dep<T>` with `PhantomData`; a tuple `Extract`; the schema lists `q` and omits the database and the token |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).

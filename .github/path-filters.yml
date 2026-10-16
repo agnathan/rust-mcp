@@ -26,3 +26,5 @@ ch08-1-errors:
   - "steps/ch08-1-errors/**"
 ch09-1-context:
   - "steps/ch09-1-context/**"
+ch10-1-depends:
+  - "steps/ch10-1-depends/**"

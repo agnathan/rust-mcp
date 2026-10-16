@@ -107,3 +107,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `progress_1000` | < 100 µs | pending | 14.37 µs |
 
 `progress_1000` is a thousand in-memory progress notes, then a clear. Details are in [Chapter 9](../book/chapter-09-context.md).
+
+## Chapter 10 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `inject_1000` | < 100 µs | pending | 12.03 µs |
+| `hand_1000` | < 100 µs | pending | 15.22 µs |
+
+`inject_1000` is a thousand `Dep::<Db>` extractions. `hand_1000` is a thousand `Arc` clones of a `Db` the caller already holds. Details are in [Chapter 10](../book/chapter-10-dependency-injection.md).
