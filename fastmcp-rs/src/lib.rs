@@ -73,3 +73,8 @@ pub fn elicit_phase() -> &'static str {
 pub fn grouped_tool_name() -> &'static str {
     todo!("chapter 14: return server name, underscore, tool name")
 }
+
+/// The first name in a harness snapshot of an empty server.
+pub fn snapshot_tool_name() -> &'static str {
+    todo!("chapter 15: return the built-in tool name")
+}
