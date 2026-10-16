@@ -36,3 +36,5 @@ ch13-1-elicit:
   - "steps/ch13-1-elicit/**"
 ch14-1-client:
   - "steps/ch14-1-client/**"
+ch15-1-testing:
+  - "steps/ch15-1-testing/**"

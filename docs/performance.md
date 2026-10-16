@@ -161,3 +161,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 | `fanout_8` | < 500 µs | 184.0 µs | 78.98 µs |
 
 `list_once` is one `tools/list` on a connected memory client. `fanout_8` lists eight servers on a `JoinSet`. Details are in [Chapter 14](../book/chapter-14-client-and-groups.md).
+
+## Chapter 15 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `memory_list` | < 1 µs | pending | 24.20 ns |
+| `duplex_list` | < 200 µs | pending | 53.27 µs |
+
+`memory_list` collects tool names from the harness. `duplex_list` is one `tools/list` on a connected memory client. Details are in [Chapter 15](../book/chapter-15-testing-utilities.md).

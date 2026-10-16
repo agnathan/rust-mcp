@@ -14,7 +14,7 @@
   {"n": 12, "title": "Streamable HTTP, sessions, both protocol eras", "step": "ch12-1-http", "part": "I"},
   {"n": 13, "title": "Elicitation and interactive tools", "step": "ch13-1-elicit", "part": "I"},
   {"n": 14, "title": "The client and client groups", "step": "ch14-1-client", "part": "II"},
-  {"n": 15, "title": "Testing utilities", "step": "ch15-testing", "part": "II"},
+  {"n": 15, "title": "Testing utilities", "step": "ch15-1-testing", "part": "II"},
   {"n": 16, "title": "Middleware", "step": "ch16-middleware", "part": "II"},
   {"n": 17, "title": "Providers and composition", "step": "ch17-providers", "part": "II"},
   {"n": 18, "title": "Transforms and visibility", "step": "ch18-transforms", "part": "II"},

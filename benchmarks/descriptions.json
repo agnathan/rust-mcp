@@ -419,6 +419,34 @@
       "fake": "No process and no HTTP. The peers are already up.",
       "source": "steps/ch14-1-client/crates/fastmcp-core/benches/client.rs",
       "reading": "Smaller is better. Eight lists should stay well under 500 microseconds. About 79 \u00b5s locally."
+    },
+    {
+      "id": "15.1/memory_list",
+      "section": "15.1 Testing",
+      "chapter": "Chapter 15 Testing utilities",
+      "function": "memory_list",
+      "summary": "Tool names from the in-process harness.",
+      "what": "The cost of collecting registered tool names and placing status first.",
+      "why": "A unit test that calls the server directly should stay in the nanoseconds.",
+      "timing": "The Harness is built before the bench. The timed closure is b.iter. Inside it: tool_names and black_box of the Vec.",
+      "inputs": "A server named widgets with no extra tools. The list is the one name status.",
+      "fake": "No socket, no duplex, no process.",
+      "source": "steps/ch15-1-testing/crates/fastmcp-core/benches/harness.rs",
+      "reading": "Smaller is better. One list should stay well under 1 microsecond. About 24 ns locally."
+    },
+    {
+      "id": "15.1/duplex_list",
+      "section": "15.1 Testing",
+      "chapter": "Chapter 15 Testing utilities",
+      "function": "duplex_list",
+      "summary": "tools/list on a connected memory client.",
+      "what": "The cost of one tools/list over the duplex that stdio tests use.",
+      "why": "The protocol path is the comparison for the in-process harness.",
+      "timing": "connect_memory runs before the bench. The timed closure is b.iter. Inside it: tool_names and black_box of the Vec.",
+      "inputs": "A server named widgets. The only tool is status.",
+      "fake": "No child process. The duplex is already connected.",
+      "source": "steps/ch15-1-testing/crates/fastmcp-core/benches/harness.rs",
+      "reading": "Smaller is better. One list should stay well under 200 microseconds. About 53 \u00b5s locally."
     }
   ]
 }
