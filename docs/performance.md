@@ -89,11 +89,11 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 
 ## Chapter 8 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38865647838](https://github.com/agnathan/rust-mcp/actions/runs/38865647838) (2026-10-16T07:11:53Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `dispatch_ok_1000` | < 1 ms | pending | 128.4 µs |
-| `dispatch_missing_1000` | < 1 ms | pending | 64.08 µs |
+| `dispatch_ok_1000` | < 1 ms | 172.7 µs | 128.4 µs |
+| `dispatch_missing_1000` | < 1 ms | 75.41 µs | 64.08 µs |
 
 `dispatch_ok_1000` is a thousand successful `add` dispatches. `dispatch_missing_1000` is a thousand lookups of a name that is not registered. Details are in [Chapter 8](../book/chapter-08-errors-done-right.md).
