@@ -134,7 +134,14 @@ Local medians from that run's `estimates.json` (the slope above is not this colu
 | `schema_1` | One `json_schema_of::<Greet>()`: draft 2020-12 generation, `serde_json::to_value`, and removal of the top-level title and description | Storing the `Arc` on a tool. No `.tool()` call. | `Greet { name: String, title: Option<String> }` | No socket, no `tools/list`, no cache | Well under 100 µs. About 1.6 µs here. |
 | `schema_1000` | 1,000 calls of that same function, each building a new schema | A cache. `rmcp` would hit a `TypeId` cache after the first call. This loop does not. | The same `Greet` struct, a thousand times | No socket | Under 50 ms. About 1.9 ms here. A cache would make this look like one generation. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians for this section are filled from this pull request's Benchmarks run once that job has finished. Until that table is updated, the numbers above are the local run only.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38857080367](https://github.com/agnathan/rust-mcp/actions/runs/38857080367) (2026-10-16T05:41:43Z). GitHub's `github.sha` for that pull request run is the merge commit `4e2a37e58ef911f020756b0349703c1b1f633433`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
+
+| Benchmark | CI median | Low | High | Target |
+|---|---|---|---|---|
+| `schema_1` | 1.863 µs | 1.861 µs | 1.865 µs | < 100 µs |
+| `schema_1000` | 1.916 ms | 1.913 ms | 1.920 ms | < 50 ms |
+
+On the Ubuntu runner, one schema is 1.863 µs, and a thousand uncached generations are 1.916 ms. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 

@@ -45,11 +45,11 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 
 ## Chapter 4 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The local column is the same 4-vCPU Intel Xeon guest. The CI column is filled from this chapter's Benchmarks run once that job has finished. The generator is not cached.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38857080367](https://github.com/agnathan/rust-mcp/actions/runs/38857080367) (2026-10-16T05:41:43Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest. The generator is not cached.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `schema_1` | < 100 µs | pending | 1.596 µs |
-| `schema_1000` | < 50 ms | pending | 1.854 ms |
+| `schema_1` | < 100 µs | 1.863 µs | 1.596 µs |
+| `schema_1000` | < 50 ms | 1.916 ms | 1.854 ms |
 
 `schema_1` builds one JSON Schema for a struct with a `String` and an `Option<String>`. `schema_1000` builds that schema 1,000 times. Details are in [Chapter 4](../book/chapter-04-schemas-from-types.md).
