@@ -36,14 +36,14 @@ A step is the code as of that section, with its tests. Later chapters are new co
    cargo test -p fastmcp-rs --test ch01
    ```
 
-Chapters 0 through 20. Chapter 1 is written. Later rows are the plan in [book/book-outline.md](book/book-outline.md), not empty crates. The same list is `.github/chapters.json`.
+Chapters 0 through 25. Chapter 1 is written. Later rows are the plan in [book/book-outline.md](book/book-outline.md), not empty crates. The same list is `.github/chapters.json`.
 
 | Ch | Title | Step | You add |
 |---|---|---|---|
 | 0 | Introduction | — | what MCP and FastMCP are, how steps and tags work |
 | 1 | Speaking JSON-RPC | `steps/ch01-1-jsonrpc` | JSON-RPC 2.0, `initialize`, `ping` |
-| 2 | First server over stdio | `steps/ch02-stdio` | not written |
-| 3–20 | See the outline | — | not written |
+| 2 | Negotiating the protocol | `steps/ch02-negotiate` | not written |
+| 3–25 | See the outline | — | not written |
 
 After chapter 1 merges to `main`, tag that merge commit `step-01`. The tag is not pushed from the chapter pull request. See [docs/tags.md](docs/tags.md).
 

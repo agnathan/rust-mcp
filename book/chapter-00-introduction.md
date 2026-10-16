@@ -30,7 +30,7 @@ if __name__ == "__main__":
     mcp.run()
 ```
 
-That decorator hides the JSON-RPC. This book starts under it. Chapter 1 builds the envelope by hand. Chapter 2 is the first server that a client can actually start. Later chapters add the builder, tools, resources, prompts, errors, context, HTTP, a client, middleware, and the rest of the outline in [book-outline.md](book-outline.md).
+That decorator hides the JSON-RPC. This book starts under it. Chapter 1 builds the handshake-era envelope by hand. Chapter 2 negotiates the protocol version and is the first server a client can start. Later chapters add the builder, tools, resources, prompts, errors, context, dependency injection, HTTP for both protocol eras, a client, middleware, providers, and the rest of the outline in [book-outline.md](book-outline.md) (chapters 0 through 25).
 
 The Rust we write is not a line-by-line port. FastMCP already uses the Python MCP SDK for JSON-RPC. From chapter 2 on, we use the Rust SDK `rmcp` the same way. The chapters are about the parts that make FastMCP FastMCP.
 
