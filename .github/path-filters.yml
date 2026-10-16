@@ -62,3 +62,5 @@ apa-1-apps:
   - "steps/apa-1-apps/**"
 apb-1-oauth:
   - "steps/apb-1-oauth/**"
+apc-1-icons:
+  - "steps/apc-1-icons/**"
