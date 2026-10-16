@@ -134,15 +134,15 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `proxy_call` | One `call("status")` through a `ProxyProvider` | Building the inner provider and the proxy | The same tool | No remote client and no list cache | Well under 1 µs. About 18 ns here. A proxy hop costs a little more than the direct call. |
 | `aggregate_10` | `list_tools` across ten providers | Building the ten providers | Each provider has one tool | No socket. The list is not filtered | Well under 5 µs. About 448 ns here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38962041750](https://github.com/agnathan/rust-mcp/actions/runs/38962041750) (2026-10-16T20:24:44Z). GitHub's `github.sha` for that pull request run is the merge commit `93ace4936273fba13ce8902b869110da72f18a27`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `direct_call` | pending | pending | pending | < 1 µs |
-| `proxy_call` | pending | pending | pending | < 1 µs |
-| `aggregate_10` | pending | pending | pending | < 5 µs |
+| `direct_call` | 22.87 ns | 22.59 ns | 23.09 ns | < 1 µs |
+| `proxy_call` | 23.48 ns | 23.44 ns | 23.50 ns | < 1 µs |
+| `aggregate_10` | 535.9 ns | 534.5 ns | 537.8 ns | < 5 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, a direct call is 22.87 ns, the proxy call is 23.48 ns, and a list across ten providers is 535.9 ns. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 

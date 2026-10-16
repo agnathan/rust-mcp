@@ -124,13 +124,13 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 |---|---|---|---|---|---|
 | `filter_10k` | `visible` over 10,000 tools, allocating the kept names | Building the catalog and `disable_tag` | Even indexes tagged `public`, odd indexes tagged `internal` and already disabled | No socket and no notification | Well under 1 ms. About 127 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38962377031](https://github.com/agnathan/rust-mcp/actions/runs/38962377031) (2026-10-16T20:27:32Z). GitHub's `github.sha` for that pull request run is the merge commit `e6badb1977bb36d37706a85e7102d1e9f27f071e`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `filter_10k` | pending | pending | pending | < 1 ms |
+| `filter_10k` | 137.9 µs | 137.8 µs | 138.1 µs | < 1 ms |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, a filtered list of 10,000 tools is 137.9 µs. That is the median this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
