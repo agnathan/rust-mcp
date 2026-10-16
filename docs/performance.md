@@ -128,3 +128,15 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 | `contended_reads` | < 2 ms | 236.8 µs | 244.3 µs |
 
 `contended_reads` spawns four threads that each read an `RwLock` 1,000 times. Details are in [Chapter 11](../book/chapter-11-lifespan-and-state.md).
+
+## Chapter 12 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38870644362](https://github.com/agnathan/rust-mcp/actions/runs/38870644362) (2026-10-16T07:59:08Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `http_roundtrip` | < 2 ms | 346.6 µs | 294.9 µs |
+| `initialize_once` | < 1 ms | 206.2 µs | 167.2 µs |
+| `discover_once` | < 500 µs | 118.7 µs | 91.22 µs |
+
+`http_roundtrip` is initialize, `tools/list`, and `DELETE` on loopback. `initialize_once` stops after the handshake and the delete. `discover_once` is one `server/discover` for `2026-07-28`. Details are in [Chapter 12](../book/chapter-12-streamable-http.md).
