@@ -78,11 +78,11 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 
 ## Chapter 7 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38864877048](https://github.com/agnathan/rust-mcp/actions/runs/38864877048) (2026-10-16T07:04:27Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `prompt_render_1` | < 1 µs | pending | 62.14 ns |
-| `paginate_10k` | < 50 µs | pending | 2.482 µs |
+| `prompt_render_1` | < 1 µs | 97.61 ns | 62.14 ns |
+| `paginate_10k` | < 50 µs | 2.371 µs | 2.482 µs |
 
 `prompt_render_1` is one prompt render. `paginate_10k` is one page of 50 items taken from offset 5,000 of a 10,000-item list. Details are in [Chapter 7](../book/chapter-07-prompts-completions-pagination.md).
