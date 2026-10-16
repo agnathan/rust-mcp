@@ -293,6 +293,34 @@
       "fake": "No socket and no notifications/progress. The note is a struct.",
       "source": "steps/ch09-1-context/crates/fastmcp-core/benches/context.rs",
       "reading": "Smaller is better. A thousand notes should stay well under 100 microseconds. About 14 µs locally."
+    },
+    {
+      "id": "10.1/inject_1000",
+      "section": "10.1 Depends",
+      "chapter": "Chapter 10 Dependency injection",
+      "function": "inject_1000",
+      "summary": "Extract Dep<Db> 1,000 times.",
+      "what": "The cost of 1,000 FromContext lookups: TypeId, downcast, clone, and bias + n.",
+      "why": "This is the injection overhead with no JSON and no socket, so it can be set next to a hand-passed Arc.",
+      "timing": "The InjectCtx is built before the bench. The timed closure is b.iter. Inside it: the loop, from_context, the addition, and black_box of the total.",
+      "inputs": "Db { bias: 1 }. n from 0 through 999.",
+      "fake": "No socket and no dispatch_tool.",
+      "source": "steps/ch10-1-depends/crates/fastmcp-core/benches/inject.rs",
+      "reading": "Smaller is better. A thousand extractions should stay well under 100 microseconds. About 12 µs locally."
+    },
+    {
+      "id": "10.1/hand_1000",
+      "section": "10.1 Depends",
+      "chapter": "Chapter 10 Dependency injection",
+      "function": "hand_1000",
+      "summary": "Clone an Arc<Db> by hand, 1,000 times.",
+      "what": "The cost of 1,000 Arc::clone calls plus bias + n, with no TypeId lookup.",
+      "why": "The comparison for injection. The work after the value is in hand matches inject_1000.",
+      "timing": "The Arc is built before the bench. The timed closure is b.iter. Inside it: the loop, Arc::clone, the addition, and black_box of the total.",
+      "inputs": "The same Db { bias: 1 }, already inside an Arc.",
+      "fake": "No socket and no map.",
+      "source": "steps/ch10-1-depends/crates/fastmcp-core/benches/inject.rs",
+      "reading": "Smaller is better. A thousand clones should stay well under 100 microseconds. About 15 µs locally."
     }
   ]
 }

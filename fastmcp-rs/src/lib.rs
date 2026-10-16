@@ -48,3 +48,8 @@ pub fn not_found_code() -> i32 {
 pub fn canned_sample() -> &'static str {
     todo!("chapter 9: return the fixed sample string")
 }
+
+/// The only field chapter 10 puts in the tool schema.
+pub fn injected_query_field() -> &'static str {
+    todo!("chapter 10: return the argument field the client sends")
+}
