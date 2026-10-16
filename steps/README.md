@@ -71,6 +71,9 @@ cargo bench -p ch21-1-fastmcp-core --bench openapi
 cargo test -p ch22-1-fastmcp-core
 cargo run -p ch22-1-fastmcp-core --example demo
 cargo bench -p ch22-1-fastmcp-core --bench auth
+cargo test -p ch23-1-fastmcp-core
+cargo run -p ch23-1-fastmcp-core --example demo
+cargo bench -p ch23-1-fastmcp-core --bench production
 ```
 
 | Step | Chapter | Adds |
@@ -97,5 +100,6 @@ cargo bench -p ch22-1-fastmcp-core --bench auth
 | ch20-1-tasks | 20 | Extension registry and a task board: submit, poll, and result, gated on `io.modelcontextprotocol/tasks` |
 | ch21-1-openapi | 21 | OpenAPI `paths` and `operationId` become tools; `HttpCaller` fills `{param}`; reqwest builds and does not send in tests |
 | ch22-1-auth | 22 | HS256 verify with audience check, a JWKS `kid` read, and protected-resource metadata |
+| ch23-1-production | 23 | Call check, component versions, memory and file stores, a tracing span, SHA-256 fingerprint |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).

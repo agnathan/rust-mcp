@@ -73,6 +73,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 21.1 "21.1 OpenAPI" ch21-1-fastmcp-core openapi
       - name: Section 22.1 Auth
         run: bash .github/scripts/run_bench_section.sh 22.1 "22.1 Auth" ch22-1-fastmcp-core auth
+      - name: Section 23.1 Production
+        run: bash .github/scripts/run_bench_section.sh 23.1 "23.1 Production" ch23-1-fastmcp-core production
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"

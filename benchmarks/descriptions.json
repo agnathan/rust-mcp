@@ -629,6 +629,62 @@
       "fake": "No HTTP request and no JWKS fetch.",
       "source": "steps/ch22-1-auth/crates/fastmcp-core/benches/auth.rs",
       "reading": "Smaller is better. One verification should stay well under 20 microseconds. About 1.5 \u00b5s locally."
+    },
+    {
+      "id": "23.1/auth_1k",
+      "section": "23.1 Production",
+      "chapter": "Chapter 23 Production",
+      "function": "auth_1k",
+      "summary": "One thousand authorization checks that allow the call.",
+      "what": "The cost of a boolean check in front of a tool name, repeated 1,000 times.",
+      "why": "Authorization sits on the request path. The check itself should stay tiny.",
+      "timing": "Nothing is built before the bench. The timed closure is b.iter. Inside it: 1,000 allow_call calls.",
+      "inputs": "The name add. The closure returns true when the name is add.",
+      "fake": "No token parse and no socket.",
+      "source": "steps/ch23-1-production/crates/fastmcp-core/benches/production.rs",
+      "reading": "Smaller is better. A thousand checks should stay well under 5 microseconds. About 381 ns locally."
+    },
+    {
+      "id": "23.1/store_get",
+      "section": "23.1 Production",
+      "chapter": "Chapter 23 Production",
+      "function": "store_get",
+      "summary": "One get from the memory store.",
+      "what": "The cost of reading one key from a HashMap.",
+      "why": "Storage get is the hot path once the value is already written.",
+      "timing": "The store and the set happen before the bench. The timed closure is b.iter. Inside it: get and black_box.",
+      "inputs": "Key banner, value ok.",
+      "fake": "No disk. This is the memory backend.",
+      "source": "steps/ch23-1-production/crates/fastmcp-core/benches/production.rs",
+      "reading": "Smaller is better. One get should stay well under 1 microsecond. About 20 ns locally."
+    },
+    {
+      "id": "23.1/trace_off",
+      "section": "23.1 Production",
+      "chapter": "Chapter 23 Production",
+      "function": "trace_off",
+      "summary": "One thousand strings with no span.",
+      "what": "The cost of allocating the string ok a thousand times, with no tracing span.",
+      "why": "This is the baseline the span is compared with.",
+      "timing": "The timed closure is b.iter. Inside it: 1,000 to_string calls and black_box.",
+      "inputs": "The string ok.",
+      "fake": "No subscriber and no collector.",
+      "source": "steps/ch23-1-production/crates/fastmcp-core/benches/production.rs",
+      "reading": "Smaller is better. A thousand strings should stay well under 50 microseconds. About 8.7 \u00b5s locally."
+    },
+    {
+      "id": "23.1/trace_on",
+      "section": "23.1 Production",
+      "chapter": "Chapter 23 Production",
+      "function": "trace_on",
+      "summary": "One thousand calls inside a tracing span.",
+      "what": "The cost of entering an info span a thousand times while a subscriber discards the output.",
+      "why": "A span on the request path has a cost. This is that cost with the tool body reduced to a string.",
+      "timing": "The subscriber is installed before the bench and writes to std::io::sink. The timed closure is b.iter. Inside it: 1,000 traced_call calls.",
+      "inputs": "Tool name add. The body returns ok.",
+      "fake": "No OTLP exporter. The subscriber drops the events.",
+      "source": "steps/ch23-1-production/crates/fastmcp-core/benches/production.rs",
+      "reading": "Smaller is better. A thousand spans should stay well under 1 millisecond. About 213 \u00b5s locally."
     }
   ]
 }
