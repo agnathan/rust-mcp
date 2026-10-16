@@ -1,11 +1,11 @@
-# Section 4.1: Schemas from types
+# Section 5.1: A `#[tool]` macro
 
-Chapter 3's builder, plus JSON Schema for each tool's arguments and return value. An `Option` field stays out of `required`.
+`#[tool]` leaves the function callable and emits a `ToolDecl`. `FastMcp::tool_decl` registers it. The schema is still built at registration.
 
 ```bash
-cargo test -p ch04-1-fastmcp-core
-cargo bench -p ch04-1-fastmcp-core --bench schema
-cargo run -p ch04-1-fastmcp-core --example demo
+cargo test -p ch05-1-fastmcp-core
+cargo bench -p ch05-1-fastmcp-core --bench macro_reg
+cargo run -p ch05-1-fastmcp-core --example demo
 ```
 
-The book section is [Chapter 4: Schemas from types](../../book/chapter-04-schemas-from-types.md).
+The book section is [Chapter 5: A `#[tool]` macro](../../book/chapter-05-a-tool-macro.md).
