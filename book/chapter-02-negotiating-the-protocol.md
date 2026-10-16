@@ -131,7 +131,15 @@ Local medians from that run's `estimates.json` (the slope above is not this colu
 | `negotiate_1000` | 1,000 `choose_version` calls. Every 5th request is `2026-07-28`; the rest are `2025-06-18`. | Building that `Vec` | The vec above, reused | No session | Under a millisecond. About 12 µs here. |
 | `stdio_initialize_list` | One duplex pipe, `serve` on one end, client `initialize` for `2025-06-18`, one `tools/list`, then `cancel` | Building the Tokio runtime. No process spawn. | Server name `fastmcp-rs`, version `0.1.0` | In-memory duplex, not the terminal's stdin. Same `AsyncRead`/`AsyncWrite` transport as `rmcp::transport::stdio` | Under 5 ms. About 114 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians for this section are filled from this pull request's Benchmarks run once that job has finished. Until that table is updated, the numbers above are the local run only.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38856055391](https://github.com/agnathan/rust-mcp/actions/runs/38856055391) (2026-10-16T05:29:54Z). GitHub's `github.sha` for that pull request run is the merge commit `ee7a1bd5b624f3ac203c5fc461977d052db27246`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
+
+| Benchmark | CI median | Low | High | Target |
+|---|---|---|---|---|
+| `negotiate_1` | 16.66 ns | 16.52 ns | 17.14 ns | < 1 µs |
+| `negotiate_1000` | 21.83 µs | 21.78 µs | 21.84 µs | < 1 ms |
+| `stdio_initialize_list` | 236.2 µs | 235.0 µs | 238.8 µs | < 5 ms |
+
+On the Ubuntu runner, one version choice is 16.66 ns, a thousand choices are 21.83 µs, and one in-memory initialize plus `tools/list` is 236.2 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
