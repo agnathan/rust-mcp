@@ -1,0 +1,40 @@
+{
+  "runs": [
+    {
+      "sha": "8a8303c605b937e667d904ee3f9aa0894dd8e951",
+      "date": "2026-10-16T04:52:10Z",
+      "run_url": "https://github.com/agnathan/rust-mcp/actions/runs/38852793836",
+      "estimate": "median",
+      "sections": {
+        "1.1": "1.1 JSON-RPC"
+      },
+      "benches": {
+        "1.1/dispatch_initialize": {
+          "median_ns": 710.6882627169457,
+          "low_ns": 710.3572491496599,
+          "high_ns": 711.1023678702251
+        },
+        "1.1/parse_1000_messages": {
+          "median_ns": 1285829.7581896551,
+          "low_ns": 1282915.9439655172,
+          "high_ns": 1292886.4593596058
+        },
+        "1.1/parse_1_message": {
+          "median_ns": 1283.9977914541937,
+          "low_ns": 1283.3427641990504,
+          "high_ns": 1285.2591908864829
+        },
+        "1.1/serialize_1000_messages": {
+          "median_ns": 192803.3625808348,
+          "low_ns": 192521.13888888888,
+          "high_ns": 193019.07195767196
+        },
+        "1.1/serialize_1_message": {
+          "median_ns": 179.30487690446205,
+          "low_ns": 179.18838926340223,
+          "high_ns": 179.3876331580117
+        }
+      }
+    }
+  ]
+}
