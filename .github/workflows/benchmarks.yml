@@ -55,6 +55,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 12.1 "12.1 HTTP" ch12-1-fastmcp-core http
       - name: Section 13.1 Elicit
         run: bash .github/scripts/run_bench_section.sh 13.1 "13.1 Elicit" ch13-1-fastmcp-core elicit
+      - name: Section 14.1 Client
+        run: bash .github/scripts/run_bench_section.sh 14.1 "14.1 Client" ch14-1-fastmcp-core client
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"

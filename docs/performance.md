@@ -150,3 +150,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 | `elicit_round` | < 100 µs | 30.68 µs | 15.11 µs |
 
 `elicit_round` builds a desk, asks, and submits `yes` from a spawned task. Details are in [Chapter 13](../book/chapter-13-elicitation.md).
+
+## Chapter 14 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38872049825](https://github.com/agnathan/rust-mcp/actions/runs/38872049825) (2026-10-16T08:11:48Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `list_once` | < 200 µs | 82.47 µs | 36.40 µs |
+| `fanout_8` | < 500 µs | 184.0 µs | 78.98 µs |
+
+`list_once` is one `tools/list` on a connected memory client. `fanout_8` lists eight servers on a `JoinSet`. Details are in [Chapter 14](../book/chapter-14-client-and-groups.md).

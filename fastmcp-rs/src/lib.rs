@@ -68,3 +68,8 @@ pub fn streamable_http_path() -> &'static str {
 pub fn elicit_phase() -> &'static str {
     todo!("chapter 13: return the phase after submit")
 }
+
+/// The public name of the status tool on the widgets server.
+pub fn grouped_tool_name() -> &'static str {
+    todo!("chapter 14: return server name, underscore, tool name")
+}
