@@ -35,7 +35,7 @@
 - [Chapter 22: Authentication](chapter-22-authentication.md)
 - [Chapter 23: Production: authorization, versioning, storage, telemetry](chapter-23-production.md)
 - [Chapter 24: Settings and CLI](chapter-24-settings-and-cli.md)
-- [Chapter 25: Shipping it]()
+- [Chapter 25: Shipping it](chapter-25-shipping.md)
 
 # Appendices
 
