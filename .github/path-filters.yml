@@ -28,3 +28,5 @@ ch09-1-context:
   - "steps/ch09-1-context/**"
 ch10-1-depends:
   - "steps/ch10-1-depends/**"
+ch11-1-lifespan:
+  - "steps/ch11-1-lifespan/**"

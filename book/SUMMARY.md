@@ -15,7 +15,7 @@
 - [Chapter 8: Errors done right](chapter-08-errors-done-right.md)
 - [Chapter 9: Context](chapter-09-context.md)
 - [Chapter 10: Dependency injection](chapter-10-dependency-injection.md)
-- [Chapter 11: Lifespan and state]()
+- [Chapter 11: Lifespan and state](chapter-11-lifespan-and-state.md)
 - [Chapter 12: Streamable HTTP, sessions, both protocol eras]()
 - [Chapter 13: Elicitation and interactive tools]()
 

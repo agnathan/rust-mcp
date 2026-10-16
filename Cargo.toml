@@ -17,5 +17,7 @@ members = [
     "steps/ch09-1-context/crates/fastmcp-core",
     "steps/ch10-1-depends/crates/fastmcp-macros",
     "steps/ch10-1-depends/crates/fastmcp-core",
+    "steps/ch11-1-lifespan/crates/fastmcp-macros",
+    "steps/ch11-1-lifespan/crates/fastmcp-core",
     "fastmcp-rs",
 ]

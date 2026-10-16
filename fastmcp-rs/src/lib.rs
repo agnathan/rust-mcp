@@ -53,3 +53,8 @@ pub fn canned_sample() -> &'static str {
 pub fn injected_query_field() -> &'static str {
     todo!("chapter 10: return the argument field the client sends")
 }
+
+/// Close order for chapter 11: cache, then db.
+pub fn shutdown_order() -> &'static str {
+    todo!("chapter 11: return the close order, cache then db")
+}

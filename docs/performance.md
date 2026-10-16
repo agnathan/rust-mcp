@@ -118,3 +118,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 | `hand_1000` | < 100 µs | 3.909 µs | 15.22 µs |
 
 `inject_1000` is a thousand `Dep::<Db>` extractions. `hand_1000` is a thousand `Arc` clones of a `Db` the caller already holds. Details are in [Chapter 10](../book/chapter-10-dependency-injection.md).
+
+## Chapter 11 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38867880902](https://github.com/agnathan/rust-mcp/actions/runs/38867880902) (2026-10-16T07:32:55Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `contended_reads` | < 2 ms | 236.8 µs | 244.3 µs |
+
+`contended_reads` spawns four threads that each read an `RwLock` 1,000 times. Details are in [Chapter 11](../book/chapter-11-lifespan-and-state.md).
