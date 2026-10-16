@@ -6,7 +6,7 @@
   {"n": 4, "title": "Schemas from types", "step": "ch04-1-schema", "part": "I"},
   {"n": 5, "title": "A tool macro", "step": "ch05-1-tool-macro", "part": "I"},
   {"n": 6, "title": "Resources and templates", "step": "ch06-1-resources", "part": "I"},
-  {"n": 7, "title": "Prompts, completions, pagination", "step": "ch07-prompts", "part": "I"},
+  {"n": 7, "title": "Prompts, completions, pagination", "step": "ch07-1-prompts", "part": "I"},
   {"n": 8, "title": "Errors done right", "step": "ch08-errors", "part": "I"},
   {"n": 9, "title": "Context", "step": "ch09-context", "part": "I"},
   {"n": 10, "title": "Dependency injection", "step": "ch10-depends", "part": "I"},

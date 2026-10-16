@@ -223,6 +223,34 @@
       "fake": "No socket and no filesystem. The closure ignores the capture and returns a constant.",
       "source": "steps/ch06-1-resources/crates/fastmcp-core/benches/resources.rs",
       "reading": "Smaller is better. A full scan of 10,000 templates should stay well under 1 millisecond. About 264 µs locally."
+    },
+    {
+      "id": "7.1/prompt_render_1",
+      "section": "7.1 Prompts",
+      "chapter": "Chapter 7 Prompts, completions, and pagination",
+      "function": "prompt_render_1",
+      "summary": "Render one prompt from an argument map.",
+      "what": "The cost of FastMcp::render_prompt for greet with name Ada.",
+      "why": "prompts/get pays this after the argument map is built. It is the template, not the session.",
+      "timing": "greet() runs before the bench and builds the server and the HashMap. The timed closure is b.iter. Inside it: render_prompt, then black_box. Registration is excluded.",
+      "inputs": "Prompt greet, required argument name, value Ada. The closure formats Hello, {name}.",
+      "fake": "No socket. The argument map is already owned.",
+      "source": "steps/ch07-1-prompts/crates/fastmcp-core/benches/prompts.rs",
+      "reading": "Smaller is better. One render should stay well under 1 microsecond. About 62 ns locally."
+    },
+    {
+      "id": "7.1/paginate_10k",
+      "section": "7.1 Prompts",
+      "chapter": "Chapter 7 Prompts, completions, and pagination",
+      "function": "paginate_10k",
+      "summary": "Take one page from the middle of 10,000 items.",
+      "what": "The cost of paginate_sequence: decode a cursor, skip to offset 5000, take 50 items, clone them, encode the next cursor.",
+      "why": "Every list_* page pays this. The bench is the pager, so a slow number is the slice and the cursor, not the transport.",
+      "timing": "The 10,000 strings and the starting cursor are built before the bench. The timed closure is b.iter. Inside it: paginate_sequence, then black_box. Fixture construction is excluded.",
+      "inputs": "Items item-0 through item-9999. Page size 50. Cursor offset 5000.",
+      "fake": "No socket and no rmcp session. The items are Strings in a Vec.",
+      "source": "steps/ch07-1-prompts/crates/fastmcp-core/benches/prompts.rs",
+      "reading": "Smaller is better. One page should stay well under 50 microseconds. About 2.5 µs locally."
     }
   ]
 }

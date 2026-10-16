@@ -41,6 +41,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 5.1 "5.1 Tool macro" ch05-1-fastmcp-core macro_reg
       - name: Section 6.1 Resources
         run: bash .github/scripts/run_bench_section.sh 6.1 "6.1 Resources" ch06-1-fastmcp-core resources
+      - name: Section 7.1 Prompts
+        run: bash .github/scripts/run_bench_section.sh 7.1 "7.1 Prompts" ch07-1-fastmcp-core prompts
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"

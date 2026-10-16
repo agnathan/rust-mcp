@@ -75,3 +75,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `template_scan_10k` | < 1 ms | pending | 264.2 µs |
 
 `resource_lookup_10k` is one `HashMap` get among 10,000 static resources. `template_scan_10k` walks 10,000 templates and matches the last one. Details are in [Chapter 6](../book/chapter-06-resources-and-templates.md).
+
+## Chapter 7 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `prompt_render_1` | < 1 µs | pending | 62.14 ns |
+| `paginate_10k` | < 50 µs | pending | 2.482 µs |
+
+`prompt_render_1` is one prompt render. `paginate_10k` is one page of 50 items taken from offset 5,000 of a 10,000-item list. Details are in [Chapter 7](../book/chapter-07-prompts-completions-pagination.md).
