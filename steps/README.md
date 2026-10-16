@@ -41,6 +41,9 @@ cargo bench -p ch11-1-fastmcp-core --bench lifespan
 cargo test -p ch12-1-fastmcp-core
 cargo run -p ch12-1-fastmcp-core --example demo
 cargo bench -p ch12-1-fastmcp-core --bench http
+cargo test -p ch13-1-fastmcp-core
+cargo run -p ch13-1-fastmcp-core --example demo
+cargo bench -p ch13-1-fastmcp-core --bench elicit
 ```
 
 | Step | Chapter | Adds |
@@ -57,5 +60,6 @@ cargo bench -p ch12-1-fastmcp-core --bench http
 | ch10-1-depends | 10 | `provide` and `Dep<T>` with `PhantomData`; a tuple `Extract`; the schema lists `q` and omits the database and the token |
 | ch11-1-lifespan | 11 | `Lifespan` opens in order and `Drop` closes in reverse; `Arc<RwLock<String>>` shares a banner; four threads read the lock |
 | ch12-1-http | 12 | Streamable HTTP on `127.0.0.1`, `Mcp-Session-Id` after `initialize`, `server/discover` for `2026-07-28` with no session; one round trip, one initialize, one discover |
+| ch13-1-elicit | 13 | `Desk` asks on a oneshot; `submit` accepts; a nested elicitation object is rejected; one in-process round |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).

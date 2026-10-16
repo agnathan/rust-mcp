@@ -32,3 +32,5 @@ ch11-1-lifespan:
   - "steps/ch11-1-lifespan/**"
 ch12-1-http:
   - "steps/ch12-1-http/**"
+ch13-1-elicit:
+  - "steps/ch13-1-elicit/**"

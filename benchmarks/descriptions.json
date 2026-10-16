@@ -377,6 +377,20 @@
       "fake": "Loopback only. No session id and no DELETE.",
       "source": "steps/ch12-1-http/crates/fastmcp-core/benches/http.rs",
       "reading": "Smaller is better. One discover should stay well under 500 microseconds. About 91 \u00b5s locally."
+    },
+    {
+      "id": "13.1/elicit_round",
+      "section": "13.1 Elicit",
+      "chapter": "Chapter 13 Elicitation",
+      "function": "elicit_round",
+      "summary": "One in-process ask and submit.",
+      "what": "The cost of building a Desk, spawning a task that submits yes, waiting on a oneshot, and joining.",
+      "why": "This is one elicitation round with no socket, so the channel and the task switch are the number.",
+      "timing": "Nothing is built before the bench. The timed closure is b.iter. Inside it: Desk::default, tokio::spawn of submit, ask, join, and black_box of the answer.",
+      "inputs": "Message Ship it? and the value yes.",
+      "fake": "The person is a spawned task. There is no tools/call and no schema check.",
+      "source": "steps/ch13-1-elicit/crates/fastmcp-core/benches/elicit.rs",
+      "reading": "Smaller is better. One round should stay well under 100 microseconds. About 15 \u00b5s locally."
     }
   ]
 }
