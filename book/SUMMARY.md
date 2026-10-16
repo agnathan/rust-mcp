@@ -16,7 +16,7 @@
 - [Chapter 9: Context](chapter-09-context.md)
 - [Chapter 10: Dependency injection](chapter-10-dependency-injection.md)
 - [Chapter 11: Lifespan and state](chapter-11-lifespan-and-state.md)
-- [Chapter 12: Streamable HTTP, sessions, both protocol eras]()
+- [Chapter 12: Streamable HTTP, sessions, both protocol eras](chapter-12-streamable-http.md)
 - [Chapter 13: Elicitation and interactive tools]()
 
 # Part II: The client, tests, and composition

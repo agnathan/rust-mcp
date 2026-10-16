@@ -58,3 +58,8 @@ pub fn injected_query_field() -> &'static str {
 pub fn shutdown_order() -> &'static str {
     todo!("chapter 11: return the close order, cache then db")
 }
+
+/// The path chapter 12 serves.
+pub fn streamable_http_path() -> &'static str {
+    todo!("chapter 12: return the path the listener serves")
+}

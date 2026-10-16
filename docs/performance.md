@@ -128,3 +128,15 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `contended_reads` | < 2 ms | pending | 244.3 µs |
 
 `contended_reads` spawns four threads that each read an `RwLock` 1,000 times. Details are in [Chapter 11](../book/chapter-11-lifespan-and-state.md).
+
+## Chapter 12 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `http_roundtrip` | < 2 ms | pending | 294.9 µs |
+| `initialize_once` | < 1 ms | pending | 167.2 µs |
+| `discover_once` | < 500 µs | pending | 91.22 µs |
+
+`http_roundtrip` is initialize, `tools/list`, and `DELETE` on loopback. `initialize_once` stops after the handshake and the delete. `discover_once` is one `server/discover` for `2026-07-28`. Details are in [Chapter 12](../book/chapter-12-streamable-http.md).

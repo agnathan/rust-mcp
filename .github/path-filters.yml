@@ -30,3 +30,5 @@ ch10-1-depends:
   - "steps/ch10-1-depends/**"
 ch11-1-lifespan:
   - "steps/ch11-1-lifespan/**"
+ch12-1-http:
+  - "steps/ch12-1-http/**"

@@ -96,7 +96,7 @@
       "inputs": "1,000 versions. Indexes divisible by 5 are 2026-07-28. The others are 2025-06-18. The same Vec is reused for every sample.",
       "fake": "Nothing is mocked. No session and no socket.",
       "source": "steps/ch02-1-negotiate/crates/fastmcp-core/benches/negotiate.rs",
-      "reading": "Smaller is better. A thousand choices should stay well under a millisecond. About 12 µs locally."
+      "reading": "Smaller is better. A thousand choices should stay well under a millisecond. About 12 \u00b5s locally."
     },
     {
       "id": "2.1/stdio_initialize_list",
@@ -110,7 +110,7 @@
       "inputs": "Server name fastmcp-rs, version 0.1.0. Client protocol version 2025-06-18. The server answers with that version and one status tool.",
       "fake": "The pipe is tokio::io::duplex, not the terminal's stdin and stdout. It is the same AsyncRead and AsyncWrite transport rmcp::transport::stdio uses. No child process.",
       "source": "steps/ch02-1-negotiate/crates/fastmcp-core/benches/negotiate.rs",
-      "reading": "Smaller is better. One session should stay well under 5 ms. About 114 µs locally. A jump into milliseconds of process startup would mean the bench started spawning a binary."
+      "reading": "Smaller is better. One session should stay well under 5 ms. About 114 \u00b5s locally. A jump into milliseconds of process startup would mean the bench started spawning a binary."
     },
     {
       "id": "3.1/lookup_1",
@@ -138,7 +138,7 @@
       "inputs": "1,000 tools. Each call receives the object {\"n\": 1}. The closure returns the number 1.",
       "fake": "No socket and no rmcp session. status is not called. The argument object is real JSON, cloned once per call.",
       "source": "steps/ch03-1-builder/crates/fastmcp-core/benches/tools.rs",
-      "reading": "Smaller is better. A thousand calls should stay well under a millisecond. About 60 µs locally."
+      "reading": "Smaller is better. A thousand calls should stay well under a millisecond. About 60 \u00b5s locally."
     },
     {
       "id": "4.1/schema_1",
@@ -152,7 +152,7 @@
       "inputs": "Greet has name: String and title: Option<String>. The schema's required array contains name and omits title.",
       "fake": "Nothing is mocked. No socket, no tools/list, and no TypeId cache. rmcp caches this kind of schema; this function does not.",
       "source": "steps/ch04-1-schema/crates/fastmcp-core/benches/schema.rs",
-      "reading": "Smaller is better. One schema should stay well under 100 microseconds. About 1.6 µs locally."
+      "reading": "Smaller is better. One schema should stay well under 100 microseconds. About 1.6 \u00b5s locally."
     },
     {
       "id": "4.1/schema_1000",
@@ -180,7 +180,7 @@
       "inputs": "add(left: i64, right: i64) -> Sum, description \"add two integers\".",
       "fake": "No socket. The schema is generated, not loaded from a file.",
       "source": "steps/ch05-1-tool-macro/crates/fastmcp-core/benches/macro_reg.rs",
-      "reading": "Smaller is better. One registration should stay well under 100 microseconds. About 3.2 µs locally."
+      "reading": "Smaller is better. One registration should stay well under 100 microseconds. About 3.2 \u00b5s locally."
     },
     {
       "id": "5.1/call_fn_1000",
@@ -222,7 +222,7 @@
       "inputs": "Patterns res://item-0/{name} through res://item-9999/{name}. The URI matches item-9999. The closure returns \"found\".",
       "fake": "No socket and no filesystem. The closure ignores the capture and returns a constant.",
       "source": "steps/ch06-1-resources/crates/fastmcp-core/benches/resources.rs",
-      "reading": "Smaller is better. A full scan of 10,000 templates should stay well under 1 millisecond. About 264 µs locally."
+      "reading": "Smaller is better. A full scan of 10,000 templates should stay well under 1 millisecond. About 264 \u00b5s locally."
     },
     {
       "id": "7.1/prompt_render_1",
@@ -250,7 +250,7 @@
       "inputs": "Items item-0 through item-9999. Page size 50. Cursor offset 5000.",
       "fake": "No socket and no rmcp session. The items are Strings in a Vec.",
       "source": "steps/ch07-1-prompts/crates/fastmcp-core/benches/prompts.rs",
-      "reading": "Smaller is better. One page should stay well under 50 microseconds. About 2.5 µs locally."
+      "reading": "Smaller is better. One page should stay well under 50 microseconds. About 2.5 \u00b5s locally."
     },
     {
       "id": "8.1/dispatch_ok_1000",
@@ -264,7 +264,7 @@
       "inputs": "Tool add. Arguments left 2, right 3. 1,000 calls of the same name.",
       "fake": "No socket. The JSON is an in-memory Value.",
       "source": "steps/ch08-1-errors/crates/fastmcp-core/benches/errors.rs",
-      "reading": "Smaller is better. A thousand successes should stay well under 1 millisecond. About 128 µs locally."
+      "reading": "Smaller is better. A thousand successes should stay well under 1 millisecond. About 128 \u00b5s locally."
     },
     {
       "id": "8.1/dispatch_missing_1000",
@@ -278,7 +278,7 @@
       "inputs": "A server with only add. The name missing. The same argument JSON as the happy path, cloned and then unused.",
       "fake": "No socket. The closure does not run.",
       "source": "steps/ch08-1-errors/crates/fastmcp-core/benches/errors.rs",
-      "reading": "Smaller is better, and below the happy path. A thousand misses should stay well under 1 millisecond. About 64 µs locally."
+      "reading": "Smaller is better, and below the happy path. A thousand misses should stay well under 1 millisecond. About 64 \u00b5s locally."
     },
     {
       "id": "9.1/progress_1000",
@@ -292,7 +292,7 @@
       "inputs": "progress is 0 through 999. total is Some(1000). message is None.",
       "fake": "No socket and no notifications/progress. The note is a struct.",
       "source": "steps/ch09-1-context/crates/fastmcp-core/benches/context.rs",
-      "reading": "Smaller is better. A thousand notes should stay well under 100 microseconds. About 14 µs locally."
+      "reading": "Smaller is better. A thousand notes should stay well under 100 microseconds. About 14 \u00b5s locally."
     },
     {
       "id": "10.1/inject_1000",
@@ -306,7 +306,7 @@
       "inputs": "Db { bias: 1 }. n from 0 through 999.",
       "fake": "No socket and no dispatch_tool.",
       "source": "steps/ch10-1-depends/crates/fastmcp-core/benches/inject.rs",
-      "reading": "Smaller is better. A thousand extractions should stay well under 100 microseconds. About 12 µs locally."
+      "reading": "Smaller is better. A thousand extractions should stay well under 100 microseconds. About 12 \u00b5s locally."
     },
     {
       "id": "10.1/hand_1000",
@@ -320,7 +320,7 @@
       "inputs": "The same Db { bias: 1 }, already inside an Arc.",
       "fake": "No socket and no map.",
       "source": "steps/ch10-1-depends/crates/fastmcp-core/benches/inject.rs",
-      "reading": "Smaller is better. A thousand clones should stay well under 100 microseconds. About 15 µs locally."
+      "reading": "Smaller is better. A thousand clones should stay well under 100 microseconds. About 15 \u00b5s locally."
     },
     {
       "id": "11.1/contended_reads",
@@ -334,7 +334,49 @@
       "inputs": "Banner ready. Four threads. 1,000 reads each.",
       "fake": "No socket and no database. The string is already in the lock.",
       "source": "steps/ch11-1-lifespan/crates/fastmcp-core/benches/lifespan.rs",
-      "reading": "Smaller is better. The four threads should stay well under 2 milliseconds. About 244 µs locally."
+      "reading": "Smaller is better. The four threads should stay well under 2 milliseconds. About 244 \u00b5s locally."
+    },
+    {
+      "id": "12.1/http_roundtrip",
+      "section": "12.1 HTTP",
+      "chapter": "Chapter 12 Streamable HTTP",
+      "function": "http_roundtrip",
+      "summary": "initialize, tools/list, and DELETE on loopback.",
+      "what": "The cost of one handshake session: a TCP connect, an initialize POST, the SSE read, a tools/list POST, that read, and a DELETE.",
+      "why": "This is the price of one client that opens a session and lists tools. Discover is a separate bench so the session cost stays visible.",
+      "timing": "serve_http runs before the bench. The timed closure is b.iter. Inside it: post_mcp for initialize, post_mcp for tools/list, delete_mcp, and black_box of the list status.",
+      "inputs": "protocolVersion 2025-06-18. Mcp-Method initialize, then tools/list with Mcp-Session-Id and MCP-Protocol-Version, then DELETE of that session.",
+      "fake": "Loopback only. No TLS, no second machine, no event-store replay.",
+      "source": "steps/ch12-1-http/crates/fastmcp-core/benches/http.rs",
+      "reading": "Smaller is better. One round trip should stay well under 2 milliseconds. About 295 \u00b5s locally."
+    },
+    {
+      "id": "12.1/initialize_once",
+      "section": "12.1 HTTP",
+      "chapter": "Chapter 12 Streamable HTTP",
+      "function": "initialize_once",
+      "summary": "One initialize and a DELETE on loopback.",
+      "what": "The cost of opening a handshake session and closing it, with no tools/list.",
+      "why": "The comparison next to discover_once. Both are one request. This one also creates and deletes a session.",
+      "timing": "serve_http runs before the bench. The timed closure is b.iter. Inside it: post_mcp for initialize, delete_mcp, and black_box of the status.",
+      "inputs": "The same 2025-06-18 initialize body as http_roundtrip.",
+      "fake": "Loopback only. No tools/list.",
+      "source": "steps/ch12-1-http/crates/fastmcp-core/benches/http.rs",
+      "reading": "Smaller is better. One initialize should stay well under 1 millisecond. About 167 \u00b5s locally."
+    },
+    {
+      "id": "12.1/discover_once",
+      "section": "12.1 HTTP",
+      "chapter": "Chapter 12 Streamable HTTP",
+      "function": "discover_once",
+      "summary": "One server/discover for 2026-07-28 on loopback.",
+      "what": "The cost of a modern discover POST and the JSON read. No session is created.",
+      "why": "This is the per-request cost of the 2026-07-28 era, set next to initialize_once.",
+      "timing": "serve_http runs before the bench. The timed closure is b.iter. Inside it: post_mcp for server/discover and black_box of the status.",
+      "inputs": "server/discover with MCP-Protocol-Version 2026-07-28, Mcp-Method server/discover, and _meta carrying the protocol version, client info, and client capabilities.",
+      "fake": "Loopback only. No session id and no DELETE.",
+      "source": "steps/ch12-1-http/crates/fastmcp-core/benches/http.rs",
+      "reading": "Smaller is better. One discover should stay well under 500 microseconds. About 91 \u00b5s locally."
     }
   ]
 }
