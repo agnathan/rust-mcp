@@ -132,13 +132,13 @@ Local median from that run's `estimates.json` (the slope above is a different st
 |---|---|---|---|---|---|
 | `elicit_round` | Building the desk, spawning the answerer, `ask`, `submit("yes")`, and joining the task | Any socket, any `tools/call`, any schema check | The message `Ship it?` and the value `yes` | The person is a spawned task. The answer is already the string `yes`. | Well under 100 µs. About 15 µs here. Spawn and the channel are part of the number. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI median below is filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38871433836](https://github.com/agnathan/rust-mcp/actions/runs/38871433836) (2026-10-16T08:06:20Z). GitHub's `github.sha` for that pull request run is the merge commit `716a4c4091158b89d3a405b57a8f035622309b1b`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `elicit_round` | pending | pending | pending | < 100 µs |
+| `elicit_round` | 30.68 µs | 29.59 µs | 31.93 µs | < 100 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI median once the run is linked.
+On the Ubuntu runner, one round is 30.68 µs. That is the median this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -162,7 +162,7 @@ phase: accepted
 
 `ask` sets the phase to `Waiting` and waits on a `oneshot`. `submit` sends the string and the phase becomes `Accepted`. `decline` finishes the tool with `is_error`. A nested object never reaches the desk. A second question uses a new channel.
 
-`cargo run -p ch13-1-fastmcp-core --example demo` prints the three lines above. Locally, one round is 15.11 µs.
+`cargo run -p ch13-1-fastmcp-core --example demo` prints the three lines above. Locally, one round is 15.11 µs. On the Ubuntu run linked above, one round is 30.68 µs.
 
 [personal note: the second answer I sent into a channel that was already closed]
 

@@ -128,13 +128,13 @@ Local median from that run's `estimates.json` (the slope above is a different st
 |---|---|---|---|---|---|
 | `progress_1000` | 1,000 `report_progress` calls on one `Context`, then `clear` so the list does not grow across samples | Building the `Context`. No JSON, no tool dispatch. | `progress` is 0 through 999. `total` is `Some(1000)`. The message is `None`. | No socket and no `notifications/progress`. The note is a struct in a `Mutex<Vec>`. | Well under 100 µs. About 14 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI median below is filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38866727295](https://github.com/agnathan/rust-mcp/actions/runs/38866727295) (2026-10-16T07:22:12Z). GitHub's `github.sha` for that pull request run is the merge commit `fcc548e361b65eec6de86372640aaa3500f23592`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `progress_1000` | pending | pending | pending | < 100 µs |
+| `progress_1000` | 12.63 µs | 12.47 µs | 12.86 µs | < 100 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI median once the run is linked.
+On the Ubuntu runner, a thousand progress notes take 12.63 µs. That is the median this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -158,7 +158,7 @@ progress: 2
 
 `tool_ctx` gives a tool a `Context` and leaves the schema as `P`. The context is an `Arc` around a `Mutex` of notes, so a clone shares the list and a test can read it after the call. `read_resource` returns a static body. `sample` returns `canned`.
 
-`cargo run -p ch09-1-fastmcp-core --example demo` prints the note, one log, and a progress value of 1. Locally, a thousand progress notes take 14.37 µs.
+`cargo run -p ch09-1-fastmcp-core --example demo` prints the note, one log, and a progress value of 1. Locally, a thousand progress notes take 14.37 µs. On the Ubuntu run linked above, a thousand progress notes take 12.63 µs.
 
 [personal note: a lock I held too long, or the moment sharing the list was obvious]
 
