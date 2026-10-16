@@ -152,15 +152,15 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `initialize_once` | A TCP connect, the `initialize` POST, the SSE read, and the `DELETE` | `tools/list` and the bind | The same initialize body | The same loopback socket | Well under 1 ms. About 167 µs here. |
 | `discover_once` | A TCP connect, one `server/discover` POST, and the JSON read | Session creation and `DELETE` | Discover for `2026-07-28` with `Mcp-Method` set | The same loopback socket | Well under 500 µs. About 91 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI median below is filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38870644362](https://github.com/agnathan/rust-mcp/actions/runs/38870644362) (2026-10-16T07:59:08Z). GitHub's `github.sha` for that pull request run is the merge commit `a14adcc4a62b988416c611c2635b0c4f757dc24a`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `http_roundtrip` | pending | pending | pending | < 2 ms |
-| `initialize_once` | pending | pending | pending | < 1 ms |
-| `discover_once` | pending | pending | pending | < 500 µs |
+| `http_roundtrip` | 346.6 µs | 336.0 µs | 350.8 µs | < 2 ms |
+| `initialize_once` | 206.2 µs | 203.5 µs | 215.2 µs | < 1 ms |
+| `discover_once` | 118.7 µs | 118.3 µs | 119.8 µs | < 500 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI median once the run is linked.
+On the Ubuntu runner, the round trip is 346.6 µs, one initialize is 206.2 µs, and one discover is 118.7 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -184,7 +184,7 @@ discover: 2026-07-28
 
 `serve_http` binds `127.0.0.1` and serves `/mcp`. A handshake `initialize` returns `Mcp-Session-Id` and an SSE body whose protocol date is `2025-06-18`. `tools/list` sends that id. `server/discover` for `2026-07-28` returns JSON and no session id.
 
-`cargo run -p ch12-1-fastmcp-core --example demo` prints the four lines above. Locally, the round trip is 294.9 µs, one initialize is 167.2 µs, and one discover is 91.22 µs.
+`cargo run -p ch12-1-fastmcp-core --example demo` prints the four lines above. Locally, the round trip is 294.9 µs, one initialize is 167.2 µs, and one discover is 91.22 µs. On the Ubuntu run linked above, the round trip is 346.6 µs, one initialize is 206.2 µs, and one discover is 118.7 µs.
 
 [personal note: the reply that came back empty because the client had already closed its write side]
 

@@ -164,14 +164,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `register_macro_1` | `FastMcp::new` and `tool_decl::<AddTool>`, including both schema generations inside `tool` | The proc-macro expansion, which finished at compile time. No `dispatch_tool`. | `add(left: i64, right: i64) -> Sum`, description `add two integers` | No socket | Well under 100 µs. About 3.2 µs here, in the same band as chapter 4's schema generation. |
 | `call_fn_1000` | 1,000 calls of `add(n, 1)` and a running total | Registration, schema generation, JSON | `n` from 0 through 999 | No server | Well under 10 µs. About 263 ns here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38862013588](https://github.com/agnathan/rust-mcp/actions/runs/38862013588) (2026-10-16T06:35:09Z). GitHub's `github.sha` for that pull request run is the merge commit `4bf53ac06faba49c79c3c6a90cc6ca30b3b515ac`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `register_macro_1` | pending | pending | pending | < 100 µs |
-| `call_fn_1000` | pending | pending | pending | < 10 µs |
+| `register_macro_1` | 4.640 µs | 4.632 µs | 4.652 µs | < 100 µs |
+| `call_fn_1000` | 342.5 ns | 342.0 ns | 343.2 ns | < 10 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, one registration is 4.640 µs and a thousand direct calls are 342.5 ns. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -194,7 +194,7 @@ add
 
 `#[tool]` on `fn add` leaves `add` callable and emits `AddTool`, which implements `ToolDecl`. `FastMcp::new("fastmcp-rs").tool_decl::<AddTool>()` registers it. The description defaults to the doc comment. The schema is still built at registration, so the macro did not make startup free. It removed the glue.
 
-`cargo run -p ch05-1-fastmcp-core --example demo` prints the sum, the description, and the direct call. Locally, one registration is 3.200 µs and a thousand direct calls are 263.2 ns. The thousand calls are the function. The registration is the schema. The compiler already ran the macro.
+`cargo run -p ch05-1-fastmcp-core --example demo` prints the sum, the description, and the direct call. Locally, one registration is 3.200 µs and a thousand direct calls are 263.2 ns. The thousand calls are the function. The registration is the schema. The compiler already ran the macro. On the Ubuntu run linked above, one registration is 4.640 µs and a thousand direct calls are 342.5 ns.
 
 [personal note: a moment where the compiler stopped me, and how I worked out what it wanted]
 

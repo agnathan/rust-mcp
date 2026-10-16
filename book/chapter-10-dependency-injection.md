@@ -124,14 +124,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `inject_1000` | 1,000 `Dep::<Db>::from_context` calls, each a `TypeId` lookup, a downcast, a clone of `Db`, and `bias + n` | Building the map. No JSON and no `dispatch_tool`. | `Db { bias: 1 }`. `n` from 0 through 999. | No socket | Well under 100 µs. About 12 µs here. |
 | `hand_1000` | 1,000 `Arc::clone` calls of a `Db` the caller already holds, and the same `bias + n` | Building the `Arc`. No map lookup. | The same `Db { bias: 1 }` | No socket | Well under 100 µs. About 15 µs here. On this guest the lookup-and-clone loop was the smaller of the two. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38867393927](https://github.com/agnathan/rust-mcp/actions/runs/38867393927) (2026-10-16T07:28:20Z). GitHub's `github.sha` for that pull request run is the merge commit `9159a4c7f6299ce480e3c667504333507d053a43`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `inject_1000` | pending | pending | pending | < 100 µs |
-| `hand_1000` | pending | pending | pending | < 100 µs |
+| `inject_1000` | 18.66 µs | 18.64 µs | 18.82 µs | < 100 µs |
+| `hand_1000` | 3.909 µs | 3.907 µs | 3.911 µs | < 100 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, a thousand extractions take 18.66 µs and a thousand hand-passed `Arc` clones take 3.909 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -154,7 +154,7 @@ required: q
 
 `provide` stores a value by `TypeId`. `Dep<T>` clones it out, and `PhantomData<fn() -> T>` keeps the type invariant. `tool_inject` extracts a dependency tuple and deserializes only `P`, so `required` stays `q`.
 
-`cargo run -p ch10-1-fastmcp-core --example demo` prints `main secret widgets` and `required: q`. Locally, a thousand extractions take 12.03 µs and a thousand hand-passed `Arc` clones take 15.22 µs.
+`cargo run -p ch10-1-fastmcp-core --example demo` prints `main secret widgets` and `required: q`. Locally, a thousand extractions take 12.03 µs and a thousand hand-passed `Arc` clones take 15.22 µs. On the Ubuntu run linked above, a thousand extractions take 18.66 µs and a thousand hand-passed `Arc` clones take 3.909 µs.
 
 [personal note: a type that landed in the schema, and the field name that gave it away]
 
