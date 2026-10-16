@@ -685,6 +685,20 @@
       "fake": "No OTLP exporter. The subscriber drops the events.",
       "source": "steps/ch23-1-production/crates/fastmcp-core/benches/production.rs",
       "reading": "Smaller is better. A thousand spans should stay well under 1 millisecond. About 213 \u00b5s locally."
+    },
+    {
+      "id": "24.1/cold_start",
+      "section": "24.1 Settings",
+      "chapter": "Chapter 24 Settings and CLI",
+      "function": "cold_start",
+      "summary": "Parse inspect and load settings from scratch.",
+      "what": "The cost of clap parsing, a figment load of the defaults, and listing tool names on a new server.",
+      "why": "Cold start is what a developer pays the first time the command runs. The OnceLock cache is a different path.",
+      "timing": "Nothing is cached before the bench. The timed closure is b.iter. Inside it: plan of inspect and black_box of the Plan.",
+      "inputs": "The argument list inspect. No config file. Environment defaults.",
+      "fake": "No socket and no reload watcher. The OnceLock getter is not called.",
+      "source": "steps/ch24-1-cli/crates/fastmcp-core/benches/settings.rs",
+      "reading": "Smaller is better. One cold inspect should stay well under 50 microseconds. About 8.4 \u00b5s locally."
     }
   ]
 }

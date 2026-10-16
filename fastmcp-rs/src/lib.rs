@@ -118,3 +118,8 @@ pub fn auth_algorithm() -> &'static str {
 pub fn fingerprint_algo() -> &'static str {
     todo!("chapter 23: return the fingerprint algorithm")
 }
+
+/// The environment prefix for settings.
+pub fn settings_env_prefix() -> &'static str {
+    todo!("chapter 24: return the settings environment prefix")
+}

@@ -54,3 +54,5 @@ ch22-1-auth:
   - "steps/ch22-1-auth/**"
 ch23-1-production:
   - "steps/ch23-1-production/**"
+ch24-1-cli:
+  - "steps/ch24-1-cli/**"
