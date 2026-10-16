@@ -146,14 +146,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `resource_lookup_10k` | One `read` of `file://doc-5000` on a server that already holds 10,000 static resources | Building those 10,000 resources. No template walk, because the URI hits the map. | URIs `file://doc-0` through `file://doc-9999`, body `body` | No socket | Well under 1 µs. About 39 ns here, one `HashMap` get and two `String` clones. |
 | `template_scan_10k` | One `read` of `res://item-9999/readme`. The pattern that matches is registered last, so the scan walks all 10,000 templates, copies the capture, and runs the closure. | Building the 10,000 templates | Patterns `res://item-0/{name}` through `res://item-9999/{name}` | No socket. The closure returns `"found"` and does no I/O. | Well under 1 ms. About 264 µs here. The cost is the scan, then one copy. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38863264174](https://github.com/agnathan/rust-mcp/actions/runs/38863264174) (2026-10-16T06:48:21Z). GitHub's `github.sha` for that pull request run is the merge commit `e91e35c9b00edccf18cb6047ec6d0aa245ca0ec8`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `resource_lookup_10k` | pending | pending | pending | < 1 µs |
-| `template_scan_10k` | pending | pending | pending | < 1 ms |
+| `resource_lookup_10k` | 64.47 ns | 64.38 ns | 64.59 ns | < 1 µs |
+| `template_scan_10k` | 308.6 µs | 307.9 µs | 310.0 µs | < 1 ms |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, one lookup among 10,000 static resources is 64.47 ns and a scan of 10,000 templates is 308.6 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -176,7 +176,7 @@ repo=widgets
 
 A static resource is a URI in a `HashMap`. A template is a pattern with `{param}` holes, matched so the name borrows the pattern and the value borrows the URI, then copied into `String`s before the function runs. `resources/read` returns the body. An unknown URI is `invalid_params`. `{param}` captures one segment.
 
-`cargo run -p ch06-1-fastmcp-core --example demo` prints `hello` and `acme/widgets`. Locally, one lookup among 10,000 static resources is 38.75 ns, and a scan of 10,000 templates is 264.2 µs.
+`cargo run -p ch06-1-fastmcp-core --example demo` prints `hello` and `acme/widgets`. Locally, one lookup among 10,000 static resources is 38.75 ns, and a scan of 10,000 templates is 264.2 µs. On the Ubuntu run linked above, one lookup is 64.47 ns and one template scan is 308.6 µs.
 
 [personal note: the moment the two lifetimes clicked, or the error that made them obvious]
 
