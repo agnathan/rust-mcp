@@ -217,3 +217,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `turns_8` | < 1 µs | pending | 89.57 ns |
 
 `search_10k` queries a BM25 index of 10,000 tools. `script_8` runs eight calls in one rhai script. `turns_8` is eight host lookups. Details are in [Chapter 19](../book/chapter-19-tool-search-and-code-mode.md).
+
+## Chapter 20 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `submit_to_result` | < 50 µs | pending | 4.219 µs |
+| `concurrent_1k` | < 20 ms | pending | 2.423 ms |
+
+`submit_to_result` submits one task and waits for its text. `concurrent_1k` submits one thousand tasks and waits for each. Details are in [Chapter 20](../book/chapter-20-background-tasks-and-extensions.md).

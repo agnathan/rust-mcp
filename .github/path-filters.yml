@@ -46,3 +46,5 @@ ch18-1-transforms:
   - "steps/ch18-1-transforms/**"
 ch19-1-search:
   - "steps/ch19-1-search/**"
+ch20-1-tasks:
+  - "steps/ch20-1-tasks/**"
