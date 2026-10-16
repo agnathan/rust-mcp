@@ -28,7 +28,7 @@
 - [Chapter 18: Transforms and visibility](chapter-18-transforms-and-visibility.md)
 - [Chapter 19: Tool search and code mode](chapter-19-tool-search-and-code-mode.md)
 - [Chapter 20: Background tasks and extensions](chapter-20-background-tasks-and-extensions.md)
-- [Chapter 21: OpenAPI to MCP]()
+- [Chapter 21: OpenAPI to MCP](chapter-21-openapi-to-mcp.md)
 
 # Part III: Shipping
 

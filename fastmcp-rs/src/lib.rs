@@ -103,3 +103,8 @@ pub fn search_tool_name() -> &'static str {
 pub fn tasks_extension_id() -> &'static str {
     todo!("chapter 20: return the tasks extension identifier")
 }
+
+/// The tool name of `GET /widgets` when the spec sets that operationId.
+pub fn openapi_tool_name() -> &'static str {
+    todo!("chapter 21: return the operationId")
+}

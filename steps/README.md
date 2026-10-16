@@ -65,6 +65,9 @@ cargo bench -p ch19-1-fastmcp-core --bench search
 cargo test -p ch20-1-fastmcp-core
 cargo run -p ch20-1-fastmcp-core --example demo
 cargo bench -p ch20-1-fastmcp-core --bench tasks
+cargo test -p ch21-1-fastmcp-core
+cargo run -p ch21-1-fastmcp-core --example demo
+cargo bench -p ch21-1-fastmcp-core --bench openapi
 ```
 
 | Step | Chapter | Adds |
@@ -89,5 +92,6 @@ cargo bench -p ch20-1-fastmcp-core --bench tasks
 | ch18-1-transforms | 18 | Catalog transforms: namespace `Cow`, argument rename, tag visibility, prompts and resources as tools, `list_changed` |
 | ch19-1-search | 19 | BM25 search over tool text, and a rhai script whose `call_tool` stops at a limit |
 | ch20-1-tasks | 20 | Extension registry and a task board: submit, poll, and result, gated on `io.modelcontextprotocol/tasks` |
+| ch21-1-openapi | 21 | OpenAPI `paths` and `operationId` become tools; `HttpCaller` fills `{param}`; reqwest builds and does not send in tests |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).

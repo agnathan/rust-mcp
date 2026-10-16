@@ -69,6 +69,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 19.1 "19.1 Search" ch19-1-fastmcp-core search
       - name: Section 20.1 Tasks
         run: bash .github/scripts/run_bench_section.sh 20.1 "20.1 Tasks" ch20-1-fastmcp-core tasks
+      - name: Section 21.1 OpenAPI
+        run: bash .github/scripts/run_bench_section.sh 21.1 "21.1 OpenAPI" ch21-1-fastmcp-core openapi
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"
