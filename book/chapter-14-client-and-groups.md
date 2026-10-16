@@ -137,14 +137,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `list_once` | One `tools/list` on an already connected memory client, and collecting the names | The duplex connect and the handshake | One server. The only tool is `status`. | No socket, no process, no HTTP | Well under 200 µs. About 36 µs here. |
 | `fanout_8` | Eight `tools/list` calls on a `JoinSet`, the prefixes, the collision check, and the sort | Connecting the eight servers | Eight servers named `s0` through `s7`. Each has `status`. | No process and no HTTP. The peers are already up. | Well under 500 µs. About 79 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI median below is filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38872049825](https://github.com/agnathan/rust-mcp/actions/runs/38872049825) (2026-10-16T08:11:48Z). GitHub's `github.sha` for that pull request run is the merge commit `7d9c1281837ff0b1c637f31a8445173753a7f67a`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `list_once` | pending | pending | pending | < 200 µs |
-| `fanout_8` | pending | pending | pending | < 500 µs |
+| `list_once` | 82.47 µs | 80.57 µs | 84.66 µs | < 200 µs |
+| `fanout_8` | 184.0 µs | 183.7 µs | 185.4 µs | < 500 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI median once the run is linked.
+On the Ubuntu runner, one list is 82.47 µs and eight servers are 184.0 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -169,7 +169,7 @@ tools: gadgets_status, widgets_status
 
 `infer_transport` names the kind and opens nothing. `connect_memory` handshakes on a duplex, `ping` wants an empty result, and `initialize` returns the stored version. A discover client has nothing to return. `ClientGroup` lists with a `JoinSet` and prefixes each tool. An empty group and a colliding name are errors.
 
-`cargo run -p ch14-1-fastmcp-core --example demo` prints the three lines above. Locally, one list is 36.40 µs and eight servers are 78.98 µs.
+`cargo run -p ch14-1-fastmcp-core --example demo` prints the three lines above. Locally, one list is 36.40 µs and eight servers are 78.98 µs. On the Ubuntu run linked above, one list is 82.47 µs and eight servers are 184.0 µs.
 
 [personal note: the SSE URL I sent to a Streamable HTTP client, and the handshake that never started]
 
