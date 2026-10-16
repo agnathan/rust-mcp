@@ -5,5 +5,7 @@ members = [
     "steps/ch02-1-negotiate/crates/fastmcp-core",
     "steps/ch03-1-builder/crates/fastmcp-core",
     "steps/ch04-1-schema/crates/fastmcp-core",
+    "steps/ch05-1-tool-macro/crates/fastmcp-macros",
+    "steps/ch05-1-tool-macro/crates/fastmcp-core",
     "fastmcp-rs",
 ]

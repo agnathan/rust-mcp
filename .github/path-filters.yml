@@ -16,3 +16,5 @@ ch03-1-builder:
   - "steps/ch03-1-builder/**"
 ch04-1-schema:
   - "steps/ch04-1-schema/**"
+ch05-1-tool-macro:
+  - "steps/ch05-1-tool-macro/**"

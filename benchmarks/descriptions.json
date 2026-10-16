@@ -167,6 +167,34 @@
       "fake": "No socket and no cache. The repetition is the point: each call builds a new document.",
       "source": "steps/ch04-1-schema/crates/fastmcp-core/benches/schema.rs",
       "reading": "Smaller is better. A thousand uncached generations should stay well under 50 ms. About 1.9 ms locally."
+    },
+    {
+      "id": "5.1/register_macro_1",
+      "section": "5.1 Tool macro",
+      "chapter": "Chapter 5 A #[tool] macro",
+      "function": "register_macro_1",
+      "summary": "Register one tool through the struct the macro emitted.",
+      "what": "The cost of FastMcp::new plus tool_decl::<AddTool>, including the schema generation inside tool.",
+      "why": "The proc macro already ran at compile time. This is the runtime cost that is still left: building the server and the schema.",
+      "timing": "The AddTool type is compiled in. The timed closure is b.iter. Inside it: FastMcp::new and tool_decl, then black_box of the server. No dispatch_tool. The macro expansion is excluded.",
+      "inputs": "add(left: i64, right: i64) -> Sum, description \"add two integers\".",
+      "fake": "No socket. The schema is generated, not loaded from a file.",
+      "source": "steps/ch05-1-tool-macro/crates/fastmcp-core/benches/macro_reg.rs",
+      "reading": "Smaller is better. One registration should stay well under 100 microseconds. About 3.2 µs locally."
+    },
+    {
+      "id": "5.1/call_fn_1000",
+      "section": "5.1 Tool macro",
+      "chapter": "Chapter 5 A #[tool] macro",
+      "function": "call_fn_1000",
+      "summary": "Call the function the macro left in place, 1,000 times.",
+      "what": "The cost of add(n, 1) in a loop of 1,000, summing the totals.",
+      "why": "Shows the function after expansion. Registration and schema generation are a different cost.",
+      "timing": "The timed closure is b.iter. Inside it: the loop, the calls, and black_box of the total. No FastMcp is constructed.",
+      "inputs": "n runs from 0 through 999. The second argument is 1.",
+      "fake": "No server, no JSON, no socket.",
+      "source": "steps/ch05-1-tool-macro/crates/fastmcp-core/benches/macro_reg.rs",
+      "reading": "Smaller is better. A thousand calls should stay well under 10 microseconds. About 263 ns locally."
     }
   ]
 }
