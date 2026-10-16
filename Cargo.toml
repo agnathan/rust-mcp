@@ -31,5 +31,7 @@ members = [
     "steps/ch16-1-middleware/crates/fastmcp-core",
     "steps/ch17-1-providers/crates/fastmcp-macros",
     "steps/ch17-1-providers/crates/fastmcp-core",
+    "steps/ch18-1-transforms/crates/fastmcp-macros",
+    "steps/ch18-1-transforms/crates/fastmcp-core",
     "fastmcp-rs",
 ]

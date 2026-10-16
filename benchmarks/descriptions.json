@@ -517,6 +517,20 @@
       "fake": "No socket. The list is not filtered.",
       "source": "steps/ch17-1-providers/crates/fastmcp-core/benches/providers.rs",
       "reading": "Smaller is better. The list should stay well under 5 microseconds. About 448 ns locally."
+    },
+    {
+      "id": "18.1/filter_10k",
+      "section": "18.1 Transforms",
+      "chapter": "Chapter 18 Transforms and visibility",
+      "function": "filter_10k",
+      "summary": "The enabled names in a catalog of 10,000 tools.",
+      "what": "The cost of walking 10,000 tool records and collecting the ones still enabled.",
+      "why": "A visibility filter sits on the list path. Ten thousand tools is the size where that walk has to stay cheap.",
+      "timing": "The catalog is built and the internal tag is disabled before the bench. The timed closure is b.iter. Inside it: visible and black_box of the Vec.",
+      "inputs": "10,000 tools. Even indexes are tagged public. Odd indexes are tagged internal and already disabled.",
+      "fake": "No socket and no list-changed notification.",
+      "source": "steps/ch18-1-transforms/crates/fastmcp-core/benches/transform.rs",
+      "reading": "Smaller is better. The filtered list should stay well under 1 millisecond. About 127 \u00b5s locally."
     }
   ]
 }

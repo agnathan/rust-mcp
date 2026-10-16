@@ -63,6 +63,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 16.1 "16.1 Middleware" ch16-1-fastmcp-core middleware
       - name: Section 17.1 Providers
         run: bash .github/scripts/run_bench_section.sh 17.1 "17.1 Providers" ch17-1-fastmcp-core providers
+      - name: Section 18.1 Transforms
+        run: bash .github/scripts/run_bench_section.sh 18.1 "18.1 Transforms" ch18-1-fastmcp-core transform
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"
