@@ -42,3 +42,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The local column is the same 4-vCP
 | `dispatch_1000` | < 1 ms | pending | 59.96 µs |
 
 `lookup_1` is one `HashMap` lookup among 1,000 tools. `dispatch_1000` deserializes and calls all 1,000. Details are in [Chapter 3](../book/chapter-03-the-fastmcp-builder-and-tools.md).
+
+## Chapter 4 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The local column is the same 4-vCPU Intel Xeon guest. The CI column is filled from this chapter's Benchmarks run once that job has finished. The generator is not cached.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `schema_1` | < 100 µs | pending | 1.596 µs |
+| `schema_1000` | < 50 ms | pending | 1.854 ms |
+
+`schema_1` builds one JSON Schema for a struct with a `String` and an `Option<String>`. `schema_1000` builds that schema 1,000 times. Details are in [Chapter 4](../book/chapter-04-schemas-from-types.md).

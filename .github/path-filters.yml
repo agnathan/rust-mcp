@@ -14,3 +14,5 @@ ch02-1-negotiate:
   - "steps/ch02-1-negotiate/**"
 ch03-1-builder:
   - "steps/ch03-1-builder/**"
+ch04-1-schema:
+  - "steps/ch04-1-schema/**"
