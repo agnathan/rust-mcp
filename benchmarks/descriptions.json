@@ -321,6 +321,20 @@
       "fake": "No socket and no map.",
       "source": "steps/ch10-1-depends/crates/fastmcp-core/benches/inject.rs",
       "reading": "Smaller is better. A thousand clones should stay well under 100 microseconds. About 15 µs locally."
+    },
+    {
+      "id": "11.1/contended_reads",
+      "section": "11.1 Lifespan",
+      "chapter": "Chapter 11 Lifespan and state",
+      "function": "contended_reads",
+      "summary": "Four threads read one RwLock.",
+      "what": "The cost of spawning four threads, 1,000 read locks each, and joining them.",
+      "why": "Shared state is a lock. This is that lock under four readers, with spawn included.",
+      "timing": "The RwLock and the string ready are built before the bench. The timed closure is b.iter. Inside it: four thread::spawn calls, the reads, the joins, and black_box of the summed lengths.",
+      "inputs": "Banner ready. Four threads. 1,000 reads each.",
+      "fake": "No socket and no database. The string is already in the lock.",
+      "source": "steps/ch11-1-lifespan/crates/fastmcp-core/benches/lifespan.rs",
+      "reading": "Smaller is better. The four threads should stay well under 2 milliseconds. About 244 µs locally."
     }
   ]
 }

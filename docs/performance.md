@@ -118,3 +118,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `hand_1000` | < 100 µs | pending | 15.22 µs |
 
 `inject_1000` is a thousand `Dep::<Db>` extractions. `hand_1000` is a thousand `Arc` clones of a `Db` the caller already holds. Details are in [Chapter 10](../book/chapter-10-dependency-injection.md).
+
+## Chapter 11 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `contended_reads` | < 2 ms | pending | 244.3 µs |
+
+`contended_reads` spawns four threads that each read an `RwLock` 1,000 times. Details are in [Chapter 11](../book/chapter-11-lifespan-and-state.md).

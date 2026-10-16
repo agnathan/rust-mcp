@@ -49,6 +49,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 9.1 "9.1 Context" ch09-1-fastmcp-core context
       - name: Section 10.1 Depends
         run: bash .github/scripts/run_bench_section.sh 10.1 "10.1 Depends" ch10-1-fastmcp-core inject
+      - name: Section 11.1 Lifespan
+        run: bash .github/scripts/run_bench_section.sh 11.1 "11.1 Lifespan" ch11-1-fastmcp-core lifespan
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"
