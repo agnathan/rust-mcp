@@ -67,6 +67,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 18.1 "18.1 Transforms" ch18-1-fastmcp-core transform
       - name: Section 19.1 Search
         run: bash .github/scripts/run_bench_section.sh 19.1 "19.1 Search" ch19-1-fastmcp-core search
+      - name: Section 20.1 Tasks
+        run: bash .github/scripts/run_bench_section.sh 20.1 "20.1 Tasks" ch20-1-fastmcp-core tasks
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"

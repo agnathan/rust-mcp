@@ -19,7 +19,7 @@
   {"n": 17, "title": "Providers and composition", "step": "ch17-1-providers", "part": "II"},
   {"n": 18, "title": "Transforms and visibility", "step": "ch18-1-transforms", "part": "II"},
   {"n": 19, "title": "Tool search and code mode", "step": "ch19-1-search", "part": "II"},
-  {"n": 20, "title": "Background tasks and extensions", "step": "ch20-tasks", "part": "II"},
+  {"n": 20, "title": "Background tasks and extensions", "step": "ch20-1-tasks", "part": "II"},
   {"n": 21, "title": "OpenAPI to MCP", "step": "ch21-openapi", "part": "II"},
   {"n": 22, "title": "Authentication", "step": "ch22-auth", "part": "III"},
   {"n": 23, "title": "Production: authorization, versioning, storage, telemetry", "step": "ch23-production", "part": "III"},

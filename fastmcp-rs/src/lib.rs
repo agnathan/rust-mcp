@@ -98,3 +98,8 @@ pub fn namespaced_tool() -> &'static str {
 pub fn search_tool_name() -> &'static str {
     todo!("chapter 19: return the search tool's name")
 }
+
+/// The extension id a task-capable server advertises.
+pub fn tasks_extension_id() -> &'static str {
+    todo!("chapter 20: return the tasks extension identifier")
+}

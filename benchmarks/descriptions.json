@@ -573,6 +573,34 @@
       "fake": "No engine, no model, and no socket.",
       "source": "steps/ch19-1-search/crates/fastmcp-core/benches/search.rs",
       "reading": "Smaller is better. Eight lookups should stay well under 1 microsecond. About 90 ns locally."
+    },
+    {
+      "id": "20.1/submit_to_result",
+      "section": "20.1 Tasks",
+      "chapter": "Chapter 20 Background tasks and extensions",
+      "function": "submit_to_result",
+      "summary": "One task from submit until the result is stored.",
+      "what": "The cost of spawning one closure and yielding until its text is in the map.",
+      "why": "Submit-to-result is the path a client walks for a single background call.",
+      "timing": "The runtime and the board are built before the bench. The timed closure is b.iter. Inside it: submit, wait, and black_box of the text.",
+      "inputs": "A closure that returns ok. The tasks extension is already registered.",
+      "fake": "No socket, no TTL, and no poll interval.",
+      "source": "steps/ch20-1-tasks/crates/fastmcp-core/benches/tasks.rs",
+      "reading": "Smaller is better. One task should stay well under 50 microseconds. About 4.2 \u00b5s locally."
+    },
+    {
+      "id": "20.1/concurrent_1k",
+      "section": "20.1 Tasks",
+      "chapter": "Chapter 20 Background tasks and extensions",
+      "function": "concurrent_1k",
+      "summary": "One thousand tasks submitted, then waited.",
+      "what": "The cost of 1,000 spawns and a wait for each id.",
+      "why": "Background work shows up as many tasks at once. This is that pile on one board.",
+      "timing": "The runtime and the board are built before the bench. The timed closure is b.iter. Inside it: 1,000 submits, then wait on each id.",
+      "inputs": "The same instant closure, one thousand times.",
+      "fake": "Waits start after every submit, so the tasks overlap. No socket.",
+      "source": "steps/ch20-1-tasks/crates/fastmcp-core/benches/tasks.rs",
+      "reading": "Smaller is better. One thousand tasks should stay well under 20 milliseconds. About 2.4 ms locally."
     }
   ]
 }
