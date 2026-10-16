@@ -20,7 +20,11 @@ Do not invent a file path, a function name, or a threshold. If the source was no
 
 ## What else a chapter contains
 
-Use [the chapter template](chapter-template.md). In short: a decision section, a walkthrough of the key function, a Rust sidebar at the moment the feature needs the language, the tests in words, a Build/run/benchmark section with a real command and the real output, a milestone demo, a summary, and social posts with a `[personal note]` placeholder. Criterion tables use the median from `estimates.json` (`median.point_estimate`). The printed `time:` line is the slope. CI stays keyless.
+Follow [book/STYLE.md](../book/STYLE.md) for the voice and the shape. [The chapter template](chapter-template.md) is the same skeleton.
+
+A chapter opens with an introduction, "What you'll build," goals, and a roadmap, before any long code. Each section starts from the problem it solves, shows only the lines that carry the idea, and explains them afterwards. The long form stays in the step crate. The chapter closes with a recap tied to the goals, and with "What's next."
+
+Also include the How FastMCP box, the guardrails box, a Rust explanation at the moment the feature needs the language, the tests in words, a Build/run/benchmark section with a real command and the real output, a milestone demo, a playground link that has been executed, and social posts with a `[personal note]` placeholder. Criterion tables use the median from `estimates.json` (`median.point_estimate`). The printed `time:` line is the slope. CI stays keyless.
 
 Teach a Rust concept in the chapter that first needs it. Do not introduce it earlier.
 

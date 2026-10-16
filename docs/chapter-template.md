@@ -1,17 +1,28 @@
 # Chapter template
 
-Copy this shape. The FastMCP box is filled only after the files have been read. See [Writing a chapter](writing-a-chapter.md).
+The chapter shape and the voice live in [book/STYLE.md](../book/STYLE.md). Follow that file. The skeleton below is the same opening and closing, copied so this page still stands alone. The FastMCP box is filled only after the files have been read. See [Writing a chapter](writing-a-chapter.md).
 
 ```markdown
 # Chapter N: Title
 
 *Draft. Bracketed notes like [personal note] are where my own story goes.*
 
-Two or three paragraphs: what the previous chapter cannot do, what this one adds, what it leaves for later.
+## Introduction
 
-| Section | Step | What it adds |
-|---|---|---|
-| N.1 | `steps/chNN-1-slug` | … |
+Where we are in the book, the problem this chapter solves, and why it matters. Plain language, before any code.
+
+## What you'll build
+
+The concrete result, then a tiny example of it running.
+
+## Goals
+
+- What the reader will understand and be able to do (Rust)
+- What the reader will understand and be able to do (MCP / FastMCP)
+
+## Roadmap
+
+One or two sentences per section: what happens there, and why.
 
 > **How FastMCP does it**
 >
@@ -23,17 +34,17 @@ Two or three paragraphs: what the previous chapter cannot do, what this one adds
 
 [personal note: …]
 
-## What this chapter decides
-
 ## N.1 Section title
 
-Walk the key function. A Rust sidebar sits where the type is first needed.
+A sentence or two of context, then only the lines that carry the idea, then prose that explains them. The rest of the code stays in the step crate. A Rust explanation sits where the term is first needed, as a paragraph.
 
 ### The tests
 
+What goes in, what comes back, and which failure the test guards. Quote the real summary line.
+
 ### Build, run, and benchmark
 
-A real command, the real test summary, the real demo output, the Criterion slope, and a table whose Median column is `estimates.json`.
+The real commands, the real demo output, the Criterion slope lines, and a table whose Median column is `median.point_estimate` from `estimates.json`. The `time:` line is the slope.
 
 ### Milestone demo
 
@@ -41,9 +52,9 @@ A real command, the real test summary, the real demo output, the Criterion slope
 
 One file, crates the playground already has, and a play.rust-lang.org link that has been executed.
 
-## Pitfalls
+## Recap
 
-## Chapter summary
+Tie the result back to the goals.
 
 ## What's next
 ```

@@ -1,6 +1,6 @@
 # Contributing
 
-Chapters are written by reading FastMCP first. The standing rule, the chapter template, and where a deferred idea gets recorded are in [docs/writing-a-chapter.md](docs/writing-a-chapter.md).
+Chapters are written by reading FastMCP first. The voice and the chapter shape are in [book/STYLE.md](book/STYLE.md). The standing rule, and where a deferred idea gets recorded, are in [docs/writing-a-chapter.md](docs/writing-a-chapter.md).
 
 Before writing or revising a chapter:
 

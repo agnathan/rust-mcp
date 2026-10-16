@@ -45,7 +45,7 @@ Appendix A: Apps (interactive UIs, `apps/`). Appendix B: OAuth proxy, OIDC proxy
 ```
 rust-mcp/
   Cargo.toml           # workspace, resolver 3
-  book/                # book.toml, SUMMARY.md, chapter-NN-slug.md, book-outline.md, playground/, social/
+  book/                # book.toml, SUMMARY.md, STYLE.md, chapter-NN-slug.md, book-outline.md, playground/, social/
   steps/chNN-M-slug/crates/{fastmcp-core,fastmcp-cli}/   # complete cumulative copies; package prefix chNN-M-
   fastmcp-rs/          # the crate the reader grows
   benchmarks/          # data.json, descriptions.json, index.html (gh-pages)
