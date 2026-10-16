@@ -56,10 +56,3 @@ rust-mcp/
 ## rmcp note
 
 Use rmcp (3.5.1) for the protocol model types, the session machinery and the stdio/HTTP transports from Ch 2 onward; Ch 1 hand-rolls the wire format once, for learning. Before Ch 2 is written, confirm which protocol versions rmcp 3.5.1 negotiates, and whether it supports `2026-07-28` and the tasks extension. If it doesn't, Ch 2, 12 and 20 implement the missing parts themselves, which also makes good teaching material. Everything that makes FastMCP what it is (builder, macro, providers, transforms, DI, middleware, tasks/extensions plumbing, auth policy, production features, CLI) is implemented by the book.
-
-## Impact on PR #1 (agnathan/rust-mcp#1)
-
-The Chapter 1 code is compatible as it stands. It pins `PROTOCOL_VERSION = "2025-06-18"` and already says that negotiating versions is a later chapter, which matches the new Ch 2. What needs to change:
-1. `book/book-outline.md` (and probably `book/SUMMARY.md` and the outline paragraph in `chapter-00-introduction.md`) still has the v1 chapter list. Replace it with this v2 outline.
-2. Optional: one sentence in chapter 1 saying that `2025-06-18` is the handshake era and that FastMCP 4 also speaks `2026-07-28`, with a pointer to Ch 2.
-3. Check `.github/chapters.json` and `docs/tags.md`, in case they list chapter numbers or titles beyond 1.
