@@ -150,3 +150,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `elicit_round` | < 100 µs | pending | 15.11 µs |
 
 `elicit_round` builds a desk, asks, and submits `yes` from a spawned task. Details are in [Chapter 13](../book/chapter-13-elicitation.md).
+
+## Chapter 14 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `list_once` | < 200 µs | pending | 36.40 µs |
+| `fanout_8` | < 500 µs | pending | 78.98 µs |
+
+`list_once` is one `tools/list` on a connected memory client. `fanout_8` lists eight servers on a `JoinSet`. Details are in [Chapter 14](../book/chapter-14-client-and-groups.md).

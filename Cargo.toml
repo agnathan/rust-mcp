@@ -23,5 +23,7 @@ members = [
     "steps/ch12-1-http/crates/fastmcp-core",
     "steps/ch13-1-elicit/crates/fastmcp-macros",
     "steps/ch13-1-elicit/crates/fastmcp-core",
+    "steps/ch14-1-client/crates/fastmcp-macros",
+    "steps/ch14-1-client/crates/fastmcp-core",
     "fastmcp-rs",
 ]

@@ -391,6 +391,34 @@
       "fake": "The person is a spawned task. There is no tools/call and no schema check.",
       "source": "steps/ch13-1-elicit/crates/fastmcp-core/benches/elicit.rs",
       "reading": "Smaller is better. One round should stay well under 100 microseconds. About 15 \u00b5s locally."
+    },
+    {
+      "id": "14.1/list_once",
+      "section": "14.1 Client",
+      "chapter": "Chapter 14 The client and client groups",
+      "function": "list_once",
+      "summary": "One tools/list on a connected memory client.",
+      "what": "The cost of one tools/list over an in-memory duplex, including the reply and the name collection.",
+      "why": "This is the price of asking one server what it serves, after the handshake is already done.",
+      "timing": "connect_memory runs before the bench. The timed closure is b.iter. Inside it: tool_names and black_box of the Vec.",
+      "inputs": "One server. The only tool is status.",
+      "fake": "No socket, no process, no HTTP. The duplex is already connected.",
+      "source": "steps/ch14-1-client/crates/fastmcp-core/benches/client.rs",
+      "reading": "Smaller is better. One list should stay well under 200 microseconds. About 36 \u00b5s locally."
+    },
+    {
+      "id": "14.1/fanout_8",
+      "section": "14.1 Client",
+      "chapter": "Chapter 14 The client and client groups",
+      "function": "fanout_8",
+      "summary": "tools/list across eight memory servers on a JoinSet.",
+      "what": "The cost of eight lists in parallel, prefixing each tool, checking for a name collision, and sorting.",
+      "why": "A group pays for every member. This is that fan-out with the connects already finished.",
+      "timing": "Eight connect_memory calls and ClientGroup::new run before the bench. The timed closure is b.iter. Inside it: list_tools and black_box of the name count.",
+      "inputs": "Servers s0 through s7. Each advertises status. Public names are s0_status through s7_status.",
+      "fake": "No process and no HTTP. The peers are already up.",
+      "source": "steps/ch14-1-client/crates/fastmcp-core/benches/client.rs",
+      "reading": "Smaller is better. Eight lists should stay well under 500 microseconds. About 79 \u00b5s locally."
     }
   ]
 }
