@@ -133,3 +133,8 @@ pub fn publish_command() -> &'static str {
 pub fn ui_extension_id() -> &'static str {
     todo!("appendix A: return the UI extension identifier")
 }
+
+/// The PKCE method the in-memory authorization server accepts.
+pub fn pkce_method() -> &'static str {
+    todo!("appendix B: return the PKCE method")
+}

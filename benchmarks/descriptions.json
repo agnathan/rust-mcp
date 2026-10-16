@@ -727,6 +727,20 @@
       "fake": "No SHA-256, no renderer, no socket.",
       "source": "steps/apa-1-apps/benches/apps.rs",
       "reading": "Smaller is better. The filter should stay well under 50 microseconds. About 10 \u00b5s locally."
+    },
+    {
+      "id": "B.1/pkce_s256",
+      "section": "B.1 OAuth",
+      "chapter": "Appendix B OAuth",
+      "function": "pkce_s256",
+      "summary": "One S256 PKCE challenge.",
+      "what": "The cost of SHA-256 over the verifier and unpadded base64url of the digest.",
+      "why": "Every authorization code in this appendix stores that challenge.",
+      "timing": "The verifier string exists before the bench. The timed closure is b.iter. Inside it: code_challenge_s256 and black_box.",
+      "inputs": "One 43-character verifier.",
+      "fake": "No HTTP, no code map, no token.",
+      "source": "steps/apb-1-oauth/benches/oauth.rs",
+      "reading": "Smaller is better. One challenge should stay well under 1 microsecond. About 101 ns locally."
     }
   ]
 }

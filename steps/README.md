@@ -83,6 +83,9 @@ cargo bench -p ch25-1-fastmcp-core --bench shipping
 cargo test -p apa-1-apps
 cargo run -p apa-1-apps --example demo
 cargo bench -p apa-1-apps --bench apps
+cargo test -p apb-1-oauth
+cargo run -p apb-1-oauth --example demo
+cargo bench -p apb-1-oauth --bench oauth
 ```
 
 | Step | Chapter | Adds |
@@ -113,5 +116,6 @@ cargo bench -p apa-1-apps --bench apps
 | ch24-1-cli | 24 | Settings from defaults, JSON, and `FASTMCP_` env; `run`, `dev`, `inspect`, and `install` |
 | ch25-1-shipping | 25 | A dry-run publish plan, three archive names, and one in-process `add` next to Python FastMCP |
 | apa-1-apps | A | Model tools versus app tools, and the 12-character SHA-256 backend name |
+| apb-1-oauth | B | In-memory OAuth codes, a redirect proxy, and a strict OIDC document |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).

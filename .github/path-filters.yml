@@ -60,3 +60,5 @@ ch25-1-shipping:
   - "steps/ch25-1-shipping/**"
 apa-1-apps:
   - "steps/apa-1-apps/**"
+apb-1-oauth:
+  - "steps/apb-1-oauth/**"

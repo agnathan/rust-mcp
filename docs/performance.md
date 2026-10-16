@@ -291,3 +291,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `visible_10k` | < 50 µs | pending | 9.924 µs |
 
 `visible_10k` keeps the model-visible names in a list of 10,000 tools. Details are in [Appendix A](../book/appendix-a-apps.md).
+
+## Appendix B budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this appendix. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `pkce_s256` | < 1 µs | pending | 100.6 ns |
+
+`pkce_s256` hashes one verifier and encodes it as unpadded base64url. Details are in [Appendix B](../book/appendix-b-oauth.md).
