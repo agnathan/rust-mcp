@@ -122,15 +122,15 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 
 The script is the stand-in for one model turn that calls eight tools. Eight host lookups are cheaper because they skip the engine. They are in the table so the script's cost has a neighbor.
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38962856709](https://github.com/agnathan/rust-mcp/actions/runs/38962856709) (2026-10-16T20:31:27Z). GitHub's `github.sha` for that pull request run is the merge commit `0dacb20e992652570053c8f43e64158b4803165f`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `search_10k` | pending | pending | pending | < 1 ms |
-| `script_8` | pending | pending | pending | < 1 ms |
-| `turns_8` | pending | pending | pending | < 1 µs |
+| `search_10k` | 175.8 µs | 175.7 µs | 176.1 µs | < 1 ms |
+| `script_8` | 143.2 µs | 143.0 µs | 143.6 µs | < 1 ms |
+| `turns_8` | 86.15 ns | 86.07 ns | 86.19 ns | < 1 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, a search of 10,000 tools is 175.8 µs, one script of eight calls is 143.2 µs, and eight host lookups are 86.15 ns. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
