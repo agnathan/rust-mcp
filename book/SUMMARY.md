@@ -26,7 +26,7 @@
 - [Chapter 16: Middleware](chapter-16-middleware.md)
 - [Chapter 17: Providers and composition](chapter-17-providers-and-composition.md)
 - [Chapter 18: Transforms and visibility](chapter-18-transforms-and-visibility.md)
-- [Chapter 19: Tool search and code mode]()
+- [Chapter 19: Tool search and code mode](chapter-19-tool-search-and-code-mode.md)
 - [Chapter 20: Background tasks and extensions]()
 - [Chapter 21: OpenAPI to MCP]()
 

@@ -59,6 +59,9 @@ cargo bench -p ch17-1-fastmcp-core --bench providers
 cargo test -p ch18-1-fastmcp-core
 cargo run -p ch18-1-fastmcp-core --example demo
 cargo bench -p ch18-1-fastmcp-core --bench transform
+cargo test -p ch19-1-fastmcp-core
+cargo run -p ch19-1-fastmcp-core --example demo
+cargo bench -p ch19-1-fastmcp-core --bench search
 ```
 
 | Step | Chapter | Adds |
@@ -81,5 +84,6 @@ cargo bench -p ch18-1-fastmcp-core --bench transform
 | ch16-1-middleware | 16 | `ToolHook` chain: log, time, token bucket, cache, response limit; `PingMiddleware` wants a positive interval and one task per connection |
 | ch17-1-providers | 17 | `Provider`: local list, aggregate, `{namespace}_` mount, proxy ping and instructions, `*.tool` discovery |
 | ch18-1-transforms | 18 | Catalog transforms: namespace `Cow`, argument rename, tag visibility, prompts and resources as tools, `list_changed` |
+| ch19-1-search | 19 | BM25 search over tool text, and a rhai script whose `call_tool` stops at a limit |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).

@@ -93,3 +93,8 @@ pub fn mounted_tool_name() -> &'static str {
 pub fn namespaced_tool() -> &'static str {
     todo!("chapter 18: return the prefix, an underscore, and the tool name")
 }
+
+/// The name of the tool that searches the catalog.
+pub fn search_tool_name() -> &'static str {
+    todo!("chapter 19: return the search tool's name")
+}

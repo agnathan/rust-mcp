@@ -531,6 +531,48 @@
       "fake": "No socket and no list-changed notification.",
       "source": "steps/ch18-1-transforms/crates/fastmcp-core/benches/transform.rs",
       "reading": "Smaller is better. The filtered list should stay well under 1 millisecond. About 127 \u00b5s locally."
+    },
+    {
+      "id": "19.1/search_10k",
+      "section": "19.1 Search",
+      "chapter": "Chapter 19 Tool search and code mode",
+      "function": "search_10k",
+      "summary": "One BM25 query over 10,000 tool descriptions.",
+      "what": "The cost of scoring every document for the tokens in word7 and keeping the top 5 names.",
+      "why": "Search replaces shipping the whole catalog. The query has to stay cheap at this size.",
+      "timing": "The index is built before the bench. The timed closure is b.iter. Inside it: search and black_box of the names.",
+      "inputs": "10,000 documents. Document i contains word{i % 50}. The query is word7. top_k is 5.",
+      "fake": "No socket. The index is already built.",
+      "source": "steps/ch19-1-search/crates/fastmcp-core/benches/search.rs",
+      "reading": "Smaller is better. One query should stay well under 1 millisecond. About 182 \u00b5s locally."
+    },
+    {
+      "id": "19.1/script_8",
+      "section": "19.1 Search",
+      "chapter": "Chapter 19 Tool search and code mode",
+      "function": "script_8",
+      "summary": "Eight tool calls inside one rhai script.",
+      "what": "The cost of building an engine, parsing a script, and running eight call_tool invocations.",
+      "why": "One script is the stand-in for one model turn that calls several tools.",
+      "timing": "The tool map and the script string are built before the bench. The timed closure is b.iter. Inside it: execute, which builds a new engine.",
+      "inputs": "Eight tools. Each call passes the integer 1. The limit is 50.",
+      "fake": "call_tool returns the integer the script passed. No model and no socket.",
+      "source": "steps/ch19-1-search/crates/fastmcp-core/benches/search.rs",
+      "reading": "Smaller is better. Eight calls in one script should stay well under 1 millisecond. About 154 \u00b5s locally."
+    },
+    {
+      "id": "19.1/turns_8",
+      "section": "19.1 Search",
+      "chapter": "Chapter 19 Tool search and code mode",
+      "function": "turns_8",
+      "summary": "Eight host lookups, one per turn.",
+      "what": "The cost of summing eight values with a HashMap lookup and no script engine.",
+      "why": "This is the in-process neighbor for the script. It is not eight network round trips.",
+      "timing": "The map is built before the bench. The timed closure is b.iter. Inside it: turn_calls and black_box of the sum.",
+      "inputs": "The same eight names, each value 1.",
+      "fake": "No engine, no model, and no socket.",
+      "source": "steps/ch19-1-search/crates/fastmcp-core/benches/search.rs",
+      "reading": "Smaller is better. Eight lookups should stay well under 1 microsecond. About 90 ns locally."
     }
   ]
 }
