@@ -56,45 +56,45 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 
 ## Chapter 5 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38862013588](https://github.com/agnathan/rust-mcp/actions/runs/38862013588) (2026-10-16T06:35:09Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `register_macro_1` | < 100 µs | pending | 3.200 µs |
-| `call_fn_1000` | < 10 µs | pending | 263.2 ns |
+| `register_macro_1` | < 100 µs | 4.640 µs | 3.200 µs |
+| `call_fn_1000` | < 10 µs | 342.5 ns | 263.2 ns |
 
 `register_macro_1` is one `tool_decl` registration, including schema generation. `call_fn_1000` is a thousand direct calls of the function the macro left in place. The proc macro is not in either timer. Details are in [Chapter 5](../book/chapter-05-a-tool-macro.md).
 
 ## Chapter 6 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38863264174](https://github.com/agnathan/rust-mcp/actions/runs/38863264174) (2026-10-16T06:48:21Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `resource_lookup_10k` | < 1 µs | pending | 38.75 ns |
-| `template_scan_10k` | < 1 ms | pending | 264.2 µs |
+| `resource_lookup_10k` | < 1 µs | 64.47 ns | 38.75 ns |
+| `template_scan_10k` | < 1 ms | 308.6 µs | 264.2 µs |
 
 `resource_lookup_10k` is one `HashMap` get among 10,000 static resources. `template_scan_10k` walks 10,000 templates and matches the last one. Details are in [Chapter 6](../book/chapter-06-resources-and-templates.md).
 
 ## Chapter 7 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38864877048](https://github.com/agnathan/rust-mcp/actions/runs/38864877048) (2026-10-16T07:04:27Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `prompt_render_1` | < 1 µs | pending | 62.14 ns |
-| `paginate_10k` | < 50 µs | pending | 2.482 µs |
+| `prompt_render_1` | < 1 µs | 97.61 ns | 62.14 ns |
+| `paginate_10k` | < 50 µs | 2.371 µs | 2.482 µs |
 
 `prompt_render_1` is one prompt render. `paginate_10k` is one page of 50 items taken from offset 5,000 of a 10,000-item list. Details are in [Chapter 7](../book/chapter-07-prompts-completions-pagination.md).
 
 ## Chapter 8 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38865647838](https://github.com/agnathan/rust-mcp/actions/runs/38865647838) (2026-10-16T07:11:53Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `dispatch_ok_1000` | < 1 ms | pending | 128.4 µs |
-| `dispatch_missing_1000` | < 1 ms | pending | 64.08 µs |
+| `dispatch_ok_1000` | < 1 ms | 172.7 µs | 128.4 µs |
+| `dispatch_missing_1000` | < 1 ms | 75.41 µs | 64.08 µs |
 
 `dispatch_ok_1000` is a thousand successful `add` dispatches. `dispatch_missing_1000` is a thousand lookups of a name that is not registered. Details are in [Chapter 8](../book/chapter-08-errors-done-right.md).
 
