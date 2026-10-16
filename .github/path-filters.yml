@@ -18,3 +18,5 @@ ch04-1-schema:
   - "steps/ch04-1-schema/**"
 ch05-1-tool-macro:
   - "steps/ch05-1-tool-macro/**"
+ch06-1-resources:
+  - "steps/ch06-1-resources/**"

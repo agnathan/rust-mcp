@@ -195,6 +195,34 @@
       "fake": "No server, no JSON, no socket.",
       "source": "steps/ch05-1-tool-macro/crates/fastmcp-core/benches/macro_reg.rs",
       "reading": "Smaller is better. A thousand calls should stay well under 10 microseconds. About 263 ns locally."
+    },
+    {
+      "id": "6.1/resource_lookup_10k",
+      "section": "6.1 Resources",
+      "chapter": "Chapter 6 Resources and templates",
+      "function": "resource_lookup_10k",
+      "summary": "Read one static resource from a map of 10,000.",
+      "what": "The cost of FastMcp::read on a URI that is present in the static HashMap.",
+      "why": "An exact URI should not scan templates. This is the cost of the hit.",
+      "timing": "ten_thousand_static() runs before the bench and registers file://doc-0 through file://doc-9999. The timed closure is b.iter. Inside it: one read of file://doc-5000, then black_box. Building the map is excluded.",
+      "inputs": "10,000 static resources, MIME text/plain, body \"body\". The looked-up URI is file://doc-5000.",
+      "fake": "No socket. The body is a String already stored on the server. The read clones it.",
+      "source": "steps/ch06-1-resources/crates/fastmcp-core/benches/resources.rs",
+      "reading": "Smaller is better. One lookup should stay well under 1 microsecond. About 39 ns locally."
+    },
+    {
+      "id": "6.1/template_scan_10k",
+      "section": "6.1 Resources",
+      "chapter": "Chapter 6 Resources and templates",
+      "function": "template_scan_10k",
+      "summary": "Scan 10,000 URI templates and render the last match.",
+      "what": "The cost of FastMcp::read when the URI misses the static map and matches the last registered template.",
+      "why": "Templates are a list. The worst case walks every pattern, copies the capture, and runs the closure.",
+      "timing": "ten_thousand_templates() runs before the bench. The timed closure is b.iter. Inside it: one read of res://item-9999/readme, then black_box. Registration is excluded. The scan, the String copy, and the closure are included.",
+      "inputs": "Patterns res://item-0/{name} through res://item-9999/{name}. The URI matches item-9999. The closure returns \"found\".",
+      "fake": "No socket and no filesystem. The closure ignores the capture and returns a constant.",
+      "source": "steps/ch06-1-resources/crates/fastmcp-core/benches/resources.rs",
+      "reading": "Smaller is better. A full scan of 10,000 templates should stay well under 1 millisecond. About 264 µs locally."
     }
   ]
 }
