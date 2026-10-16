@@ -100,10 +100,10 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 
 ## Chapter 9 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38866727295](https://github.com/agnathan/rust-mcp/actions/runs/38866727295) (2026-10-16T07:22:12Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `progress_1000` | < 100 µs | pending | 14.37 µs |
+| `progress_1000` | < 100 µs | 12.63 µs | 14.37 µs |
 
 `progress_1000` is a thousand in-memory progress notes, then a clear. Details are in [Chapter 9](../book/chapter-09-context.md).
