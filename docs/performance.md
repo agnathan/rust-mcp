@@ -255,9 +255,9 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `auth_1k` | < 5 µs | pending | 381.4 ns |
-| `store_get` | < 1 µs | pending | 19.94 ns |
-| `trace_off` | < 50 µs | pending | 8.701 µs |
-| `trace_on` | < 1 ms | pending | 213.4 µs |
+| `auth_1k` | < 5 µs | 545.5 ns | 381.4 ns |
+| `store_get` | < 1 µs | 27.72 ns | 19.94 ns |
+| `trace_off` | < 50 µs | 10.11 µs | 8.701 µs |
+| `trace_on` | < 1 ms | 288.6 µs | 213.4 µs |
 
 `auth_1k` is a thousand allows. `store_get` is one memory read. `trace_off` and `trace_on` are a thousand calls with the span absent and present. Details are in [Chapter 23](../book/chapter-23-production.md).
