@@ -33,3 +33,8 @@ pub fn macro_tool_struct_name() -> &'static str {
 pub fn static_resource_uri() -> &'static str {
     todo!("chapter 6: return the URI passed to FastMcp::resource for the readme")
 }
+
+/// The prompt name chapter 7 renders as `Hello, Ada`.
+pub fn sample_prompt_name() -> &'static str {
+    todo!("chapter 7: return the name passed to FastMcp::prompt for the greeting")
+}

@@ -11,7 +11,7 @@
 - [Chapter 4: Schemas from types](chapter-04-schemas-from-types.md)
 - [Chapter 5: A `#[tool]` macro](chapter-05-a-tool-macro.md)
 - [Chapter 6: Resources and templates](chapter-06-resources-and-templates.md)
-- [Chapter 7: Prompts, completions, pagination]()
+- [Chapter 7: Prompts, completions, and pagination](chapter-07-prompts-completions-pagination.md)
 - [Chapter 8: Errors done right]()
 - [Chapter 9: Context]()
 - [Chapter 10: Dependency injection]()

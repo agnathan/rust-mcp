@@ -23,6 +23,9 @@ cargo bench -p ch05-1-fastmcp-core --bench macro_reg
 cargo test -p ch06-1-fastmcp-core
 cargo run -p ch06-1-fastmcp-core --example demo
 cargo bench -p ch06-1-fastmcp-core --bench resources
+cargo test -p ch07-1-fastmcp-core
+cargo run -p ch07-1-fastmcp-core --example demo
+cargo bench -p ch07-1-fastmcp-core --bench prompts
 ```
 
 | Step | Chapter | Adds |
@@ -33,5 +36,6 @@ cargo bench -p ch06-1-fastmcp-core --bench resources
 | ch04-1-schema | 4 | JSON Schema for a tool's argument struct and return struct via `schemars`; `Option` stays out of `required`; schema generation for 1 and 1,000 tools |
 | ch05-1-tool-macro | 5 | `#[tool]` emits a `ToolDecl` and leaves the function callable; `tool_decl` registers it; one registration versus 1,000 direct calls |
 | ch06-1-resources | 6 | Static resources in a `HashMap`, `{param}` URI templates with two lifetimes, `resources/read`; one lookup among 10,000 URIs and a scan of 10,000 templates |
+| ch07-1-prompts | 7 | Prompts, prefix completion capped at 100, and a base64 offset cursor on every `list_*`; one render and one page from 10,000 items |
 
 Your own copy is `fastmcp-rs/` at the repo root. Its chapter tests panic in `todo!()` until you implement them. The course plan is chapters 0–25 in [book/book-outline.md](../book/book-outline.md) and `.github/chapters.json`. The steps in the table above exist so far. After a chapter merges, tag `step-NN` on that merge commit. Do not push the tag from the chapter branch. See [docs/tags.md](../docs/tags.md).
