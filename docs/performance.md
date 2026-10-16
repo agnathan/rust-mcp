@@ -179,7 +179,7 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `layers_0` | < 2 ms | pending | 194.0 µs |
-| `layers_5` | < 2 ms | pending | 557.2 µs |
+| `layers_0` | < 2 ms | 306.7 µs | 194.0 µs |
+| `layers_5` | < 2 ms | 664.2 µs | 557.2 µs |
 
 `layers_0` is a thousand `echo` calls with no hooks. `layers_5` is the same thousand through five hooks that all continue. Details are in [Chapter 16](../book/chapter-16-middleware.md).
