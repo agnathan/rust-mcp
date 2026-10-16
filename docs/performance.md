@@ -53,3 +53,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 | `schema_1000` | < 50 ms | 1.916 ms | 1.854 ms |
 
 `schema_1` builds one JSON Schema for a struct with a `String` and an `Option<String>`. `schema_1000` builds that schema 1,000 times. Details are in [Chapter 4](../book/chapter-04-schemas-from-types.md).
+
+## Chapter 5 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `register_macro_1` | < 100 µs | pending | 3.200 µs |
+| `call_fn_1000` | < 10 µs | pending | 263.2 ns |
+
+`register_macro_1` is one `tool_decl` registration, including schema generation. `call_fn_1000` is a thousand direct calls of the function the macro left in place. The proc macro is not in either timer. Details are in [Chapter 5](../book/chapter-05-a-tool-macro.md).

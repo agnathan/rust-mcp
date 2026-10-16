@@ -23,3 +23,8 @@ pub fn registered_tool_name() -> &'static str {
 pub fn optional_argument_name() -> &'static str {
     todo!("chapter 4: return the name of the Option field")
 }
+
+/// The struct `#[tool]` emits for `fn add`.
+pub fn macro_tool_struct_name() -> &'static str {
+    todo!("chapter 5: return the ToolDecl struct name for fn add")
+}

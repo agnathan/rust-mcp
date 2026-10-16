@@ -116,6 +116,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "ch05-1-fastmcp-core"
+version = "0.1.0"
+dependencies = [
+ "ch05-1-fastmcp-macros",
+ "criterion",
+ "rmcp",
+ "schemars",
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
+name = "ch05-1-fastmcp-macros"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
+]
+
+[[package]]
 name = "chrono"
 version = "0.4.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
