@@ -24,7 +24,7 @@
 - [Chapter 14: The client and client groups](chapter-14-client-and-groups.md)
 - [Chapter 15: Testing utilities](chapter-15-testing-utilities.md)
 - [Chapter 16: Middleware](chapter-16-middleware.md)
-- [Chapter 17: Providers and composition]()
+- [Chapter 17: Providers and composition](chapter-17-providers-and-composition.md)
 - [Chapter 18: Transforms and visibility]()
 - [Chapter 19: Tool search and code mode]()
 - [Chapter 20: Background tasks and extensions]()

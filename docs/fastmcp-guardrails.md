@@ -14,4 +14,4 @@ Source: `PrefectHQ/fastmcp`, commit `e2fcc412001ff7414095c5dc282f94c70299a612` (
 | W6 | `client/client.py` | `Client.ping` sends a ping and treats an `EmptyResult` as success. `Client.initialize` is the handshake and is idempotent. A modern `server/discover` session has no `InitializeResult`. |
 | W7 | `server/providers/proxy.py` | A proxy that handles `ping` forwards it and returns `EmptyResult`. On `initialize`, it can copy the upstream `instructions` onto the result. |
 
-Chapter 1 enforces W1, W2, and the "one of result or error" half of W3 on the hand-rolled types. Chapter 8 enforces W4. Chapter 14 enforces W6. Chapter 16 enforces W5: the interval is positive, and one connection gets one ping task. W7's proxy waits for chapter 17.
+Chapter 1 enforces W1, W2, and the "one of result or error" half of W3 on the hand-rolled types. Chapter 8 enforces W4. Chapter 14 enforces W6. Chapter 16 enforces W5: the interval is positive, and one connection gets one ping task. Chapter 17 enforces W7: a proxy ping forwards and returns success, and instructions are copied when the proxy defines none.
