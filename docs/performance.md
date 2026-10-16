@@ -202,6 +202,6 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `filter_10k` | < 1 ms | pending | 127.2 µs |
+| `filter_10k` | < 1 ms | 137.9 µs | 127.2 µs |
 
 `filter_10k` lists the enabled names in a catalog of 10,000 tools. Details are in [Chapter 18](../book/chapter-18-transforms-and-visibility.md).
