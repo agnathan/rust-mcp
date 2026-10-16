@@ -12,7 +12,7 @@
 - [Chapter 5: A `#[tool]` macro](chapter-05-a-tool-macro.md)
 - [Chapter 6: Resources and templates](chapter-06-resources-and-templates.md)
 - [Chapter 7: Prompts, completions, and pagination](chapter-07-prompts-completions-pagination.md)
-- [Chapter 8: Errors done right]()
+- [Chapter 8: Errors done right](chapter-08-errors-done-right.md)
 - [Chapter 9: Context]()
 - [Chapter 10: Dependency injection]()
 - [Chapter 11: Lifespan and state]()

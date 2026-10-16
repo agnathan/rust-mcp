@@ -38,3 +38,8 @@ pub fn static_resource_uri() -> &'static str {
 pub fn sample_prompt_name() -> &'static str {
     todo!("chapter 7: return the name passed to FastMcp::prompt for the greeting")
 }
+
+/// The JSON-RPC code `to_mcp_error` uses for a missing component.
+pub fn not_found_code() -> i32 {
+    todo!("chapter 8: return the invalid_params code")
+}

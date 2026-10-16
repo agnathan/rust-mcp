@@ -11,5 +11,7 @@ members = [
     "steps/ch06-1-resources/crates/fastmcp-core",
     "steps/ch07-1-prompts/crates/fastmcp-macros",
     "steps/ch07-1-prompts/crates/fastmcp-core",
+    "steps/ch08-1-errors/crates/fastmcp-macros",
+    "steps/ch08-1-errors/crates/fastmcp-core",
     "fastmcp-rs",
 ]
