@@ -190,8 +190,8 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `direct_call` | < 1 µs | pending | 15.91 ns |
-| `proxy_call` | < 1 µs | pending | 17.58 ns |
-| `aggregate_10` | < 5 µs | pending | 448.1 ns |
+| `direct_call` | < 1 µs | 22.87 ns | 15.91 ns |
+| `proxy_call` | < 1 µs | 23.48 ns | 17.58 ns |
+| `aggregate_10` | < 5 µs | 535.9 ns | 448.1 ns |
 
 `direct_call` is one local `call`. `proxy_call` is the same call through a proxy. `aggregate_10` lists ten providers. Details are in [Chapter 17](../book/chapter-17-providers-and-composition.md).
