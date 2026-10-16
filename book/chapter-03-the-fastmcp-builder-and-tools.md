@@ -144,7 +144,14 @@ Local medians from that run's `estimates.json` (the slope above is not this colu
 | `lookup_1` | One `HashMap::contains_key` for `tool-500` | Building the server and the 1,000 closures | A server with tools `tool-0` through `tool-999`. The name is `tool-500`. | No JSON, no socket, no `tools/call` | Well under a microsecond. About 13 ns here. |
 | `dispatch_1000` | 1,000 lookups, a clone of the argument JSON, serde into `Echo`, and the closure that returns `n` | Building the server, the name list, and the argument JSON | Tools `tool-0` through `tool-999`. Each call gets `{"n": 1}`. | No socket and no `rmcp` session. `status` is not in this loop. | Under a millisecond. About 60 µs here. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians for this section are filled from this pull request's Benchmarks run once that job has finished. Until that table is updated, the numbers above are the local run only.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38856477535](https://github.com/agnathan/rust-mcp/actions/runs/38856477535) (2026-10-16T05:34:43Z). GitHub's `github.sha` for that pull request run is the merge commit `8159c536d796b488fab17233fbfcf7cb4877a717`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
+
+| Benchmark | CI median | Low | High | Target |
+|---|---|---|---|---|
+| `lookup_1` | 17.14 ns | 17.13 ns | 17.16 ns | < 1 µs |
+| `dispatch_1000` | 82.97 µs | 82.81 µs | 83.08 µs | < 1 ms |
+
+On the Ubuntu runner, one lookup among 1,000 tools is 17.14 ns, and dispatching all 1,000 is 82.97 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
