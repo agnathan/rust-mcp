@@ -2,13 +2,54 @@
 
 *Draft. Bracketed notes like [personal note] are where my own story goes.*
 
-FastMCP's `mcp.run()` hides the bytes. Before using a protocol crate, I want to see one message: a JSON object with a version, a method, and sometimes an id. This chapter builds that object, parses it back, and answers two MCP methods, `initialize` and `ping`. It does not open a socket. Chapter 2 is the first server a client can start, and that server will use `rmcp` instead of these hand-rolled types. FastMCP 4 also speaks protocol `2026-07-28`, and chapter 2 covers version negotiation.
+## Introduction
+
+Picture a client that wants to call a tool on your server. Before it can name the tool, the two programs have to agree they are speaking the same language. That language, on the wire, is JSON-RPC 2.0: one JSON object, a version, a method name, and, when a reply is expected, an id.
+
+FastMCP's `mcp.run()` sends and receives those objects for you. This book starts one layer under that call, because every later chapter is a conversation made of the same objects. Tools, schemas, and HTTP are easier once you have held a single message in your hands and watched a reply come back.
+
+You are at the beginning of the server. There is no socket in this chapter, and no client process. Chapter 2 is the first program another process can start, and that program will hand the bytes to the Rust MCP SDK, `rmcp`. FastMCP 4 also speaks a newer protocol revision, `2026-07-28`, which changes how a session begins. Chapter 2 negotiates versions. This chapter answers `initialize` with one fixed string, `2025-06-18`, so the success path fits on a screen.
+
+## What you'll build
+
+A small library that reads one JSON-RPC message and, when the message expects a reply, writes one back. Give it an `initialize` request and it answers with the server's name.
+
+```text
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"demo","version":"0.1.0"},"protocolVersion":"2025-06-18"}}
+{"jsonrpc":"2.0","id":1,"result":{"capabilities":{},"protocolVersion":"2025-06-18","serverInfo":{"name":"fastmcp-rs","version":"0.1.0"}}}
+```
+
+The first line is the request. The second is the response: protocol version `2025-06-18`, empty capabilities, and server info `fastmcp-rs` `0.1.0`. A `ping` comes back as an empty object, `{}`. A notification comes back as silence.
+
+The code lives in one library crate. The package name is `ch01-1-fastmcp-core` and the library name, the name you import, is `fastmcp_core`. The finished snapshot is `steps/ch01-1-jsonrpc`. From the repo root:
+
+```bash
+cargo run -p ch01-1-fastmcp-core --example demo
+```
+
+## Goals
+
+- Read a JSON-RPC 2.0 object and say whether it is a request, a notification, or a response.
+- Explain why a request carries an id, why a notification does not, and what the server sends back in each case.
+- Answer the MCP methods `initialize` and `ping`, and turn broken JSON and unknown methods into the standard error codes.
+- Use Cargo, a struct, an enum, serde, `Result`, and `?` on a real message.
+- Run the chapter's tests and read a Criterion median, including the difference between that median and the slope Criterion prints.
+
+## Roadmap
+
+**1.1 A message is one of three things.** We name the three shapes, because the rest of the parser depends on knowing which one arrived.
+
+**1.2 Look at the keys, then parse.** A broken request must stay a broken request. Guessing the shape by trying each struct in turn would hide that failure.
+
+**1.3 Answer `initialize` and `ping`.** The server writes a response for a request, stays quiet for a notification, and keeps a Rust error separate from an error that has an id and can travel back to the client.
+
+**1.4 Build, run, and benchmark.** The tests, the demo above, and the timings, so the numbers later in the book have a first measurement to sit beside.
 
 | Section | Step | What it adds |
 |---|---|---|
-| 1.1 | `steps/ch01-1-jsonrpc` | JSON-RPC 2.0 requests, notifications, responses, and errors; MCP `initialize` and `ping` |
+| 1.1–1.4 | `steps/ch01-1-jsonrpc` | JSON-RPC 2.0 requests, notifications, responses, and errors; MCP `initialize` and `ping` |
 
-The code is one library crate, package `ch01-1-fastmcp-core`, library name `fastmcp_core`.
+The Python this chapter is copying, and the wire rules it keeps, come next. The Rust starts in 1.1.
 
 > **How FastMCP does it**
 >
@@ -16,9 +57,9 @@ The code is one library crate, package `ch01-1-fastmcp-core`, library name `fast
 >
 > **Adopted.** A request is a message that has an id. [`server/low_level.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/low_level.py) runs `initialize` only when `ctx.method == "initialize"` and `ctx.request_id is not None`. Notifications, including `notifications/initialized`, are a different path, and `ping` is named there as a message with no interior FastMCP handler. This chapter's `Message` enum is that split: request, notification, response. `dispatch` returns `None` for a notification.
 >
-> **Adopted.** A failed call still has a wire shape. [`exceptions.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/exceptions.py) `to_mcp_error` turns a Python exception into an `MCPError` whose code is `INVALID_PARAMS` or `INTERNAL_ERROR`. [`server/mixins/mcp_operations.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/mixins/mcp_operations.py) raises `MCPError(code=INVALID_PARAMS)` when a list cursor is bad. This chapter uses the JSON-RPC codes for parse errors, invalid messages, unknown methods, and bad `initialize` params. An unknown method is a response, not a panic.
+> **Adopted.** A failed call still has a wire shape. [`exceptions.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/exceptions.py) `to_mcp_error` turns a Python exception into an `MCPError` whose code is `INVALID_PARAMS` or `INTERNAL_ERROR`. [`server/mixins/mcp_operations.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/mixins/mcp_operations.py) raises `MCPError(code=INVALID_PARAMS)` when a list cursor is bad. This chapter uses the JSON-RPC codes for parse errors, invalid messages, unknown methods, and bad `initialize` params. An unknown method is a response.
 >
-> **Adapted.** FastMCP does not parse JSON-RPC itself. [`server/low_level.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/low_level.py) rebuilds `mcp_types.InitializeRequest` with `model_validate`, and [`_compat.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/_compat.py) still recognizes the wire names `protocolVersion` and `serverInfo` on `InitializeResult`. [`types.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/types.py) is not those models. It defines `Textarea` for tool UIs. The wire types live in the Python SDK. This chapter hand-rolls the same JSON with serde, camelCase on the wire, so the next chapter can switch to `rmcp` without the envelope being a mystery. [`server/context.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/context.py) sets `protocol_version="2025-06-18"` on a detached request context. This step answers with that same string and does not negotiate.
+> **Adapted.** FastMCP does not parse JSON-RPC itself. [`server/low_level.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/low_level.py) rebuilds `mcp_types.InitializeRequest` with `model_validate`, and [`_compat.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/_compat.py) still recognizes the wire names `protocolVersion` and `serverInfo` on `InitializeResult`. [`types.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/types.py) is the module for tool-UI types such as `Textarea`. The wire types live in the Python SDK. This chapter hand-rolls the same JSON with serde, camelCase on the wire, so the next chapter can switch to `rmcp` with the envelope already familiar. [`server/context.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/context.py) sets `protocol_version="2025-06-18"` on a detached request context. This step answers with that same string and does not negotiate.
 >
 > **Deferred.** [`client/client.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/client/client.py) `initialize` is idempotent and can end in a `server/discover` session that has no `InitializeResult`. That handshake is chapter 2's server and chapter 14's client. [`server/middleware/ping.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/middleware/ping.py) `PingMiddleware` sends pings on a timer (`interval_ms`, default `30000`, and the value must be positive). Chapter 16 takes that loop. This chapter only answers an inbound `ping` with an empty object, which is what [`server/providers/proxy.py`](https://github.com/PrefectHQ/fastmcp/blob/e2fcc412001ff7414095c5dc282f94c70299a612/fastmcp_slim/fastmcp/server/providers/proxy.py) returns from its `ping` handler (`EmptyResult`) and what `Client.ping` treats as success. The same proxy copies upstream `instructions` onto the initialize result. Composition does that in chapter 17. `to_mcp_error`'s map from `NotFoundError`, `DisabledError`, and `ValidationError` waits for chapter 8.
 
@@ -30,54 +71,17 @@ The code is one library crate, package `ch01-1-fastmcp-core`, library name `fast
 >
 > **One response, and it is either a result or an error.** A message with both `result` and `error` is an invalid request. `dispatch` of `initialize` returns one `Response`. FastMCP's root middleware goes further: if middleware raises after initialize already produced a result, it keeps the committed result so the client does not see two replies (W3, `server/low_level.py`). This chapter has no middleware, so that second half waits.
 >
-> **Bad input is a JSON-RPC error, not a crash.** Broken JSON is code `-32700`. A JSON value that is not a message is `-32600`. Unknown methods are `-32601` inside a normal response. `initialize` with missing params is `-32602`. The full `to_mcp_error` map (W4) is chapter 8. The ping timer (W5) is chapter 16. Discover-era initialize (W6) and proxy forwarding (W7) are later chapters.
+> **Bad input is a JSON-RPC error, and the process stays up.** Broken JSON is code `-32700`. A JSON value that is not a message is `-32600`. Unknown methods are `-32601` inside a normal response. `initialize` with missing params is `-32602`. The full `to_mcp_error` map (W4) is chapter 8. The ping timer (W5) is chapter 16. Discover-era initialize (W6) and proxy forwarding (W7) are later chapters.
 
 [personal note: where I was with Rust when I started this chapter]
 
-## What this chapter decides
+## 1.1 A message is one of three things
 
-- The envelope is hand-rolled. `rmcp` arrives in chapter 2.
-- A message is one of three structs: request, notification, response. The parser chooses by keys, not by trying each shape until one fits.
-- `ping` returns `{}`. `initialize` returns protocol version `2025-06-18`, empty capabilities, and server info `fastmcp-rs` `0.1.0`. No `instructions` field.
-- An unknown method is a successful Rust `Result` whose JSON-RPC body is an error. A parse failure is a Rust error, because there is no id to answer yet.
-- JSON arrays are rejected. This chapter does not frame stdin, and it does not implement JSON-RPC batches.
+A client can send three kinds of JSON object, and they ask for three different reactions. A request wants a response. A notification is a fire-and-forget, the way `notifications/initialized` tells the server "I heard you" and then expects silence. A response is the reply itself, which this chapter's server receives only so it can refuse to treat it as a new question.
 
-## 1.1 The crate
-
-The workspace root `Cargo.toml` lists every step crate. `resolver = "3"` is the current cargo resolver. The package that matters today:
-
-```bash
-cargo test -p ch01-1-fastmcp-core
-cargo bench -p ch01-1-fastmcp-core --bench jsonrpc
-cargo run -p ch01-1-fastmcp-core --example demo
-```
-
-> **Rust sidebar: cargo**
->
-> - Cargo builds, fetches dependencies, and runs tests. `cargo test -p NAME` tests one package. `cargo run -p NAME --example demo` runs `examples/demo.rs`. `cargo bench` runs the Criterion files under `benches/`.
-> - `Cargo.toml` is the manifest. `[dependencies]` names crates from crates.io. This step depends on `serde` and `serde_json`.
-> - A workspace is one lockfile and one `target/` directory for many packages. The root manifest sets `resolver = "3"`.
-> - The package name (`ch01-1-fastmcp-core`) must be unique in the workspace. The library name (`fastmcp_core`) is what `use fastmcp_core::...` imports. `publish = false` keeps the step off crates.io. `rust-version = "1.85"` says which compiler the manifest expects.
-
-### Structs for the three messages
-
-A request asks for a response. A notification does not. A response is the reply. Those are three structs, and an enum that holds exactly one of them.
+Those are three structs. A struct is a group of named fields that travel together. `Request` is the one to look at, because the other two are the same idea with a field added or removed. The full definitions are in `steps/ch01-1-jsonrpc/crates/fastmcp-core/src/jsonrpc.rs`.
 
 ```rust
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-pub enum JsonRpcVersion {
-    #[serde(rename = "2.0")]
-    V2,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum RequestId {
-    Number(i64),
-    String(String),
-}
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Request {
     pub jsonrpc: JsonRpcVersion,
     pub id: RequestId,
@@ -87,10 +91,15 @@ pub struct Request {
 }
 ```
 
-`Notification` is the same idea without `id`. `Response` has `id` (which may be JSON `null`), and at most one of `result` and `error`. `ErrorObject` is `code`, `message`, and an optional `data`. `Message` is the enum:
+`jsonrpc` is the version. This chapter accepts the string `"2.0"` and stores it as the enum value `JsonRpcVersion::V2`. An enum is a type with a fixed set of variants, and a value is exactly one of them. `RequestId` is the other small enum: an id is either a number or a string, because JSON-RPC allows both.
+
+`method` is the name, `"initialize"` or `"ping"`. `params` might be missing. `Option` is the standard library's enum for that situation: `Some(value)` when the field is there, `None` when it is absent. The `serde` attribute on the line above says a missing field becomes `None`, and a `None` is left off the JSON on the way back out.
+
+`Notification` is this struct without `id`. `Response` has an id that may be JSON `null` (stored as `Option`), plus at most one of `result` and `error`. `ErrorObject` carries a numeric `code`, a `message`, and an optional `data`.
+
+The parser has to hand you exactly one of the three. That is another enum:
 
 ```rust
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Message {
     Request(Request),
@@ -99,20 +108,30 @@ pub enum Message {
 }
 ```
 
-`ErrorCode` is the other enum this chapter needs. `ParseError` is `-32700`, `InvalidRequest` is `-32600`, `MethodNotFound` is `-32601`, `InvalidParams` is `-32602`, `InternalError` is `-32603`. Those numbers are the JSON-RPC 2.0 codes. FastMCP's `to_mcp_error` imports the params and internal names from the Python SDK; the integers are not written out in the FastMCP file I read.
+`Message::Request` and `Message::Notification` are different values. A `match` later in the chapter says what to do for each. The `untagged` attribute matters in section 1.2: serde will not look for an extra tag field in the JSON. We decide the variant ourselves, from the keys.
 
-> **Rust sidebar: structs and enums**
->
-> - A struct groups named fields. `Request` is always a version, an id, a method, and maybe params.
-> - An enum is one variant at a time. `Message::Request` and `Message::Notification` cannot both be true. `match` says what to do for each variant.
-> - `#[derive(Debug, Clone, PartialEq, Eq)]` asks the compiler to write those pieces. `Debug` is what `{:?}` prints. `PartialEq` is what `assert_eq!` uses.
-> - `Option` is an enum the standard library already defined: `Some(value)` or `None`. A missing `params` field is `None`.
+`#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]` on these types asks the compiler to write the boring pieces. `Debug` is what `{:?}` prints. `Clone` makes a copy. `PartialEq` is what `assert_eq!` uses in the tests. `Serialize` and `Deserialize` belong to serde, which is the next section.
 
-MCP `initialize` adds two more structs. `#[serde(rename_all = "camelCase")]` turns `protocol_version` into `protocolVersion` and `client_info` into `clientInfo`. `InitializeResult` does the same for `serverInfo`. `instructions` is optional and is left off the JSON when it is `None`.
+The error codes are an enum too, and the numbers are the JSON-RPC 2.0 codes. `ParseError` is `-32700`. `InvalidRequest` is `-32600`. `MethodNotFound` is `-32601`. `InvalidParams` is `-32602`. `InternalError` is `-32603`. FastMCP's `to_mcp_error` imports the params and internal names from the Python SDK. The integers themselves are not written out in the FastMCP file this chapter read. They live here so a test can name them.
 
-### Parsing without guessing
+MCP `initialize` adds two more structs, in `src/mcp.rs`. The wire uses camelCase (`protocolVersion`, `clientInfo`) and the Rust fields use snake_case. `#[serde(rename_all = "camelCase")]` is the whole translation:
 
-Serde can derive `Deserialize` for each struct. It should not be asked to guess the message kind. A request and a notification both have `method`. If the id failed to parse and we tried "does this fit a notification?" second, a broken request could be accepted as a notification. `parse_message` reads the keys first.
+```rust
+#[serde(rename_all = "camelCase")]
+pub struct InitializeParams {
+    pub protocol_version: String,
+    pub capabilities: Value,
+    pub client_info: Implementation,
+}
+```
+
+`InitializeResult` does the same for `serverInfo`. An optional `instructions` string is left off the JSON when it is `None`. This chapter's result leaves it off.
+
+One trap is worth naming now, before the parser. `"id": null` is legal on an error response, for the case where the id of a failed request could not be read. It is illegal on a request. A request with a null id is an invalid request, and the tests keep it that way.
+
+## 1.2 Look at the keys, then parse
+
+Serde can fill in a struct from JSON. The trouble is asking it to guess which struct. A request and a notification both have `method`. If you try "does this fit a request?" and, on failure, "does this fit a notification?", a request with a bad id can fall through and get accepted as a notification. The client would wait for a reply that never comes. `parse_message` refuses that guess. It reads the keys first, then deserializes the struct it has already chosen.
 
 ```rust
 pub fn parse_message(bytes: &[u8]) -> Result<Message, ProtocolError> {
@@ -121,25 +140,22 @@ pub fn parse_message(bytes: &[u8]) -> Result<Message, ProtocolError> {
 }
 ```
 
-`serde_json::Value` is one JSON value: object, array, string, number, bool, or null. `from_slice` turns bytes into that value. The `?` on that line is the next sidebar. After the version string is `"2.0"`, the function branches:
+`serde_json::Value` is one JSON value: an object, an array, a string, a number, a bool, or null. `from_slice` turns bytes into that value. The `?` on that line returns early when the bytes are not JSON at all. Section 1.3 explains `?` on the function that callers actually use. `message_from_value` is the rest of the function, in the same file. After it has checked that the version string is `"2.0"`, it branches on keys:
 
-- `method`, and no `result` or `error`, and an `id` that is not null: a request.
-- `method`, and no `id`: a notification.
-- no `method`, an `id`, and exactly one of `result` or `error`: a response.
-- both `result` and `error`, or anything else: `InvalidRequest`.
+- `method` is present, `result` and `error` are absent, and `id` is present and not null: a request.
+- `method` is present and `id` is absent: a notification.
+- `method` is absent, `id` is present, and exactly one of `result` or `error` is present: a response.
+- Both `result` and `error`, a JSON array, a version other than `"2.0"`, or anything else: `InvalidRequest` (`-32600`).
 
-A null `result` is rejected. MCP `ping` uses `{}`, not null. An error response may use `"id": null`, and that becomes `Option::None` on `Response.id`.
+A null `result` is rejected. MCP `ping` uses `{}`, an empty object. An error response may use `"id": null`, and that becomes `None` on `Response.id`.
 
-> **Rust sidebar: serde and serde_json**
->
-> - `Serialize` writes a Rust value out as JSON. `Deserialize` reads JSON into a Rust value. `#[derive(Serialize, Deserialize)]` generates both.
-> - `#[serde(rename = "2.0")]` stores `JsonRpcVersion::V2` in memory and writes the string `"2.0"`. `rename_all = "camelCase"` renames every field.
-> - `#[serde(default, skip_serializing_if = "Option::is_none")]` accepts a missing field and omits it on the way out.
-> - `serde_json::from_slice` and `to_vec` are the byte forms. `to_value` and `json!` build a `Value` in memory. `json!({})` is an empty object, which is the body of a ping result.
+Serde is the crate doing the translation, and `serde_json` is the crate that speaks JSON specifically. `Serialize` writes a Rust value out as JSON. `Deserialize` reads JSON into a Rust value. The derive on `Request` generates both. `#[serde(rename = "2.0")]` on `JsonRpcVersion::V2` stores the enum in memory and writes the string `"2.0"`. `serde_json::to_vec` is the byte form of the other direction. `json!({})` builds an empty object in memory, which is the body of a ping result.
 
-### `Result` and `?`
+A JSON array is an invalid request in this chapter. JSON-RPC batches exist in the wild. This server answers one object at a time, and newline framing of a stdio stream waits until chapter 2.
 
-`parse_message` and `dispatch` return `Result<T, ProtocolError>`. The `Ok` side is the value. The `Err` side is why it failed. `ProtocolError` carries an `ErrorCode` and a message. `From<serde_json::Error>` turns a serde failure into that type: syntax and a cut-off buffer become a parse error, and other serde failures become an invalid request. That `From` impl is what lets `?` convert the error.
+## 1.3 Answer `initialize` and `ping`
+
+Parsing gives you a `Message`. Something still has to decide what to send back. That function is `reply`, and it is the one to read twice, because it is where Rust's `?` earns its place. It lives in `src/mcp.rs`.
 
 ```rust
 pub fn reply(bytes: &[u8]) -> Result<Option<Response>, ProtocolError> {
@@ -148,39 +164,47 @@ pub fn reply(bytes: &[u8]) -> Result<Option<Response>, ProtocolError> {
 }
 ```
 
-If `parse_message` returns `Err`, `reply` returns that same error and does not call `dispatch`. If parse succeeds, `?` unwraps the `Message` and continues. `dispatch` matches on the enum. A notification is `Ok(None)`. A response is `Err`, because dispatch only accepts something a peer sent us to handle. A request matches the method string: `ping`, `initialize`, or anything else.
+`Result<T, E>` is the standard library's enum for an operation that can fail. `Ok(T)` is the value. `Err(E)` is why it failed. Here `E` is `ProtocolError`, which carries an `ErrorCode` and a message. `From<serde_json::Error>` turns a serde failure into that type: a syntax error or a cut-off buffer becomes a parse error (`-32700`), and other serde failures become an invalid request. That conversion is what lets `?` change the error type on the way out.
 
-`ping` builds `Response::success` with `json!({})`. `initialize` reads params into `InitializeParams`. Missing params, an empty protocol version, or an empty client name or version is `Err` with `InvalidParams`. A method this chapter does not know is `Ok(Some(error_response))` with code `-32601`. The JSON-RPC error and the Rust error are different. The first is a body we can send. The second means we could not build a body.
+`?` after a call that returns `Result` does two things. On `Ok`, it unwraps the inner value and the function continues. On `Err`, it returns from the function you are in. If `parse_message` fails, `reply` returns that error and never calls `dispatch`. The function that uses `?` has to return a `Result` whose error matches, or a type the error converts into. `expect` and `unwrap` are for tests and for the demo, where a failure should stop the process. Library code in this chapter returns the `Result`.
 
-> **Rust sidebar: `Result` and `?`**
->
-> - `Result<T, E>` is `Ok(T)` or `Err(E)`. Functions in this chapter use `E = ProtocolError`.
-> - `?` after a call that returns `Result` does two things. On `Ok`, it gives you the inner value. On `Err`, it returns from the function you are in.
-> - The function that uses `?` has to return a `Result` whose error type matches, or a type the error converts into with `From`.
-> - `expect` and `unwrap` are for tests and for the demo, where a failure should stop the process. Library code in this chapter returns the `Result` instead.
+`dispatch` matches on the enum. A notification is `Ok(None)`: success, and nothing to write. A response is an error, because dispatch only accepts something a peer sent us to handle. A request matches the method string:
 
-`initialize_params` does not use `?` on the serde error, because that conversion would mark a bad object as `InvalidRequest`. Bad params are `InvalidParams`, so the function maps the error itself:
+```rust
+match request.method.as_str() {
+    "ping" => Ok(Response::success(request.id.clone(), json!({}))),
+    "initialize" => initialize_response(request),
+    other => Ok(Response::failure(
+        Some(request.id.clone()),
+        ErrorObject::from_code(
+            ErrorCode::MethodNotFound,
+            format!("Method not found: {other}"),
+        ),
+    )),
+}
+```
+
+`ping` returns `{}`. `initialize` reads params into `InitializeParams`. Missing params, an empty protocol version, or an empty client name or version is `Err` with `InvalidParams` (`-32602`). The success body is protocol version `2025-06-18`, empty capabilities, and server info `fastmcp-rs` `0.1.0`. There is no `instructions` field.
+
+A method this chapter does not know, including `tools/call`, is `Ok(Some(error_response))` with code `-32601`. Read that twice. The JSON-RPC error and the Rust error are different kinds of failure. The JSON-RPC error is a body we can send, because we still have an id. The Rust error means we could not build a body at all, which is what happens when the bytes are not JSON, or when `initialize` params are missing. The tool registry that would make `tools/call` a real method is chapter 3. The error response is the point of this chapter.
+
+Bad `initialize` params take a careful path. Mapping a serde error through the usual `From` would mark a bad object as `InvalidRequest`. Bad params are `InvalidParams`, so `initialize_params` maps the error itself:
 
 ```rust
 serde_json::from_value(params).map_err(|err| ProtocolError::invalid_params(err.to_string()))
 ```
 
-### The tests
-
-`#[test]` marks a function cargo should run. Tests next to the code live in a `mod tests` at the bottom of the file, behind `#[cfg(test)]`, so a normal build does not include them. Tests in `tests/handshake.rs` are integration tests: they can only call the public API, the same way another crate would.
-
-> **Rust sidebar: `#[test]`**
->
-> - `#[test]` goes on a function that takes no arguments and returns nothing (or a `Result`).
-> - `cargo test` builds those functions and runs them. A panic, or a failed `assert_eq!`, fails the test.
-> - `#[cfg(test)]` keeps the unit-test module out of the library you publish to dependents.
-> - A file under `tests/` is a separate crate. It uses `fastmcp_core::parse_message`, not the private helpers.
+The tests sit next to this code and in `tests/handshake.rs`. `#[test]` marks a function Cargo should run. A panic, or a failed `assert_eq!`, fails the test. Tests in a `mod tests` at the bottom of the file are behind `#[cfg(test)]`, so a normal build leaves them out. A file under `tests/` is a separate crate. It can call `fastmcp_core::parse_message` and the other public functions, the same way another crate would, and it cannot see the private helpers.
 
 The unit tests check a request round trip, a notification with no `id` key, a string id on an error response, `"id": null` on an error, broken JSON (`{`) as a parse error, version `"1.0"` and a JSON array as invalid requests, both `result` and `error` rejected, and a null id on a request rejected. The MCP tests check ping's empty object, initialize's `serverInfo` and camelCase wire names, silence for `notifications/initialized`, an unknown method as a response, missing initialize params as `InvalidParams`, and `reply` on `not-json` as a parse error.
 
-The integration test runs the handshake in order: initialize, `notifications/initialized`, ping. A second test covers `tools/call` (unknown here) and an initialize object that has a protocol version but no client info. A third parses 1,000 initialize requests and checks each id. That third test is the same size as the parse bench, but it is a correctness check, not a timer.
+The integration test runs the handshake in order: initialize, `notifications/initialized`, ping. A second test covers `tools/call` (unknown here) and an initialize object that has a protocol version and no client info. A third parses 1,000 initialize requests and checks each id. That third test is the same size as the parse bench. It checks correctness. The bench, next, checks time.
 
-### Build, run, and benchmark
+## 1.4 Build, run, and benchmark
+
+Cargo is the build tool. It fetches dependencies, compiles, and runs tests. `cargo test -p NAME` tests one package. `cargo run -p NAME --example demo` runs `examples/demo.rs`. `cargo bench` runs the Criterion files under `benches/`. `Cargo.toml` is the manifest. This step depends on `serde` and `serde_json`.
+
+The workspace root `Cargo.toml` lists every step crate and sets `resolver = "3"`, the current Cargo feature resolver. A workspace is one lockfile and one `target/` directory for many packages. The package name `ch01-1-fastmcp-core` has to be unique in the workspace. The library name `fastmcp_core` is what `use fastmcp_core::...` imports. `publish = false` keeps the step off crates.io. `rust-version = "1.85"` says which compiler the manifest expects.
 
 From the repository root. Nothing in this step reads an API key or opens a socket.
 
@@ -198,91 +222,30 @@ I ran those commands on a 4-vCPU Intel Xeon guest under KVM, with 16 GiB of RAM,
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
 ```
 
-Nextest, after it finished compiling the tests:
+Nextest prints a `PASS` line per test. The line that matters is the summary, from run `302e1e52-cb38-49a0-a285-6f429a9ad0c5`:
 
 ```text
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.31s
-────────────
- Nextest run ID 302e1e52-cb38-49a0-a285-6f429a9ad0c5 with nextest profile: default
-    Starting 19 tests across 2 binaries
-        PASS [   0.003s] ( 1/19) ch01-1-fastmcp-core jsonrpc::tests::both_result_and_error_is_rejected
-        PASS [   0.003s] ( 2/19) ch01-1-fastmcp-core jsonrpc::tests::array_is_an_invalid_request
-        PASS [   0.004s] ( 3/19) ch01-1-fastmcp-core jsonrpc::tests::broken_json_is_a_parse_error
-        PASS [   0.004s] ( 4/19) ch01-1-fastmcp-core jsonrpc::tests::notification_has_no_id_field
-        PASS [   0.003s] ( 5/19) ch01-1-fastmcp-core jsonrpc::tests::null_id_error_response_is_allowed
-        PASS [   0.004s] ( 6/19) ch01-1-fastmcp-core jsonrpc::tests::null_request_id_is_rejected
-        PASS [   0.004s] ( 7/19) ch01-1-fastmcp-core jsonrpc::tests::request_round_trips
-        PASS [   0.004s] ( 8/19) ch01-1-fastmcp-core jsonrpc::tests::string_id_and_error_response_round_trip
-        PASS [   0.003s] ( 9/19) ch01-1-fastmcp-core jsonrpc::tests::wrong_version_is_an_invalid_request
-        PASS [   0.003s] (10/19) ch01-1-fastmcp-core mcp::tests::initialize_returns_server_info
-        PASS [   0.003s] (11/19) ch01-1-fastmcp-core mcp::tests::initialize_without_params_is_invalid_params
-        PASS [   0.005s] (12/19) ch01-1-fastmcp-core mcp::tests::handshake_bytes_round_trip_through_reply
-        PASS [   0.004s] (13/19) ch01-1-fastmcp-core mcp::tests::initialized_notification_is_silent
-        PASS [   0.004s] (14/19) ch01-1-fastmcp-core mcp::tests::reply_uses_question_mark_on_bad_json
-        PASS [   0.005s] (15/19) ch01-1-fastmcp-core mcp::tests::ping_returns_an_empty_object
-        PASS [   0.005s] (16/19) ch01-1-fastmcp-core mcp::tests::unknown_method_is_a_response_not_a_rust_error
-        PASS [   0.005s] (17/19) ch01-1-fastmcp-core::handshake handshake_initialize_then_notification_then_ping
-        PASS [   0.003s] (18/19) ch01-1-fastmcp-core::handshake unknown_method_and_bad_initialize_params
-        PASS [   0.021s] (19/19) ch01-1-fastmcp-core::handshake parse_one_thousand_initialize_requests
-────────────
      Summary [   0.037s] 19 tests run: 19 passed, 0 skipped
 ```
 
-The demo:
+The demo prints one initialize request and the success response:
 
 ```text
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
-     Running `target/debug/examples/demo`
 {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"demo","version":"0.1.0"},"protocolVersion":"2025-06-18"}}
 {"jsonrpc":"2.0","id":1,"result":{"capabilities":{},"protocolVersion":"2025-06-18","serverInfo":{"name":"fastmcp-rs","version":"0.1.0"}}}
 ```
 
-Criterion prints a slope on the `time:` line. That slope is not the number in the table. The table is the median point estimate from `target/criterion/<name>/new/estimates.json` on this same run. The first optimized build on this machine compiled the bench dependencies, which is the 16.73 s in the log.
+Criterion prints a slope on the `time:` line. That slope is a different statistic from the median in the table below. The table is `median.point_estimate` from `target/criterion/<name>/new/estimates.json` on this same run. The first optimized build on this machine compiled the bench dependencies, which took 16.73 s. The slope lines:
 
 ```text
-    Finished `bench` profile [optimized] target(s) in 16.73s
-     Running benches/jsonrpc.rs (target/release/deps/jsonrpc-7119a1c6f1cdd032)
-Gnuplot not found, using plotters backend
-Benchmarking parse_1_message
-Benchmarking parse_1_message: Warming up for 1.0000 s
-Benchmarking parse_1_message: Collecting 10 samples in estimated 2.0000 s (1.7M iterations)
-Benchmarking parse_1_message: Analyzing
 parse_1_message         time:   [1.1739 µs 1.1891 µs 1.2033 µs]
-Found 1 outliers among 10 measurements (10.00%)
-  1 (10.00%) low mild
-
-Benchmarking parse_1000_messages
-Benchmarking parse_1000_messages: Warming up for 1.0000 s
-Benchmarking parse_1000_messages: Collecting 10 samples in estimated 2.0169 s (1595 iterations)
-Benchmarking parse_1000_messages: Analyzing
 parse_1000_messages     time:   [1.2917 ms 1.3082 ms 1.3263 ms]
-Found 3 outliers among 10 measurements (30.00%)
-  1 (10.00%) low severe
-  1 (10.00%) low mild
-  1 (10.00%) high severe
-
-Benchmarking serialize_1_message
-Benchmarking serialize_1_message: Warming up for 1.0000 s
-Benchmarking serialize_1_message: Collecting 10 samples in estimated 2.0000 s (11M iterations)
-Benchmarking serialize_1_message: Analyzing
 serialize_1_message     time:   [179.49 ns 181.79 ns 183.81 ns]
-Found 1 outliers among 10 measurements (10.00%)
-  1 (10.00%) high mild
-
-Benchmarking serialize_1000_messages
-Benchmarking serialize_1000_messages: Warming up for 1.0000 s
-Benchmarking serialize_1000_messages: Collecting 10 samples in estimated 2.0091 s (11k iterations)
-Benchmarking serialize_1000_messages: Analyzing
 serialize_1000_messages time:   [177.14 µs 178.81 µs 180.63 µs]
-
-Benchmarking dispatch_initialize
-Benchmarking dispatch_initialize: Warming up for 1.0000 s
-Benchmarking dispatch_initialize: Collecting 10 samples in estimated 2.0000 s (2.7M iterations)
-Benchmarking dispatch_initialize: Analyzing
 dispatch_initialize     time:   [738.41 ns 743.92 ns 751.87 ns]
 ```
 
-Local medians from that run's `estimates.json` (the slope above is not this column):
+Local medians from that run's `estimates.json` (the slope above is a different column):
 
 | Benchmark | Median | Low | High | Target |
 |---|---|---|---|---|
@@ -339,21 +302,16 @@ I executed that gist on the playground's stable channel, debug mode, edition 202
 parse error -32700 (EOF while parsing an object at line 1 column 1)
 ```
 
-## Pitfalls
+## Recap
 
-- Classifying a message by "try each struct" will accept a request with a bad id as a notification, because a notification ignores an `id` field. Check the keys, then deserialize the struct you already chose.
-- `"id": null` is legal on an error response when the id could not be read. It is not legal on a request.
-- A response with both `result` and `error` is invalid even if both values would otherwise deserialize.
-- `Option` turns JSON `null` into `None`. This chapter rejects a null result instead of treating it as an empty object.
-- A JSON array is an invalid request here. Newline framing of stdio is chapter 2.
-- `tools/list` is an unknown method. The error response is the point. The tool registry is chapter 3.
+You can take a JSON-RPC 2.0 object and say which of the three shapes it is, because the parser looks at the keys before it builds a struct. A request has an id and gets one response. A notification, including `notifications/initialized`, gets silence. `ping` returns `{}`. `initialize` returns protocol version `2025-06-18`, empty capabilities, and server info `fastmcp-rs` `0.1.0`.
 
-## Chapter summary
+Broken JSON is `-32700`. A value that is not a message is `-32600`. An unknown method is a response whose code is `-32601`, which is a Rust `Ok` because the id is still there. Bad `initialize` params are `-32602`, a Rust `Err`, because the body could not be built. You have used Cargo, structs, enums, serde, `Result`, and `?` on that path.
 
-The crate can parse and emit a JSON-RPC 2.0 message, and it can answer `initialize` and `ping`. Requests have ids. Notifications do not, and they get no response. Errors use the standard codes. On the Ubuntu CI run linked above, the medians are 1.558 µs to parse one message, 1.569 ms to parse 1,000, 249.3 ns to serialize one, 249.8 µs to serialize 1,000, and 863.7 ns to dispatch `initialize`. All five sit under the targets.
+`cargo run -p ch01-1-fastmcp-core --example demo` prints the two lines from the start of the chapter. On the Ubuntu CI run linked above, the medians are 1.558 µs to parse one message, 1.569 ms to parse 1,000, 249.3 ns to serialize one, 249.8 µs to serialize 1,000, and 863.7 ns to dispatch `initialize`. All five sit under their targets. The slope on Criterion's `time:` line is a different number. The table is the median.
 
 [personal note: a moment where the compiler stopped me, and how I worked out what it wanted]
 
 ## What's next
 
-Chapter 2 starts a process. A small server speaks stdio, answers `initialize` and `tools/list`, and you can point the MCP Inspector at it. That chapter is the first one that needs async, `tokio`, and `rmcp`. The types in this chapter stay as the picture of the wire. The running server will not keep parsing by hand.
+Chapter 2 starts a process. A small server speaks stdio, chooses a protocol version from a fixed list, and answers `initialize` and `tools/list`. You can point the MCP Inspector at it. That chapter is the first one that needs async, Tokio, and `rmcp`. The types in this chapter stay as the picture of the wire. The running server will let the SDK parse.
