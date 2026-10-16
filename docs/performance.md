@@ -56,11 +56,11 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 
 ## Chapter 5 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38862013588](https://github.com/agnathan/rust-mcp/actions/runs/38862013588) (2026-10-16T06:35:09Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `register_macro_1` | < 100 µs | pending | 3.200 µs |
-| `call_fn_1000` | < 10 µs | pending | 263.2 ns |
+| `register_macro_1` | < 100 µs | 4.640 µs | 3.200 µs |
+| `call_fn_1000` | < 10 µs | 342.5 ns | 263.2 ns |
 
 `register_macro_1` is one `tool_decl` registration, including schema generation. `call_fn_1000` is a thousand direct calls of the function the macro left in place. The proc macro is not in either timer. Details are in [Chapter 5](../book/chapter-05-a-tool-macro.md).
