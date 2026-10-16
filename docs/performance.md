@@ -97,3 +97,13 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `dispatch_missing_1000` | < 1 ms | pending | 64.08 µs |
 
 `dispatch_ok_1000` is a thousand successful `add` dispatches. `dispatch_missing_1000` is a thousand lookups of a name that is not registered. Details are in [Chapter 8](../book/chapter-08-errors-done-right.md).
+
+## Chapter 9 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `progress_1000` | < 100 µs | pending | 14.37 µs |
+
+`progress_1000` is a thousand in-memory progress notes, then a clear. Details are in [Chapter 9](../book/chapter-09-context.md).

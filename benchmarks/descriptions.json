@@ -279,6 +279,20 @@
       "fake": "No socket. The closure does not run.",
       "source": "steps/ch08-1-errors/crates/fastmcp-core/benches/errors.rs",
       "reading": "Smaller is better, and below the happy path. A thousand misses should stay well under 1 millisecond. About 64 µs locally."
+    },
+    {
+      "id": "9.1/progress_1000",
+      "section": "9.1 Context",
+      "chapter": "Chapter 9 Context",
+      "function": "progress_1000",
+      "summary": "Record 1,000 progress notes in memory.",
+      "what": "The cost of 1,000 Context::report_progress calls into a Mutex<Vec>, then a clear.",
+      "why": "Progress in this chapter is a shared list. This is that list, without a notification on the wire.",
+      "timing": "The Context is built before the bench. The timed closure is b.iter. Inside it: the loop of 1,000 pushes, clear, and black_box of the context. Building the Arc is excluded.",
+      "inputs": "progress is 0 through 999. total is Some(1000). message is None.",
+      "fake": "No socket and no notifications/progress. The note is a struct.",
+      "source": "steps/ch09-1-context/crates/fastmcp-core/benches/context.rs",
+      "reading": "Smaller is better. A thousand notes should stay well under 100 microseconds. About 14 µs locally."
     }
   ]
 }

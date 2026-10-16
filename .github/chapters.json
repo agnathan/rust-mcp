@@ -8,7 +8,7 @@
   {"n": 6, "title": "Resources and templates", "step": "ch06-1-resources", "part": "I"},
   {"n": 7, "title": "Prompts, completions, pagination", "step": "ch07-1-prompts", "part": "I"},
   {"n": 8, "title": "Errors done right", "step": "ch08-1-errors", "part": "I"},
-  {"n": 9, "title": "Context", "step": "ch09-context", "part": "I"},
+  {"n": 9, "title": "Context", "step": "ch09-1-context", "part": "I"},
   {"n": 10, "title": "Dependency injection", "step": "ch10-depends", "part": "I"},
   {"n": 11, "title": "Lifespan and state", "step": "ch11-lifespan", "part": "I"},
   {"n": 12, "title": "Streamable HTTP, sessions, both protocol eras", "step": "ch12-http", "part": "I"},

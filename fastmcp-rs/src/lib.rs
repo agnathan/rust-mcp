@@ -43,3 +43,8 @@ pub fn sample_prompt_name() -> &'static str {
 pub fn not_found_code() -> i32 {
     todo!("chapter 8: return the invalid_params code")
 }
+
+/// The string `Context::sample` returns in chapter 9.
+pub fn canned_sample() -> &'static str {
+    todo!("chapter 9: return the fixed sample string")
+}
