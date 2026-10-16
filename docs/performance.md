@@ -131,12 +131,12 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 
 ## Chapter 12 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38870644362](https://github.com/agnathan/rust-mcp/actions/runs/38870644362) (2026-10-16T07:59:08Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `http_roundtrip` | < 2 ms | pending | 294.9 µs |
-| `initialize_once` | < 1 ms | pending | 167.2 µs |
-| `discover_once` | < 500 µs | pending | 91.22 µs |
+| `http_roundtrip` | < 2 ms | 346.6 µs | 294.9 µs |
+| `initialize_once` | < 1 ms | 206.2 µs | 167.2 µs |
+| `discover_once` | < 500 µs | 118.7 µs | 91.22 µs |
 
 `http_roundtrip` is initialize, `tools/list`, and `DELETE` on loopback. `initialize_once` stops after the handshake and the delete. `discover_once` is one `server/discover` for `2026-07-28`. Details are in [Chapter 12](../book/chapter-12-streamable-http.md).
