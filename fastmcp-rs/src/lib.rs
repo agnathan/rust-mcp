@@ -78,3 +78,8 @@ pub fn grouped_tool_name() -> &'static str {
 pub fn snapshot_tool_name() -> &'static str {
     todo!("chapter 15: return the built-in tool name")
 }
+
+/// The default ping interval, in milliseconds.
+pub fn ping_interval_ms() -> &'static str {
+    todo!("chapter 16: return the default ping interval")
+}

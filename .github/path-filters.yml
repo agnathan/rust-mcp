@@ -38,3 +38,5 @@ ch14-1-client:
   - "steps/ch14-1-client/**"
 ch15-1-testing:
   - "steps/ch15-1-testing/**"
+ch16-1-middleware:
+  - "steps/ch16-1-middleware/**"
