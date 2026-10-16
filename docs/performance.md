@@ -168,7 +168,7 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `memory_list` | < 1 µs | pending | 24.20 ns |
-| `duplex_list` | < 200 µs | pending | 53.27 µs |
+| `memory_list` | < 1 µs | 30.67 ns | 24.20 ns |
+| `duplex_list` | < 200 µs | 47.07 µs | 53.27 µs |
 
 `memory_list` collects tool names from the harness. `duplex_list` is one `tools/list` on a connected memory client. Details are in [Chapter 15](../book/chapter-15-testing-utilities.md).
