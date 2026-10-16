@@ -205,3 +205,15 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `filter_10k` | < 1 ms | 137.9 µs | 127.2 µs |
 
 `filter_10k` lists the enabled names in a catalog of 10,000 tools. Details are in [Chapter 18](../book/chapter-18-transforms-and-visibility.md).
+
+## Chapter 19 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `search_10k` | < 1 ms | 175.8 µs | 181.6 µs |
+| `script_8` | < 1 ms | 143.2 µs | 154.1 µs |
+| `turns_8` | < 1 µs | 86.15 ns | 89.57 ns |
+
+`search_10k` queries a BM25 index of 10,000 tools. `script_8` runs eight calls in one rhai script. `turns_8` is eight host lookups. Details are in [Chapter 19](../book/chapter-19-tool-search-and-code-mode.md).
