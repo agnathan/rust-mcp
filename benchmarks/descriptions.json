@@ -447,6 +447,34 @@
       "fake": "No child process. The duplex is already connected.",
       "source": "steps/ch15-1-testing/crates/fastmcp-core/benches/harness.rs",
       "reading": "Smaller is better. One list should stay well under 200 microseconds. About 53 \u00b5s locally."
+    },
+    {
+      "id": "16.1/layers_0",
+      "section": "16.1 Middleware",
+      "chapter": "Chapter 16 Middleware",
+      "function": "layers_0",
+      "summary": "A thousand echo calls with no hooks.",
+      "what": "The cost of invoke when the hook list is empty: dispatch, schema check, and the closure.",
+      "why": "This is the baseline the five-layer chain is compared with.",
+      "timing": "The server and the argument JSON are built before the bench. The timed closure is b.iter. Inside it: 1,000 invoke calls and black_box of each value.",
+      "inputs": "echo with text hi, repeated 1,000 times.",
+      "fake": "No hooks and no socket.",
+      "source": "steps/ch16-1-middleware/crates/fastmcp-core/benches/middleware.rs",
+      "reading": "Smaller is better. A thousand calls should stay well under 2 milliseconds. About 194 \u00b5s locally."
+    },
+    {
+      "id": "16.1/layers_5",
+      "section": "16.1 Middleware",
+      "chapter": "Chapter 16 Middleware",
+      "function": "layers_5",
+      "summary": "A thousand echo calls through five hooks.",
+      "what": "The cost of two logs, a timer, a token bucket, and a size limit around each of 1,000 calls.",
+      "why": "Each layer adds work on the way in and on the way out. This is that overhead with the tool still running.",
+      "timing": "The server, the five hooks, and the argument JSON are built before the bench. The timed closure is b.iter. Inside it: 1,000 invoke calls.",
+      "inputs": "echo with text hi. The bucket holds 1e15 tokens. The limit is 1,000,000 bytes.",
+      "fake": "The cache is not in this timer. No socket.",
+      "source": "steps/ch16-1-middleware/crates/fastmcp-core/benches/middleware.rs",
+      "reading": "Smaller is better. A thousand calls should stay well under 2 milliseconds. About 557 \u00b5s locally."
     }
   ]
 }

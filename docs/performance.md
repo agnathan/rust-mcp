@@ -172,3 +172,14 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 | `duplex_list` | < 200 µs | 47.07 µs | 53.27 µs |
 
 `memory_list` collects tool names from the harness. `duplex_list` is one `tools/list` on a connected memory client. Details are in [Chapter 15](../book/chapter-15-testing-utilities.md).
+
+## Chapter 16 budget
+
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the Benchmarks run for this chapter. The local column is the same 4-vCPU Intel Xeon guest.
+
+| Benchmark | Target | CI median | Local median |
+|---|---|---|---|
+| `layers_0` | < 2 ms | 306.7 µs | 194.0 µs |
+| `layers_5` | < 2 ms | 664.2 µs | 557.2 µs |
+
+`layers_0` is a thousand `echo` calls with no hooks. `layers_5` is the same thousand through five hooks that all continue. Details are in [Chapter 16](../book/chapter-16-middleware.md).
