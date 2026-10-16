@@ -34,11 +34,11 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [
 
 ## Chapter 3 budget
 
-Sample size 10, warm-up 1 s, measurement 2 s. The local column is the same 4-vCPU Intel Xeon guest. The CI column is filled from this chapter's Benchmarks run once that job has finished.
+Sample size 10, warm-up 1 s, measurement 2 s. The CI column is the median from [Benchmarks run 38856477535](https://github.com/agnathan/rust-mcp/actions/runs/38856477535) (2026-10-16T05:34:43Z, Ubuntu). The local column is the same 4-vCPU Intel Xeon guest.
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `lookup_1` | < 1 µs | pending | 12.51 ns |
-| `dispatch_1000` | < 1 ms | pending | 59.96 µs |
+| `lookup_1` | < 1 µs | 17.14 ns | 12.51 ns |
+| `dispatch_1000` | < 1 ms | 82.97 µs | 59.96 µs |
 
 `lookup_1` is one `HashMap` lookup among 1,000 tools. `dispatch_1000` deserializes and calls all 1,000. Details are in [Chapter 3](../book/chapter-03-the-fastmcp-builder-and-tools.md).
