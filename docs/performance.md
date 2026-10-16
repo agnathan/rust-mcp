@@ -168,8 +168,8 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `memory_list` | < 1 µs | pending | 24.20 ns |
-| `duplex_list` | < 200 µs | pending | 53.27 µs |
+| `memory_list` | < 1 µs | 30.67 ns | 24.20 ns |
+| `duplex_list` | < 200 µs | 47.07 µs | 53.27 µs |
 
 `memory_list` collects tool names from the harness. `duplex_list` is one `tools/list` on a connected memory client. Details are in [Chapter 15](../book/chapter-15-testing-utilities.md).
 
@@ -179,8 +179,8 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `layers_0` | < 2 ms | pending | 194.0 µs |
-| `layers_5` | < 2 ms | pending | 557.2 µs |
+| `layers_0` | < 2 ms | 306.7 µs | 194.0 µs |
+| `layers_5` | < 2 ms | 664.2 µs | 557.2 µs |
 
 `layers_0` is a thousand `echo` calls with no hooks. `layers_5` is the same thousand through five hooks that all continue. Details are in [Chapter 16](../book/chapter-16-middleware.md).
 
@@ -190,9 +190,9 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `direct_call` | < 1 µs | pending | 15.91 ns |
-| `proxy_call` | < 1 µs | pending | 17.58 ns |
-| `aggregate_10` | < 5 µs | pending | 448.1 ns |
+| `direct_call` | < 1 µs | 22.87 ns | 15.91 ns |
+| `proxy_call` | < 1 µs | 23.48 ns | 17.58 ns |
+| `aggregate_10` | < 5 µs | 535.9 ns | 448.1 ns |
 
 `direct_call` is one local `call`. `proxy_call` is the same call through a proxy. `aggregate_10` lists ten providers. Details are in [Chapter 17](../book/chapter-17-providers-and-composition.md).
 

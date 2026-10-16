@@ -132,14 +132,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `layers_0` | 1,000 `invoke` calls of `echo`, including argument clone and JSON | Building the server and the argument value | `{"text":"hi"}`, a thousand times | No hooks and no socket | Well under 2 ms. About 194 µs here. |
 | `layers_5` | The same thousand calls through two logs, a timer, a token bucket, and a size limit | Building those hooks. The cache is not in this timer. | The same argument. The bucket holds 1e15 tokens and refills just as fast, so it never stops the loop. The limit is 1,000,000 bytes, so it does not cut the reply. | No socket | Well under 2 ms. About 557 µs here. Five layers cost more than zero. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38961359144](https://github.com/agnathan/rust-mcp/actions/runs/38961359144) (2026-10-16T20:19:06Z). GitHub's `github.sha` for that pull request run is the merge commit `cebfb8249b85337bf8a87256422f0715041679aa`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `layers_0` | pending | pending | pending | < 2 ms |
-| `layers_5` | pending | pending | pending | < 2 ms |
+| `layers_0` | 306.7 µs | 306.5 µs | 306.9 µs | < 2 ms |
+| `layers_5` | 664.2 µs | 663.9 µs | 668.8 µs | < 2 ms |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, a thousand calls take 306.7 µs with no hooks and 664.2 µs with five. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
