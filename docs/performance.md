@@ -245,6 +245,6 @@ Sample size 10, warm-up 1 s, measurement 2 s. The CI column is filled from the B
 
 | Benchmark | Target | CI median | Local median |
 |---|---|---|---|
-| `verify_hs256` | < 20 µs | pending | 1.530 µs |
+| `verify_hs256` | < 20 µs | 2.559 µs | 1.530 µs |
 
 `verify_hs256` checks one HS256 token and its audience. Details are in [Chapter 22](../book/chapter-22-authentication.md).
