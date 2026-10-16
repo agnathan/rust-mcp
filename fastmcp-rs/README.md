@@ -1,9 +1,10 @@
 # fastmcp-rs
 
-This is the crate you implement while you read the book. The finished snapshot for each chapter stays under `steps/`. `tests/ch01.rs` compiles, then panics in `todo!()` until `ping_response_json` returns a JSON-RPC ping response.
+This is the crate you implement while you read the book. The finished snapshot for each chapter stays under `steps/`. Each `tests/chNN.rs` compiles, then panics in `todo!()` until you fill in that chapter's function.
 
 CI does not run these tests. The required build is the step crates.
 
 ```bash
 cargo test -p fastmcp-rs --test ch01
+cargo test -p fastmcp-rs --test ch02
 ```

@@ -69,6 +69,48 @@
       "fake": "The server name and version are constants. Capabilities are an empty JSON object. There is no session, no middleware, and no clock.",
       "source": "steps/ch01-1-jsonrpc/crates/fastmcp-core/benches/jsonrpc.rs",
       "reading": "Smaller is better. One initialize dispatch should stay well under a millisecond. Milliseconds would mean the handler started doing real work this chapter does not do."
+    },
+    {
+      "id": "2.1/negotiate_1",
+      "section": "2.1 Negotiate",
+      "chapter": "Chapter 2 Negotiating the protocol",
+      "function": "negotiate_1",
+      "summary": "Choose one protocol version.",
+      "what": "The cost of choose_version for a supported handshake version: a contains check on a five-element const slice and a clone of the version.",
+      "why": "Every initialize pays this before the session continues. It should stay noise next to parsing a message.",
+      "timing": "The requested version is built before the bench. The timed closure is b.iter. Inside it: choose_version against SUPPORTED_VERSIONS, then black_box of the chosen version. Building the const slice is excluded.",
+      "inputs": "Requested version 2025-06-18. The supported slice is the five dates from 2024-11-05 through 2026-07-28.",
+      "fake": "Nothing is mocked. There is no socket, no rmcp serve loop, and no client.",
+      "source": "steps/ch02-1-negotiate/crates/fastmcp-core/benches/negotiate.rs",
+      "reading": "Smaller is better. One choice should stay well under a microsecond. About 10 ns locally."
+    },
+    {
+      "id": "2.1/negotiate_1000",
+      "section": "2.1 Negotiate",
+      "chapter": "Chapter 2 Negotiating the protocol",
+      "function": "negotiate_1000",
+      "summary": "Choose a protocol version 1,000 times.",
+      "what": "The cost of 1,000 choose_version calls. Every fifth request is 2026-07-28, which falls back to 2025-11-25. The rest echo 2025-06-18.",
+      "why": "A process that accepts many clients repeats this choice. The fallback path has to stay cheap too.",
+      "timing": "The Vec of 1,000 versions is built before the bench. The timed closure is b.iter. Inside it: choose_version for each entry and black_box of the last result. Building the Vec is excluded.",
+      "inputs": "1,000 versions. Indexes divisible by 5 are 2026-07-28. The others are 2025-06-18. The same Vec is reused for every sample.",
+      "fake": "Nothing is mocked. No session and no socket.",
+      "source": "steps/ch02-1-negotiate/crates/fastmcp-core/benches/negotiate.rs",
+      "reading": "Smaller is better. A thousand choices should stay well under a millisecond. About 12 µs locally."
+    },
+    {
+      "id": "2.1/stdio_initialize_list",
+      "section": "2.1 Negotiate",
+      "chapter": "Chapter 2 Negotiating the protocol",
+      "function": "stdio_initialize_list",
+      "summary": "Initialize and list tools on an in-memory stdio transport.",
+      "what": "The cost of one duplex pipe, rmcp serve on one end, a client initialize for 2025-06-18, one tools/list, and cancel.",
+      "why": "This is the first time the book times a session. It shows the floor under handshake plus tools/list when the bytes never leave the process.",
+      "timing": "The multi-thread Tokio runtime is built before the bench. The timed closure is b.iter. Inside it: tokio::io::duplex, spawn the server, client serve (which runs initialize), list_tools, cancel, and black_box of the tool count. Runtime construction is excluded. Process spawn is not part of the sample.",
+      "inputs": "Server name fastmcp-rs, version 0.1.0. Client protocol version 2025-06-18. The server answers with that version and one status tool.",
+      "fake": "The pipe is tokio::io::duplex, not the terminal's stdin and stdout. It is the same AsyncRead and AsyncWrite transport rmcp::transport::stdio uses. No child process.",
+      "source": "steps/ch02-1-negotiate/crates/fastmcp-core/benches/negotiate.rs",
+      "reading": "Smaller is better. One session should stay well under 5 ms. About 114 µs locally. A jump into milliseconds of process startup would mean the bench started spawning a binary."
     }
   ]
 }

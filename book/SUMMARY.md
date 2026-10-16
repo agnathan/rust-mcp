@@ -6,7 +6,7 @@
 
 - [Introduction](chapter-00-introduction.md)
 - [Chapter 1: Speaking JSON-RPC](chapter-01-speaking-json-rpc.md)
-- [Chapter 2: Negotiating the protocol]()
+- [Chapter 2: Negotiating the protocol](chapter-02-negotiating-the-protocol.md)
 - [Chapter 3: The `FastMcp` builder and tools]()
 - [Chapter 4: Schemas from types]()
 - [Chapter 5: A `#[tool]` macro]()

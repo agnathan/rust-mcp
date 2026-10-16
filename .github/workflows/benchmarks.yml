@@ -31,6 +31,8 @@ jobs:
           echo "BENCH_RUN_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
       - name: Section 1.1 JSON-RPC
         run: bash .github/scripts/run_bench_section.sh 1.1 "1.1 JSON-RPC" ch01-1-fastmcp-core jsonrpc
+      - name: Section 2.1 Negotiate
+        run: bash .github/scripts/run_bench_section.sh 2.1 "2.1 Negotiate" ch02-1-fastmcp-core negotiate
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"
