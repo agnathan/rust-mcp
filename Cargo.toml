@@ -47,5 +47,6 @@ members = [
     "steps/ch24-1-cli/crates/fastmcp-core",
     "steps/ch25-1-shipping/crates/fastmcp-macros",
     "steps/ch25-1-shipping/crates/fastmcp-core",
+    "steps/apa-1-apps",
     "fastmcp-rs",
 ]

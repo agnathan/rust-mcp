@@ -21,7 +21,7 @@ def existing_steps(root: Path) -> list[str]:
     return sorted(
         path.name
         for path in steps.iterdir()
-        if path.is_dir() and path.name.startswith(("ch", "gw"))
+        if path.is_dir() and path.name.startswith(("ch", "gw", "ap"))
     )
 
 
