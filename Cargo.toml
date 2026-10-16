@@ -21,5 +21,7 @@ members = [
     "steps/ch11-1-lifespan/crates/fastmcp-core",
     "steps/ch12-1-http/crates/fastmcp-macros",
     "steps/ch12-1-http/crates/fastmcp-core",
+    "steps/ch13-1-elicit/crates/fastmcp-macros",
+    "steps/ch13-1-elicit/crates/fastmcp-core",
     "fastmcp-rs",
 ]

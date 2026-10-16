@@ -63,3 +63,8 @@ pub fn shutdown_order() -> &'static str {
 pub fn streamable_http_path() -> &'static str {
     todo!("chapter 12: return the path the listener serves")
 }
+
+/// The phase after a person accepts.
+pub fn elicit_phase() -> &'static str {
+    todo!("chapter 13: return the phase after submit")
+}

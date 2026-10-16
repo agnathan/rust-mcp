@@ -12,7 +12,7 @@
   {"n": 10, "title": "Dependency injection", "step": "ch10-1-depends", "part": "I"},
   {"n": 11, "title": "Lifespan and state", "step": "ch11-1-lifespan", "part": "I"},
   {"n": 12, "title": "Streamable HTTP, sessions, both protocol eras", "step": "ch12-1-http", "part": "I"},
-  {"n": 13, "title": "Elicitation and interactive tools", "step": "ch13-elicit", "part": "I"},
+  {"n": 13, "title": "Elicitation and interactive tools", "step": "ch13-1-elicit", "part": "I"},
   {"n": 14, "title": "The client and client groups", "step": "ch14-client", "part": "II"},
   {"n": 15, "title": "Testing utilities", "step": "ch15-testing", "part": "II"},
   {"n": 16, "title": "Middleware", "step": "ch16-middleware", "part": "II"},
