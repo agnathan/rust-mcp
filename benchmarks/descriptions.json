@@ -1,0 +1,74 @@
+{
+  "benchmarks": [
+    {
+      "id": "1.1/parse_1_message",
+      "section": "1.1 JSON-RPC",
+      "chapter": "Chapter 1 Speaking JSON-RPC",
+      "function": "parse_1_message",
+      "summary": "Parse one initialize request from JSON bytes.",
+      "what": "The cost of parse_message on one initialize request: version check, key classification, and serde into a Request.",
+      "why": "Every inbound MCP message pays this before a method runs. If this grows, the server is spending time on the envelope.",
+      "timing": "one_initialize_bytes() runs before the bench and builds one JSON buffer. The timed closure is b.iter. Inside it: parse_message on that buffer, then black_box of the Message. Building the request and calling serde_json::to_vec for the fixture are excluded.",
+      "inputs": "One initialize request. id is the number 1. protocolVersion is 2025-06-18. capabilities is {}. clientInfo is name bench, version 0.1.0. The same bytes are reused for every sample.",
+      "fake": "Nothing is mocked. There is no socket, no clock sleep, and no rmcp session. The bytes are an in-memory Vec.",
+      "source": "steps/ch01-1-jsonrpc/crates/fastmcp-core/benches/jsonrpc.rs",
+      "reading": "Smaller is better. One message should stay well under a millisecond. A jump means the message type or the JSON layer got heavier."
+    },
+    {
+      "id": "1.1/parse_1000_messages",
+      "section": "1.1 JSON-RPC",
+      "chapter": "Chapter 1 Speaking JSON-RPC",
+      "function": "parse_1000_messages",
+      "summary": "Parse 1,000 initialize requests from JSON bytes.",
+      "what": "The cost of calling parse_message once per buffer, 1,000 times, and counting the results.",
+      "why": "A busy stdio server reads many messages. This is the parse cost of a batch with no transport between them.",
+      "timing": "thousand_initialize_bytes() runs before the bench and builds 1,000 separate Vec<u8> values. The timed closure is b.iter. Inside it: a for loop over those buffers, parse_message, black_box of each Message, and a count. Fixture construction is excluded. The loop and the 1,000 parses are included.",
+      "inputs": "1,000 initialize requests. ids are the integers 0 through 999. Every other field matches parse_1_message. Each message is its own buffer.",
+      "fake": "Nothing is mocked. The 1,000 buffers are already in memory. No framing, no stdin, no batch JSON array.",
+      "source": "steps/ch01-1-jsonrpc/crates/fastmcp-core/benches/jsonrpc.rs",
+      "reading": "Smaller is better. This should stay well under 50 ms. It is about 1,000 times one parse, plus the loop, not 1,000 network round trips."
+    },
+    {
+      "id": "1.1/serialize_1_message",
+      "section": "1.1 JSON-RPC",
+      "chapter": "Chapter 1 Speaking JSON-RPC",
+      "function": "serialize_1_message",
+      "summary": "Serialize one initialize request to JSON bytes.",
+      "what": "The cost of serde_json::to_vec on one Message::Request.",
+      "why": "Every outbound initialize or ping pays this on the way out.",
+      "timing": "The Request is built before the bench and wrapped in Message::Request once. The timed closure is b.iter. Inside it: serde_json::to_vec of that message, then black_box of the bytes. Struct construction is excluded.",
+      "inputs": "One initialize request, id 1, the same fields as parse_1_message. One struct, reused for every sample.",
+      "fake": "Nothing is mocked. No socket. The output buffer is allocated inside the sample, which is part of the cost of sending.",
+      "source": "steps/ch01-1-jsonrpc/crates/fastmcp-core/benches/jsonrpc.rs",
+      "reading": "Smaller is better. One message should stay well under a millisecond."
+    },
+    {
+      "id": "1.1/serialize_1000_messages",
+      "section": "1.1 JSON-RPC",
+      "chapter": "Chapter 1 Speaking JSON-RPC",
+      "function": "serialize_1000_messages",
+      "summary": "Serialize 1,000 initialize requests to JSON bytes.",
+      "what": "The cost of serde_json::to_vec on 1,000 already-built Message values, summing the byte lengths.",
+      "why": "Shows the emit cost of a thousand similar envelopes without parsing them first.",
+      "timing": "thousand_messages() runs before the bench and builds 1,000 Message values. The timed closure is b.iter. Inside it: to_vec for each message, add bytes.len() to a total, black_box of the bytes and the total. Building the 1,000 structs is excluded. The allocations of the output buffers are included.",
+      "inputs": "1,000 initialize requests. ids are 0 through 999. Same fields as parse_1_message otherwise.",
+      "fake": "Nothing is mocked. No socket and no batching into one JSON array. One object per message.",
+      "source": "steps/ch01-1-jsonrpc/crates/fastmcp-core/benches/jsonrpc.rs",
+      "reading": "Smaller is better. This should stay well under 50 ms."
+    },
+    {
+      "id": "1.1/dispatch_initialize",
+      "section": "1.1 JSON-RPC",
+      "chapter": "Chapter 1 Speaking JSON-RPC",
+      "function": "dispatch_initialize",
+      "summary": "Dispatch one already-parsed initialize request.",
+      "what": "The cost of dispatch on a Message::Request: match the method, parse InitializeParams, build InitializeResult, and wrap a success Response.",
+      "why": "This is the work after the bytes are already a Message. It is the floor under an initialize that does not touch a transport.",
+      "timing": "The Message is built before the bench. The timed closure is b.iter. Inside it: dispatch of that message, then black_box of the Option<Response>. Parsing bytes is excluded. serde_json::to_value of the result struct is included, because dispatch does that before it returns.",
+      "inputs": "One initialize request, id 1, protocolVersion 2025-06-18, empty capabilities, clientInfo name bench version 0.1.0. The server answer is protocolVersion 2025-06-18, empty capabilities, serverInfo name fastmcp-rs version 0.1.0, no instructions.",
+      "fake": "The server name and version are constants. Capabilities are an empty JSON object. There is no session, no middleware, and no clock.",
+      "source": "steps/ch01-1-jsonrpc/crates/fastmcp-core/benches/jsonrpc.rs",
+      "reading": "Smaller is better. One initialize dispatch should stay well under a millisecond. Milliseconds would mean the handler started doing real work this chapter does not do."
+    }
+  ]
+}

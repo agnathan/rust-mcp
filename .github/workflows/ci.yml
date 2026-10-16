@@ -1,0 +1,202 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  fmt-clippy:
+    name: fmt and clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .
+      - name: cargo fmt --check
+        run: cargo fmt --all -- --check
+      - name: cargo clippy
+        run: cargo clippy --workspace --all-targets --locked
+
+  list-steps:
+    name: List steps
+    runs-on: ubuntu-latest
+    outputs:
+      steps: ${{ steps.list.outputs.steps }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: python3 .github/scripts/list_steps.py --github-output "$GITHUB_OUTPUT"
+
+  test-ubuntu:
+    name: ubuntu / ${{ matrix.step }}
+    needs: list-steps
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        step: ${{ fromJSON(needs.list-steps.outputs.steps) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+      - name: cargo nextest -p step packages
+        run: bash .github/scripts/test_step.sh "${{ matrix.step }}"
+
+  changed-steps:
+    name: Steps touched by this change
+    runs-on: ubuntu-latest
+    outputs:
+      steps: ${{ steps.pick.outputs.steps }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: .github/path-filters.yml
+      - id: pick
+        shell: bash
+        env:
+          CHANGES: ${{ steps.filter.outputs.changes }}
+        run: python3 .github/scripts/changed_steps.py
+
+  test-os-matrix:
+    name: ${{ matrix.os }} / ${{ matrix.step }}
+    needs: changed-steps
+    if: needs.changed-steps.outputs.steps != '[]'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        step: ${{ fromJSON(needs.changed-steps.outputs.steps) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+      - name: cargo nextest -p step packages
+        shell: bash
+        run: bash .github/scripts/test_step.sh "${{ matrix.step }}"
+
+  # Hosted macos-latest (arm64) has been cancelling jobs before any step runs
+  # when many of them queue at once. Keep the wave small, and run it a second
+  # time only when the first wave did not succeed. continue-on-error keeps a
+  # capacity cancel from failing the workflow before the retry. The gate reads
+  # job conclusions, because continue-on-error reports needs.*.result as success
+  # even when a step failed.
+  test-macos:
+    name: macos / ${{ matrix.step }}
+    needs: changed-steps
+    if: needs.changed-steps.outputs.steps != '[]'
+    runs-on: macos-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        step: ${{ fromJSON(needs.changed-steps.outputs.steps) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+      - name: cargo nextest -p step packages
+        shell: bash
+        run: bash .github/scripts/test_step.sh "${{ matrix.step }}"
+
+  macos-inspect:
+    name: macOS results
+    needs: [changed-steps, test-macos]
+    if: always() && needs.changed-steps.outputs.steps != '[]'
+    runs-on: ubuntu-latest
+    outputs:
+      retry: ${{ steps.check.outputs.retry }}
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECT_MACOS: "true"
+        run: python3 .github/scripts/macos_retry.py inspect >> "$GITHUB_OUTPUT"
+
+  test-macos-retry:
+    name: macos retry / ${{ matrix.step }}
+    needs: [changed-steps, macos-inspect]
+    if: needs.macos-inspect.outputs.retry == 'true'
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        step: ${{ fromJSON(needs.changed-steps.outputs.steps) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+      - name: cargo nextest -p step packages
+        shell: bash
+        run: bash .github/scripts/test_step.sh "${{ matrix.step }}"
+
+  macos-gate:
+    name: macOS gate
+    needs: [changed-steps, test-macos, macos-inspect, test-macos-retry]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require one green macOS pass
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECT_MACOS: ${{ needs.changed-steps.outputs.steps != '[]' }}
+        run: python3 .github/scripts/macos_retry.py gate
+
+  book:
+    name: mdBook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: mdbook
+      - name: Build the book
+        working-directory: book
+        run: mdbook build

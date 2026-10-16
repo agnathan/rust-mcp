@@ -1,0 +1,8 @@
+[book]
+title = "Learning Rust by Building FastMCP"
+authors = ["Daniel Holmlund"]
+language = "en"
+src = "."
+
+[build]
+build-dir = "_build"

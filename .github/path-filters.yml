@@ -1,0 +1,12 @@
+# Filter names for real steps match steps/ directory names.
+# `shared` means "retest every step that exists". Add a filter when a new
+# steps/chNN-* directory lands. The chapter plan is .github/chapters.json.
+shared:
+  - "Cargo.toml"
+  - "Cargo.lock"
+  - ".github/scripts/**"
+  - ".github/workflows/ci.yml"
+  - ".github/path-filters.yml"
+  - ".github/chapters.json"
+ch01-1-jsonrpc:
+  - "steps/ch01-1-jsonrpc/**"
