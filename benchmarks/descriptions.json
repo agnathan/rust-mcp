@@ -699,6 +699,20 @@
       "fake": "No socket and no reload watcher. The OnceLock getter is not called.",
       "source": "steps/ch24-1-cli/crates/fastmcp-core/benches/settings.rs",
       "reading": "Smaller is better. One cold inspect should stay well under 50 microseconds. About 8.4 \u00b5s locally."
+    },
+    {
+      "id": "25.1/rust_call",
+      "section": "25.1 Shipping",
+      "chapter": "Chapter 25 Shipping it",
+      "function": "rust_call",
+      "summary": "One in-process add call on the book's server.",
+      "what": "The cost of dispatch_tool for add(2, 3), including JSON deserialize and serialize of the sum.",
+      "why": "This is the Rust side of the head-to-head with Python FastMCP. The Python number is measured by a script, not by this bench.",
+      "timing": "add_server runs before the bench. The timed closure is b.iter. Inside it: call_add and black_box.",
+      "inputs": "Arguments a=2 and b=3. One server, reused for every sample.",
+      "fake": "No socket, no cargo publish, no Python. Middleware hooks are not on dispatch_tool.",
+      "source": "steps/ch25-1-shipping/crates/fastmcp-core/benches/shipping.rs",
+      "reading": "Smaller is better. One call should stay well under 1 microsecond. About 98 ns locally."
     }
   ]
 }

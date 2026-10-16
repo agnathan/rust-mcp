@@ -77,6 +77,8 @@ jobs:
         run: bash .github/scripts/run_bench_section.sh 23.1 "23.1 Production" ch23-1-fastmcp-core production
       - name: Section 24.1 Settings
         run: bash .github/scripts/run_bench_section.sh 24.1 "24.1 Settings" ch24-1-fastmcp-core settings
+      - name: Section 25.1 Shipping
+        run: bash .github/scripts/run_bench_section.sh 25.1 "25.1 Shipping" ch25-1-fastmcp-core shipping
       - name: Write the job summary
         if: always()
         run: python3 .github/scripts/bench_summary.py >> "$GITHUB_STEP_SUMMARY"

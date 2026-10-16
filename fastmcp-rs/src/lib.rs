@@ -123,3 +123,8 @@ pub fn fingerprint_algo() -> &'static str {
 pub fn settings_env_prefix() -> &'static str {
     todo!("chapter 24: return the settings environment prefix")
 }
+
+/// The publish command chapter 25 plans and does not run.
+pub fn publish_command() -> &'static str {
+    todo!("chapter 25: return the dry-run publish command")
+}

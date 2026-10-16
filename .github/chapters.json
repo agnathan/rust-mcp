@@ -24,5 +24,5 @@
   {"n": 22, "title": "Authentication", "step": "ch22-1-auth", "part": "III"},
   {"n": 23, "title": "Production: authorization, versioning, storage, telemetry", "step": "ch23-1-production", "part": "III"},
   {"n": 24, "title": "Settings and CLI", "step": "ch24-1-cli", "part": "III"},
-  {"n": 25, "title": "Shipping it", "step": "ch25-shipping", "part": "III"}
+  {"n": 25, "title": "Shipping it", "step": "ch25-1-shipping", "part": "III"}
 ]
