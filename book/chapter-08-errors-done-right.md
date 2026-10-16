@@ -143,14 +143,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `dispatch_ok_1000` | 1,000 `dispatch_tool("add", {left:2, right:3})` calls: clone the JSON, deserialize `Add`, run the closure, serialize `Sum` | Building the server | One registered `add`. The same argument object, cloned each call. | No socket | Well under 1 ms. About 128 µs here. |
 | `dispatch_missing_1000` | 1,000 `dispatch_tool("missing", ...)` calls: clone the JSON, miss the `HashMap` | Deserialization and the closure, which do not run. Building the server. | The name `missing` on a server that only has `add` | No socket | Well under 1 ms, and below the happy path. About 64 µs here. The clone of the arguments is in both timers. The gap is the work the miss skips. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38865647838](https://github.com/agnathan/rust-mcp/actions/runs/38865647838) (2026-10-16T07:11:53Z). GitHub's `github.sha` for that pull request run is the merge commit `58d3f3f63b65a58c4d92c9953ff0a23bbd8e7508`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `dispatch_ok_1000` | pending | pending | pending | < 1 ms |
-| `dispatch_missing_1000` | pending | pending | pending | < 1 ms |
+| `dispatch_ok_1000` | 172.7 µs | 172.4 µs | 173.7 µs | < 1 ms |
+| `dispatch_missing_1000` | 75.41 µs | 75.33 µs | 77.68 µs | < 1 ms |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, a thousand successful dispatches take 172.7 µs and a thousand misses take 75.41 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -175,7 +175,7 @@ other: -32603
 
 `AppError` names the cases. `to_mcp_error` keeps a chosen code, maps not-found, disabled, and validation to `-32602`, and sends `anyhow` to `-32603`. `tool_app` pulls `ToolFailed` out first, so that `Err` is a tool result with `is_error: true`.
 
-`cargo run -p ch08-1-fastmcp-core --example demo` prints the sum, `nope`, `-32602`, and `-32603`. Locally, a thousand successful dispatches take 128.4 µs and a thousand misses take 64.08 µs.
+`cargo run -p ch08-1-fastmcp-core --example demo` prints the sum, `nope`, `-32602`, and `-32603`. Locally, a thousand successful dispatches take 128.4 µs and a thousand misses take 64.08 µs. On the Ubuntu run linked above, a thousand successful dispatches take 172.7 µs and a thousand misses take 75.41 µs.
 
 [personal note: the `?` that started working once `From` was in place]
 

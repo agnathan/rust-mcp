@@ -149,14 +149,14 @@ Local medians from that run's `estimates.json` (the slope above is a different s
 | `prompt_render_1` | One `render_prompt("greet", {name: Ada})`: the required-argument check and the format | Building the server and the argument map | The prompt `greet`, one required argument `name` | No socket | Well under 1 µs. About 62 ns here. |
 | `paginate_10k` | Decode the cursor, `skip` to offset 5,000, `take` 50 items, clone them, and encode the next cursor | Building the 10,000 strings and encoding the starting cursor | Items `item-0` through `item-9999`. Page size 50. Cursor offset 5,000. | No socket and no `rmcp` session. This is the pager, not a round trip. | Well under 50 µs. About 2.5 µs here. The cost is cloning 50 strings, not walking the wire. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI medians below are filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38864877048](https://github.com/agnathan/rust-mcp/actions/runs/38864877048) (2026-10-16T07:04:27Z). GitHub's `github.sha` for that pull request run is the merge commit `427472af8aaedaeeaf0790d8e4130259b41c1fed`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `prompt_render_1` | pending | pending | pending | < 1 µs |
-| `paginate_10k` | pending | pending | pending | < 50 µs |
+| `prompt_render_1` | 97.61 ns | 97.50 ns | 97.81 ns | < 1 µs |
+| `paginate_10k` | 2.371 µs | 2.368 µs | 2.379 µs | < 50 µs |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI medians once the run is linked.
+On the Ubuntu runner, one prompt render is 97.61 ns and one page from the middle of 10,000 items is 2.371 µs. Those are the medians this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -180,7 +180,7 @@ next: eyJvIjoyfQ==
 
 A prompt is a name, a description, arguments, and a function from those arguments to a message. Completion filters a candidate list by prefix and stops at 100. Every `list_*` returns a page. The cursor is base64 of `{"o": offset}`, and a cursor that is not a non-negative integer is `invalid_params`.
 
-`cargo run -p ch07-1-fastmcp-core --example demo` prints `Hello, Ada`, the page `greet, one`, and the cursor `eyJvIjoyfQ==`. Locally, one render is 62.14 ns and one page from the middle of 10,000 items is 2.482 µs.
+`cargo run -p ch07-1-fastmcp-core --example demo` prints `Hello, Ada`, the page `greet, one`, and the cursor `eyJvIjoyfQ==`. Locally, one render is 62.14 ns and one page from the middle of 10,000 items is 2.482 µs. On the Ubuntu run linked above, one render is 97.61 ns and one page is 2.371 µs.
 
 [personal note: a page that came back empty, and the cursor that caused it]
 

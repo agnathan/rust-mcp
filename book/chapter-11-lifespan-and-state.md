@@ -127,13 +127,13 @@ Local median from that run's `estimates.json` (the slope above is a different st
 |---|---|---|---|---|---|
 | `contended_reads` | Spawning four threads, 1,000 read-lock acquisitions on each, joining the threads, and summing the lengths | Building the `RwLock` and the string `ready` | The banner `ready`. Four threads. 1,000 reads each. | No socket and no database. The string is already in the lock. | Well under 2 ms. About 244 µs here. Spawn and join are part of the number. |
 
-CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The CI median below is filled from that run once it finishes. A slow number does not fail the build.
+CI runs this step's tests on Ubuntu, macOS, and Windows when the step changes. Criterion runs on Ubuntu in the [Benchmarks workflow](https://github.com/agnathan/rust-mcp/actions/workflows/benchmarks.yml). The numbers below are `median.point_estimate` and the median confidence interval from `estimates.json` on [run 38867880902](https://github.com/agnathan/rust-mcp/actions/runs/38867880902) (2026-10-16T07:32:55Z). GitHub's `github.sha` for that pull request run is the merge commit `39b439cdf9bd13e1bcf2c23fb185f0906d6b5fda`. A push to `main` appends a later run to the dashboard sources in `benchmarks/`. A slow number does not fail the build.
 
 | Benchmark | CI median | Low | High | Target |
 |---|---|---|---|---|
-| `contended_reads` | pending | pending | pending | < 2 ms |
+| `contended_reads` | 236.8 µs | 234.6 µs | 237.8 µs | < 2 ms |
 
-The local table is the machine where the command transcript was captured. The chapter quotes the CI median once the run is linked.
+On the Ubuntu runner, four threads reading the lock take 236.8 µs. That is the median this chapter quotes. The local table above is the machine where the command transcript was captured.
 
 ### Milestone demo
 
@@ -159,7 +159,7 @@ close: db
 
 `enter` records an open and pushes a close. `Drop` pops the closes, so the cache closes before the database. The banner is an `Arc<RwLock<String>>`. Clones of the server share it. The hooks run once, on the last lifespan owner.
 
-`cargo run -p ch11-1-fastmcp-core --example demo` prints `ready` and then the four lines. Locally, four threads reading the lock take 244.3 µs.
+`cargo run -p ch11-1-fastmcp-core --example demo` prints `ready` and then the four lines. Locally, four threads reading the lock take 244.3 µs. On the Ubuntu run linked above, four threads reading the lock take 236.8 µs.
 
 [personal note: the drop that ran earlier than I expected, and the clone that was still holding it]
 
